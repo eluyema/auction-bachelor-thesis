@@ -8,4 +8,6 @@
 
 :root {
     @include colors();
+    @include cornerRadius();
+    @include spaces();
 }

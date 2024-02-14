@@ -1,2 +1,4 @@
-$radius-small: 3px;
-$radius-large: 16px;
+@mixin cornerRadius {
+  --radius-small: 3px;
+  --radius-large: 16px;
+}
