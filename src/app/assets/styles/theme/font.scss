@@ -54,7 +54,11 @@
 }
 
 @mixin font-text-small {
-    @include font-setup(14px, 20px);
+    @include font-setup(12px, 20px);
+
+    @include desktop {
+      @include font-setup(14px, 20px);
+    }
 }
 
 @mixin font-label {
