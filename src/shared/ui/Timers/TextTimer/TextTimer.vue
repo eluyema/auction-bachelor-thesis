@@ -7,12 +7,12 @@
 <script setup lang="ts">
 import { ref, computed, watch, onMounted, onUnmounted } from 'vue';
 
-const props = defineProps({
-  time: {
-    type: Number,
-    default: 86400, // Default to 1 day in seconds
-    validator: (value: number) => value >= 0,
-  },
+export type TextTimerProps = {
+  time?: number;
+};
+
+const props = withDefaults(defineProps<TextTimerProps>(), {
+  time: 86400
 });
 
 const timePassed = ref(0);

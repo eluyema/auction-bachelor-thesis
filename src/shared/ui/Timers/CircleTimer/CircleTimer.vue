@@ -24,13 +24,12 @@
 <script setup lang="ts">
 import { ref, computed, onMounted, onUnmounted, watch } from 'vue';
 
-const props = defineProps({
-  time: {
-    type: Number,
-    default: 60,
-    validator: (value: number) => value >= 0 && value <= 60 * 60,
-  },
-});
+export type TextTimerProps = {
+  time?: number;
+};
+
+
+const props = withDefaults(defineProps<TextTimerProps>(), { time: 60});
 
 const FULL_DASH_ARRAY = 283;
 
