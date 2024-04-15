@@ -39,7 +39,7 @@ const sizeClassMap: Record<"medium" | "large", string> = {
 } as const;
 
 const classes = computed(()=>{
-  const defaultColorVariantClass: string = colorVariantClassMap['primary'];
+  const defaultColorVariantClass = colorVariantClassMap['primary'] as string;
   const defaultTextShapeClass = textShapeClassMap['contained'];
   const defaultSizeClass = sizeClassMap['medium'];
 
@@ -62,7 +62,6 @@ const classes = computed(()=>{
 
   padding: var(--spacing-8) var(--spacing-12);
   background: transparent;
-  border: 1px solid transparent;
   border-radius: var(--radius-small);
   cursor: pointer;
 
@@ -71,30 +70,37 @@ const classes = computed(()=>{
 
     &.primary {
       background: var(--color-main-blue);
-      border-color: var(--color-main-blue);
 
       &:hover {
         background: var(--color-hover-blue);
+      }
+
+      &:active {
+        background: var(--color-main-blue);
       }
     }
 
     &.error {
       background: var(--color-stroke-red);
-      border-color: var(--color-stroke-red);
 
       &:hover {
         background: var(--color-hover-red);
-        border-color: var(--color-hover-red);
+      }
+
+      &:active {
+        background: var(--color-stroke-red);
       }
     }
 
     &.success {
       background: var(--color-button-green);
-      border-color: var(--color-button-green);
 
       &:hover {
         background: var(--color-hover-green);
-        border-color: var(--color-hover-green);
+      }
+
+      &:active {
+        background: var(--color-button-green);
       }
     }
   }
@@ -156,8 +162,8 @@ const classes = computed(()=>{
     }
   }
 
-  &:focus, &.shape-contained:focus, &:focus {
-    border-color: var(--color-text-black) !important;
+  &:focus, &.shape-contained:focus, &.shape-text:focus {
+    outline: 1px solid var(--color-text-black);
   }
 }
 </style>

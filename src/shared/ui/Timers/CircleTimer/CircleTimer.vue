@@ -28,7 +28,6 @@ export type TextTimerProps = {
   time?: number;
 };
 
-
 const props = withDefaults(defineProps<TextTimerProps>(), { time: 60});
 
 const FULL_DASH_ARRAY = 283;
