@@ -132,7 +132,6 @@ watch(() => props.time, (newValue, oldValue) => {
     transition: 1s linear all;
     fill-rule: nonzero;
     stroke: var(--color-main-blue);
-
   }
 
   &__label {
