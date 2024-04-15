@@ -64,11 +64,11 @@ export const LargePrimary: Story = {
   }),
 };
 
-export const LargeFullWidthOnMobilePrimary: Story = {
+export const LargeFullWidthOnMobileSuccess: Story = {
   args: {
     size: 'large',
     textShape: 'contained',
-    colorVariant: 'primary',
+    colorVariant: 'success',
     fullWidthOnMobile: true,
     buttonText: 'Button text'
   },
