@@ -9,12 +9,6 @@
 import {ColorVariants} from "src/entities/theme";
 import {computed} from "vue";
 
-const activeColorVariantClassMap: Partial<Record<ColorVariants, string>> = {
-  ['primary']: 'active-primary',
-  ['warning']: 'active-warning',
-  ['success']: 'active-success',
-} as const;
-
 export type IconProps = {
   iconName: string;
   isActive: boolean;
@@ -28,6 +22,12 @@ const props = withDefaults(defineProps<IconProps>(),
       activeClass: '',
     }
 );
+
+const activeColorVariantClassMap: Partial<Record<ColorVariants, string>> = {
+  ['primary']: 'active-primary',
+  ['warning']: 'active-warning',
+  ['success']: 'active-success',
+} as const;
 
 const activeColorClass = computed(()=>{
   const defaultClass = activeColorVariantClassMap['primary'];

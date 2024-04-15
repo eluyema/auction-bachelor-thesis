@@ -1,0 +1,163 @@
+<template>
+  <button class="button" :class="classes">
+    <slot />
+  </button>
+</template>
+
+<script setup lang="ts">
+import {computed} from "vue";
+import {ColorVariants} from "src/entities/theme";
+
+export type ButtonProps = {
+  size?: "medium" | "large";
+  fullWidthOnMobile?: boolean;
+  textShape?: "contained" | "text";
+  colorVariant?: ColorVariants;
+}
+
+const props = withDefaults(defineProps<ButtonProps>(), {
+  size: "medium",
+  textShape: "contained",
+  colorVariant: 'primary',
+  fullWidthOnMobile: false
+});
+
+const colorVariantClassMap: Partial<Record<ColorVariants, string>> = {
+  primary: "primary",
+  error: 'error',
+  success: "success",
+} as const;
+
+const textShapeClassMap: Record<"contained" | "text", string> = {
+  contained: "shape-contained",
+  text: "shape-text",
+} as const;
+
+const sizeClassMap: Record<"medium" | "large", string> = {
+  medium: "medium-size",
+  large: "large-size",
+} as const;
+
+const classes = computed(()=>{
+  const defaultColorVariantClass: string = colorVariantClassMap['primary'];
+  const defaultTextShapeClass = textShapeClassMap['contained'];
+  const defaultSizeClass = sizeClassMap['medium'];
+
+  const colorVariantClass = colorVariantClassMap[props.colorVariant] ?? defaultColorVariantClass;
+  const textShapeClass = textShapeClassMap[props.textShape] ?? defaultTextShapeClass;
+  const sizeClass = sizeClassMap[props.size] ?? defaultSizeClass;
+
+  const fullWidthOnMobileClass = props.fullWidthOnMobile ? 'full-width-mobile' : '';
+
+  return [colorVariantClass, textShapeClass, sizeClass, fullWidthOnMobileClass]
+});
+
+</script>
+
+<style scoped lang="scss">
+@import "src/app/assets/styles/theme/index.scss";
+
+.button {
+  @include font-text-small();
+
+  padding: var(--spacing-8) var(--spacing-12);
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: var(--radius-small);
+  cursor: pointer;
+
+  &.shape-contained {
+    color: var(--background-color-white);
+
+    &.primary {
+      background: var(--color-main-blue);
+      border-color: var(--color-main-blue);
+
+      &:hover {
+        background: var(--color-hover-blue);
+      }
+    }
+
+    &.error {
+      background: var(--color-stroke-red);
+      border-color: var(--color-stroke-red);
+
+      &:hover {
+        background: var(--color-hover-red);
+        border-color: var(--color-hover-red);
+      }
+    }
+
+    &.success {
+      background: var(--color-button-green);
+      border-color: var(--color-button-green);
+
+      &:hover {
+        background: var(--color-hover-green);
+        border-color: var(--color-hover-green);
+      }
+    }
+  }
+
+  &.shape-text {
+    &.primary {
+      color: var(--color-main-blue);
+
+      &:hover {
+        color: var(--color-hover-blue);
+      }
+    }
+
+    &.error {
+      color: var(--color-text-red);
+
+      &:hover {
+        color: var(--color-hover-red);
+      }
+    }
+
+    &.success {
+      color: var(--color-button-green);
+
+      &:hover {
+        color: var(--color-hover-green);
+      }
+    }
+  }
+
+  &.medium-size {
+    @include font-text-medium();
+
+    padding: var(--spacing-8) var(--spacing-16);
+    font-size: 14px;
+    line-height: 24px;
+
+    @include desktop() {
+      padding: var(--spacing-8) var(--spacing-12);
+    }
+  }
+
+  &.large-size {
+    @include font-text-medium();
+
+    line-height: 24px;
+    font-size: 14px;
+    padding: var(--spacing-8) var(--spacing-28);
+
+    @include desktop() {
+      font-size: 16px;
+      padding: var(--spacing-16);
+    }
+  }
+
+  &.full-width-mobile {
+    @include mobile {
+      width: 100%;
+    }
+  }
+
+  &:focus, &.shape-contained:focus, &:focus {
+    border-color: var(--color-text-black) !important;
+  }
+}
+</style>

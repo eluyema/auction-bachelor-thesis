@@ -12,22 +12,22 @@
 import { computed } from 'vue';
 import { ColorVariants } from "src/entities/theme";
 
-export interface ProgressBarProps {
+export type ProgressBarProps = {
   percent?: number;
   variant: ColorVariants;
   message?: string;
 }
+
+const props = withDefaults(defineProps<ProgressBarProps>(), {
+  percent: 100,
+  message: ''
+});
 
 const variantColorClassMap: Partial<Record<ColorVariants, string>> = {
   'primary': 'primary-variant',
   'warning': 'warning-variant',
   'success': 'success-variant',
 } as const;
-
-const props = withDefaults(defineProps<ProgressBarProps>(), {
-  percent: 100,
-  message: ''
-});
 
 const progressClasses = computed(() =>
 {
