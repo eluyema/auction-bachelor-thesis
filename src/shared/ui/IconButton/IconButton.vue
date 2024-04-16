@@ -2,7 +2,7 @@
   <button class="icon-button" :class="paddingSizeClass">
     <Icon
         class="icon"
-        :class="hoverClass"
+        :class="[hoverClass, iconClass]"
         :iconName="iconName"
         :colorVariant="isColorAvailable && colorVariant"
     />
@@ -17,10 +17,11 @@ import {computed} from "vue";
 export type IconButtonProps = {
   iconName: string;
   colorVariant?: ColorVariants,
-  paddingSize?: 'small' | 'medium' | 'large',
+  iconClass?: string;
+  paddingSize?: 'unset' | 'medium' | 'large',
 };
 
-const props = withDefaults(defineProps<IconButtonProps>(), { paddingSize: 'medium' });
+const props = withDefaults(defineProps<IconButtonProps>(), { paddingSize: 'unset'});
 
 const colorVariantHoverClassMap: Partial<Record<ColorVariants, string>> = {
   "primary": "primary-hover", // new classes can be added here
@@ -30,8 +31,8 @@ const isColorAvailable = computed(()=> {
   return Object.keys(colorVariantHoverClassMap).some(color=> color == props.colorVariant);
 })
 
-const paddingSizeClassMap: Record<'small' | 'medium' | 'large', string> = {
-  "small": "padding-size-small",
+const paddingSizeClassMap: Record<'unset' | 'medium' | 'large', string> = {
+  "unset": "",
   "medium": "padding-size-medium",
   "large": "padding-size-large",
 } as const;
@@ -46,7 +47,7 @@ const paddingSizeClass = computed(()=> {
 
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 @import "src/app/assets/styles/theme/index.scss";
 
 .icon-button {
@@ -70,10 +71,6 @@ const paddingSizeClass = computed(()=> {
     color: var(--color-hover-blue);
   }
 
-  &.padding-size-small {
-    padding: var(--spacing-4);
-  }
-
   &.padding-size-medium {
     padding: var(--spacing-8);
   }
@@ -85,9 +82,5 @@ const paddingSizeClass = computed(()=> {
   &:focus {
     outline: 1px solid var(--color-text-black);
   }
-}
-
-.icon-button:hover {
-  background-color: rgba(0, 0, 0, 0.04);
 }
 </style>

@@ -32,7 +32,7 @@ const colorVariantClass = computed(()=>{
 
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 @import "src/app/assets/styles/theme/index.scss";
 
 .icon {
