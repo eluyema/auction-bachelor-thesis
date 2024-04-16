@@ -1,30 +1,30 @@
 <template>
   <button class="button" :class="classes">
-    <slot />
+    <slot></slot>
   </button>
 </template>
 
 <script setup lang="ts">
-import {computed} from "vue";
-import {ColorVariants} from "src/entities/theme";
+import { computed } from "vue";
+import { ColorVariants } from "src/entities/theme";
 
 export type ButtonProps = {
   size?: "medium" | "large";
   fullWidthOnMobile?: boolean;
   textShape?: "contained" | "text";
   colorVariant?: ColorVariants;
-}
+};
 
 const props = withDefaults(defineProps<ButtonProps>(), {
   size: "medium",
   textShape: "contained",
-  colorVariant: 'primary',
-  fullWidthOnMobile: false
+  colorVariant: "primary",
+  fullWidthOnMobile: false,
 });
 
 const colorVariantClassMap: Partial<Record<ColorVariants, string>> = {
   primary: "primary",
-  error: 'error',
+  error: "error",
   success: "success",
 } as const;
 
@@ -38,20 +38,23 @@ const sizeClassMap: Record<"medium" | "large", string> = {
   large: "large-size",
 } as const;
 
-const classes = computed(()=>{
-  const defaultColorVariantClass = colorVariantClassMap['primary'] as string;
-  const defaultTextShapeClass = textShapeClassMap['contained'];
-  const defaultSizeClass = sizeClassMap['medium'];
+const classes = computed(() => {
+  const defaultColorVariantClass = colorVariantClassMap["primary"] as string;
+  const defaultTextShapeClass = textShapeClassMap["contained"];
+  const defaultSizeClass = sizeClassMap["medium"];
 
-  const colorVariantClass = colorVariantClassMap[props.colorVariant] ?? defaultColorVariantClass;
-  const textShapeClass = textShapeClassMap[props.textShape] ?? defaultTextShapeClass;
+  const colorVariantClass =
+    colorVariantClassMap[props.colorVariant] ?? defaultColorVariantClass;
+  const textShapeClass =
+    textShapeClassMap[props.textShape] ?? defaultTextShapeClass;
   const sizeClass = sizeClassMap[props.size] ?? defaultSizeClass;
 
-  const fullWidthOnMobileClass = props.fullWidthOnMobile ? 'full-width-mobile' : '';
+  const fullWidthOnMobileClass = props.fullWidthOnMobile
+    ? "full-width-mobile"
+    : "";
 
-  return [colorVariantClass, textShapeClass, sizeClass, fullWidthOnMobileClass]
+  return [colorVariantClass, textShapeClass, sizeClass, fullWidthOnMobileClass];
 });
-
 </script>
 
 <style scoped lang="scss">
@@ -62,6 +65,7 @@ const classes = computed(()=>{
 
   padding: var(--spacing-8) var(--spacing-12);
   background: transparent;
+  border-color: transparent;
   border-radius: var(--radius-small);
   cursor: pointer;
 
@@ -162,7 +166,9 @@ const classes = computed(()=>{
     }
   }
 
-  &:focus, &.shape-contained:focus, &.shape-text:focus {
+  &:focus,
+  &.shape-contained:focus,
+  &.shape-text:focus {
     outline: 1px solid var(--color-text-black);
   }
 }

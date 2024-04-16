@@ -1,16 +1,18 @@
 <template>
   <button class="icon-button" :class="paddingSizeClass">
-    <Icon :iconName="iconName"
-          :isActive="!!colorVariant"
-          :activeColorVariant="colorVariant"
-          :activeClass="activeIconClass"
-          />
+    <Icon
+        class="icon"
+        :class="hoverClass"
+        :iconName="iconName"
+        :isActive="!!colorVariant"
+        :activeColorVariant="isColorAvailable && colorVariant"
+    />
   </button>
 </template>
 
 <script setup lang="ts">
 import { ColorVariants } from "src/entities/theme";
-import Icon, {IconProps} from '../Icon/Icon.vue';
+import Icon, { IconProps } from '../Icon/Icon.vue';
 import {computed} from "vue";
 
 export type IconButtonProps = {
@@ -23,20 +25,23 @@ const props = withDefaults(defineProps<IconButtonProps>(), { paddingSize: 'mediu
 
 const colorVariantHoverClassMap: Partial<Record<ColorVariants, string>> = {
   "primary": "primary-hover", // new classes can be added here
-};
+} as const;
 
-const paddingSizeClassMap: Partial<Record<IconButtonProps["paddingSize"], string>> = {
+const isColorAvailable = computed(()=> {
+  return Object.keys(colorVariantHoverClassMap).some(color=> color == props.colorVariant);
+})
+
+const paddingSizeClassMap: Record<'small' | 'medium' | 'large', string> = {
   "small": "padding-size-small",
   "medium": "padding-size-medium",
   "large": "padding-size-large",
-};
+} as const;
 
-const activeIconClass = computed(()=> {
-  return !!props.colorVariant ? colorVariantHoverClassMap[props.colorVariant] ?? '' : '';
+const hoverClass = computed(()=> {
+  return !!props.colorVariant ? colorVariantHoverClassMap[props.colorVariant] ?? 'default-hover' : 'default-hover';
 })
 
 const paddingSizeClass = computed(()=> {
-  console.log(paddingSizeClassMap[props.paddingSize])
   return paddingSizeClassMap[props.paddingSize];
 })
 
@@ -58,7 +63,11 @@ const paddingSizeClass = computed(()=> {
     background-color: transparent;
   }
 
-  &:hover .primary-hover {
+  &:hover .icon.default-hover {
+    color: var(--color-main-blue);
+  }
+
+  &:hover .icon.primary-hover {
     color: var(--color-hover-blue);
   }
 

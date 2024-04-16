@@ -44,7 +44,6 @@ export const PrimarySmall: Story = {
 export const ErrorMedium: Story = {
   args: {
     iconName: 'error',
-    colorVariant: 'error',
     paddingSize: 'medium',
   },
   render: (args) => ({
@@ -59,7 +58,6 @@ export const ErrorMedium: Story = {
 export const WarningLarge: Story = {
   args: {
     iconName: 'warning',
-    colorVariant: 'warning',
     paddingSize: 'large',
   },
   render: (args) => ({
@@ -74,7 +72,6 @@ export const WarningLarge: Story = {
 export const SuccessNoPadding: Story = {
   args: {
     iconName: 'check_circle',
-    colorVariant: 'success',
     paddingSize: 'medium',
   },
   render: (args) => ({
@@ -89,7 +86,6 @@ export const SuccessNoPadding: Story = {
 export const SecondaryCustom: Story = {
   args: {
     iconName: 'face',
-    colorVariant: 'secondary',
     paddingSize: 'large',
   },
   render: (args) => ({
