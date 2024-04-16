@@ -4,15 +4,14 @@
         class="icon"
         :class="hoverClass"
         :iconName="iconName"
-        :isActive="!!colorVariant"
-        :activeColorVariant="isColorAvailable && colorVariant"
+        :colorVariant="isColorAvailable && colorVariant"
     />
   </button>
 </template>
 
 <script setup lang="ts">
-import { ColorVariants } from "src/entities/theme";
 import Icon, { IconProps } from '../Icon/Icon.vue';
+import { ColorVariants } from "src/entities/theme";
 import {computed} from "vue";
 
 export type IconButtonProps = {

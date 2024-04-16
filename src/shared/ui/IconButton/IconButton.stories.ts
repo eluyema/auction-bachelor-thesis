@@ -11,7 +11,7 @@ const meta: Meta<IconButtonProps> = {
     },
     colorVariant: {
       control: 'select',
-      options: ['primary', 'secondary', 'error', 'success', 'warning'],
+      options: ['primary'],
       description: 'The color variant of the icon',
     },
     paddingSize: {

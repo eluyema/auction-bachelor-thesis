@@ -9,12 +9,9 @@ const meta: Meta<typeof Icon> = {
       control: 'select',
       options: ['access_time', 'done', 'trending_down', 'trending_up'],
     },
-    isActive: {
-      control: 'boolean',
-    },
-    activeColorVariant: {
+    colorVariant: {
       control: 'select',
-      options: ['primary', 'success', 'warning'],
+      options: ['', 'primary', 'success', 'warning'],
     },
   },
 };
@@ -26,32 +23,26 @@ type Story = StoryObj<typeof meta>;
 export const AccessTime: Story = {
   args: {
     iconName: 'access_time',
-    isActive: false,
-    activeColorVariant: 'success',
   },
 };
 
 export const Done: Story = {
   args: {
     iconName: 'done',
-    isActive: true,
-    activeColorVariant: 'warning',
+    colorVariant: 'warning',
   },
 };
 
 export const PriceReduction: Story = {
   args: {
     iconName: 'trending_down',
-    isActive: true,
-    activeColorVariant: 'success',
+    colorVariant: 'success',
   },
 };
 
 export const PriceIncrease: Story = {
   args: {
     iconName: 'trending_up',
-    isActive: true,
-    activeColorVariant: 'primary',
   },
 };
 

@@ -1,7 +1,7 @@
 <template>
   <span
       class="material-icons icon"
-      :class="{ 'active-icon': isActive, [activeColorClass]: isActive, [activeClass]: isActive && activeClass }"
+      :class="colorVariantClass"
   >{{ iconName }}</span>
 </template>
 
@@ -11,28 +11,23 @@ import {computed} from "vue";
 
 export type IconProps = {
   iconName: string;
-  isActive: boolean;
-  activeColorVariant?: ColorVariants;
-  activeClass?: string;
+  colorVariant?: ColorVariants;
 }
 
-const props = withDefaults(defineProps<IconProps>(),
-    {
-      activeColorVariant: 'primary',
-      activeClass: '',
-    }
-);
+const props = defineProps<IconProps>();
 
-const activeColorVariantClassMap: Partial<Record<ColorVariants, string>> = {
+const colorVariantClassMap: Partial<Record<ColorVariants, string>> = {
   ['primary']: 'active-primary',
   ['warning']: 'active-warning',
   ['success']: 'active-success',
 } as const;
 
-const activeColorClass = computed(()=>{
-  const defaultClass = activeColorVariantClassMap['primary'];
+const colorVariantClass = computed(()=>{
+  if(!props.colorVariant) {
+    return '';
+  }
 
-  return (activeColorVariantClassMap[props.activeColorVariant] ?? defaultClass) as string;
+  return colorVariantClassMap[props.colorVariant] ?? '';
 })
 
 </script>
