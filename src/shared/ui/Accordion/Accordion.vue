@@ -80,7 +80,6 @@ const iconClass = computed(()=>{
   }
 
   &:focus .icon-wrapper {
-    border-radius: var(--radius-small);
     outline: 1px solid var(--color-text-black);
   }
 
