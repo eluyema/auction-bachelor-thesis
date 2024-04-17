@@ -4,13 +4,13 @@
         class="icon"
         :class="[hoverClass, iconClass]"
         :iconName="iconName"
-        :colorVariant="isColorAvailable && colorVariant"
+        :colorVariant="colorVariant"
     />
   </button>
 </template>
 
 <script setup lang="ts">
-import Icon, { IconProps } from '../Icon/Icon.vue';
+import Icon from '../Icon/Icon.vue';
 import { ColorVariants } from "src/entities/theme";
 import {computed} from "vue";
 
@@ -26,10 +26,6 @@ const props = withDefaults(defineProps<IconButtonProps>(), { paddingSize: 'unset
 const colorVariantHoverClassMap: Partial<Record<ColorVariants, string>> = {
   "primary": "primary-hover", // new classes can be added here
 } as const;
-
-const isColorAvailable = computed(()=> {
-  return Object.keys(colorVariantHoverClassMap).some(color=> color == props.colorVariant);
-})
 
 const paddingSizeClassMap: Record<'unset' | 'medium' | 'large', string> = {
   "unset": "",

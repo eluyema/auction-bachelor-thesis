@@ -34,7 +34,7 @@ const FULL_DASH_ARRAY = 283;
 
 const timePassed = ref(0);
 
-let timerInterval = ref(null);
+let timerInterval = ref<null | ReturnType<typeof setTimeout>>(null);
 
 const timeLeft = computed(() =>{
   return props.time - timePassed.value;
@@ -73,10 +73,16 @@ onMounted(() => {
 });
 
 onUnmounted(() => {
+  if(timerInterval.value === null) {
+    return;
+  }
   clearInterval(timerInterval.value);
 });
 
 const onTimesUp = ()=> {
+  if(timerInterval.value === null) {
+    return;
+  }
   clearInterval(timerInterval.value);
 }
 
@@ -87,8 +93,10 @@ const startTimer= ()=> {
   }, 1000);
 }
 
-watch(() => props.time, (newValue, oldValue) => {
-  clearInterval(timerInterval.value);
+watch(() => props.time, ()=>{
+  if(timerInterval.value !== null) {
+    clearInterval(timerInterval.value);
+  }
   timePassed.value = 0;
   startTimer();
 });

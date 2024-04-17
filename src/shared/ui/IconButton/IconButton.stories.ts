@@ -26,11 +26,11 @@ export default meta;
 
 type Story = StoryObj<typeof meta>;
 
-export const PrimarySmall: Story = {
+export const PrimaryUnset: Story = {
   args: {
     iconName: 'home',
     colorVariant: 'primary',
-    paddingSize: 'small',
+    paddingSize: 'unset',
   },
   render: (args) => ({
     components: { IconButton },

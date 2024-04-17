@@ -33,7 +33,7 @@ const accordionContent = ref<HTMLDivElement | null>(null);
 
 const isOpen = ref(false);
 
-function toggle(_event): void {
+function toggle(): void {
   isOpen.value = !isOpen.value;
 }
 
@@ -41,7 +41,7 @@ const contentStyles = computed(()=> {
   const element = accordionContent.value;
 
   if(!isOpen.value || !element) {
-    return { maxHeight: null };
+    return { maxHeight: '0px' };
   }
 
   return { maxHeight: element.scrollHeight + "px" };

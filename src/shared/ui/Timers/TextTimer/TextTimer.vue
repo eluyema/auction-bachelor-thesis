@@ -16,7 +16,7 @@ const props = withDefaults(defineProps<TextTimerProps>(), {
 });
 
 const timePassed = ref(0);
-let timerInterval = ref(null);
+let timerInterval = ref<null | ReturnType<typeof setTimeout>>(null);
 
 const timeLeftInSeconds = computed(() => {
   return props.time - timePassed.value;
@@ -66,16 +66,24 @@ onMounted(() => {
 });
 
 watch(() => props.time, ()=>{
-  clearInterval(timerInterval.value);
+  if(timerInterval.value !== null) {
+    clearInterval(timerInterval.value);
+  }
   timePassed.value = 0;
   startTimer();
 });
 
 onUnmounted(() => {
+  if(timerInterval.value === null) {
+    return;
+  }
   clearInterval(timerInterval.value);
 });
 
 const onTimesUp = () => {
+  if(timerInterval.value === null) {
+    return;
+  }
   clearInterval(timerInterval.value);
 };
 
