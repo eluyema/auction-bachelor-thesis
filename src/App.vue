@@ -1,14 +1,11 @@
 <script setup lang="ts">
-import Button from './shared/ui/Button/Button.vue';
 
 </script>
 
 <template>
-<Button>
-  Auction click
-</Button>
+  <h1>Online Auction</h1>
 </template>
 
-<style scoped>
+<style scoped lang="scss">
 
 </style>
