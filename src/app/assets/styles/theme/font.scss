@@ -64,3 +64,22 @@
 @mixin font-label {
     @include font-setup(12px, 16px);
 }
+
+$config: ("s", "m", "l", "xl", "xxl");
+
+.font-size {
+  @each $size in $config {
+    &--#{$size} {
+      font-size: var(--size-#{$size}) !important;
+    }
+  }
+}
+
+@mixin font-sizes {
+  --size-xxl: 44px;
+  --size-xl: 24px;
+  --size-l: 18px;
+  --size-m: 16px;
+  --size-s: 14px;
+  --size-xs: 12px;
+}

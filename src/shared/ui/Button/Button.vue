@@ -139,7 +139,7 @@ const classes = computed(() => {
     @include font-text-medium();
 
     padding: var(--spacing-8) var(--spacing-16);
-    font-size: 14px;
+    font-size: var(--size-s);
     line-height: 24px;
 
     @include desktop() {
@@ -151,11 +151,11 @@ const classes = computed(() => {
     @include font-text-medium();
 
     line-height: 24px;
-    font-size: 14px;
+    font-size: var(--size-s);
     padding: var(--spacing-8) var(--spacing-28);
 
     @include desktop() {
-      font-size: 16px;
+      font-size: var(--size-m);
       padding: var(--spacing-16);
     }
   }
