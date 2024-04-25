@@ -1,31 +1,31 @@
-import { Meta, StoryObj } from '@storybook/vue3';
-import Label, {LabelProps} from './Label.vue';
+import { Meta, StoryObj } from '@storybook/vue3'
+import CustomLabel, { CustomLabelProps } from './CustomLabel.vue'
 
-const meta: Meta<LabelProps & {labelText: string}> = {
+const meta: Meta<CustomLabelProps & { labelText: string }> = {
   title: 'Components/Label',
-  component: Label,
+  component: CustomLabel,
   argTypes: {
     textShape: {
       control: 'select',
       options: ['contained', 'text'],
-      description: 'Defines the label’s shape and style',
+      description: 'Defines the label’s shape and style'
     },
     colorVariant: {
       control: 'select',
       options: ['primary', 'warning', 'success'],
-      description: 'Defines the label’s color scheme',
+      description: 'Defines the label’s color scheme'
     },
     labelText: {
       control: {
-         type: 'text',
+        type: 'text'
       }
     }
-  },
-};
+  }
+}
 
-export default meta;
+export default meta
 
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj<typeof meta>
 
 export const ContainedPrimary: Story = {
   args: {
@@ -34,13 +34,13 @@ export const ContainedPrimary: Story = {
     labelText: 'Primary'
   },
   render: (args) => ({
-    components: { Label },
+    components: { CustomLabel },
     setup() {
-      return { args };
+      return { args }
     },
-    template: '<Label v-bind="args">{{args.labelText}}</Label>',
-  }),
-};
+    template: '<CustomLabel v-bind="args">{{args.labelText}}</CustomLabel>'
+  })
+}
 
 export const ContainedWarning: Story = {
   args: {
@@ -49,14 +49,13 @@ export const ContainedWarning: Story = {
     labelText: 'Primary'
   },
   render: (args) => ({
-    components: { Label },
+    components: { CustomLabel },
     setup() {
-      return { args };
+      return { args }
     },
-    template: '<Label v-bind="args">{{args.labelText}}</Label>',
-  }),
-};
-
+    template: '<CustomLabel v-bind="args">{{args.labelText}}</CustomLabel>'
+  })
+}
 
 export const TextWarning: Story = {
   args: {
@@ -65,14 +64,13 @@ export const TextWarning: Story = {
     labelText: 'Warning'
   },
   render: (args) => ({
-    components: { Label },
+    components: { CustomLabel },
     setup() {
-      return { args };
+      return { args }
     },
-    template: '<Label v-bind="args">{{args.labelText}}</Label>',
-  }),
-};
-
+    template: '<CustomLabel v-bind="args">{{args.labelText}}</CustomLabel>'
+  })
+}
 
 export const ContainedSuccess: Story = {
   args: {
@@ -81,13 +79,13 @@ export const ContainedSuccess: Story = {
     labelText: 'Success'
   },
   render: (args) => ({
-    components: { Label },
+    components: { CustomLabel },
     setup() {
-      return { args };
+      return { args }
     },
-    template: '<Label v-bind="args">{{args.labelText}}</Label>',
-  }),
-};
+    template: '<CustomLabel v-bind="args">{{args.labelText}}</CustomLabel>'
+  })
+}
 
 export const TextSuccess: Story = {
   args: {
@@ -96,11 +94,10 @@ export const TextSuccess: Story = {
     labelText: 'Success'
   },
   render: (args) => ({
-    components: { Label },
+    components: { CustomLabel },
     setup() {
-      return { args };
+      return { args }
     },
-    template: '<Label v-bind="args">{{args.labelText}}</Label>',
-  }),
-};
-
+    template: '<CustomLabel v-bind="args">{{args.labelText}}</CustomLabel>'
+  })
+}

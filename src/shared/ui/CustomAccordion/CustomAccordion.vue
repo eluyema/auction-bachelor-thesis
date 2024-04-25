@@ -8,53 +8,48 @@
     <button textShape="text" @click="toggle" class="accordion-header">
       <span class="header-title">{{ title }}</span>
       <span class="icon-wrapper">
-        <Icon
-            class="icon"
-            colorVariant="primary"
-            icon-name="expand_more"
-            :class="iconClass"
-        />
+        <Icon class="icon" colorVariant="primary" icon-name="expand_more" :class="iconClass" />
       </span>
     </button>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue';
-import Icon from "../Icon/Icon.vue";
+import { ref, computed } from 'vue'
+import Icon from '../CustomIcon/CustomIcon.vue'
 
-export type AccordionProps = {
-  title: string;
-};
-
-defineProps<AccordionProps>();
-
-const accordionContent = ref<HTMLDivElement | null>(null);
-
-const isOpen = ref(false);
-
-function toggle(): void {
-  isOpen.value = !isOpen.value;
+export type CustomAccordionProps = {
+  title: string
 }
 
-const contentStyles = computed(()=> {
-  const element = accordionContent.value;
+defineProps<CustomAccordionProps>()
 
-  if(!isOpen.value || !element) {
-    return { maxHeight: '0px' };
+const accordionContent = ref<HTMLDivElement | null>(null)
+
+const isOpen = ref(false)
+
+function toggle(): void {
+  isOpen.value = !isOpen.value
+}
+
+const contentStyles = computed(() => {
+  const element = accordionContent.value
+
+  if (!isOpen.value || !element) {
+    return { maxHeight: '0px' }
   }
 
-  return { maxHeight: element.scrollHeight + "px" };
+  return { maxHeight: element.scrollHeight + 'px' }
 })
 
-const iconClass = computed(()=>{
+const iconClass = computed(() => {
   return {
-    "rotate-icon": isOpen.value,
+    'rotate-icon': isOpen.value
   }
 })
 </script>
 <style scoped lang="scss">
-@import "src/app/assets/styles/theme/index.scss";
+@import 'src/app/assets/styles/theme/index.scss';
 
 .accordion-header {
   display: flex;
@@ -71,7 +66,8 @@ const iconClass = computed(()=>{
     color: var(--color-main-blue);
   }
 
-  &:hover .header-title, &:hover .icon {
+  &:hover .header-title,
+  &:hover .icon {
     color: var(--color-hover-blue);
   }
 

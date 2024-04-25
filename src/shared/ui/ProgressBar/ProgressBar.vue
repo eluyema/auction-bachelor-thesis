@@ -1,47 +1,48 @@
 <template>
   <div class="progress-bar">
-    <div class="progress" :class="progressClasses" :style="{width: `${preparedPercent}%`}">
-      <div class="progress-space"></div><span class="message">
-      {{ message }}
-    </span>
+    <div class="progress" :class="progressClasses" :style="{ width: `${preparedPercent}%` }">
+      <div class="progress-space"></div>
+      <span class="message">
+        {{ message }}
+      </span>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue';
-import { ColorVariants } from "src/entities/theme";
+import { computed } from 'vue'
+import { ColorVariants } from 'src/entities/theme'
 
 export type ProgressBarProps = {
-  percent?: number;
-  variant: ColorVariants;
-  message?: string;
+  percent?: number
+  variant: ColorVariants
+  message?: string
 }
 
 const props = withDefaults(defineProps<ProgressBarProps>(), {
   percent: 100,
   message: ''
-});
+})
 
 const variantColorClassMap: Partial<Record<ColorVariants, string>> = {
-  'primary': 'primary-variant',
-  'warning': 'warning-variant',
-  'success': 'success-variant',
-} as const;
+  primary: 'primary-variant',
+  warning: 'warning-variant',
+  success: 'success-variant'
+} as const
 
-const progressClasses = computed(() =>
-{
+const progressClasses = computed(() => {
   const defaultClass = variantColorClassMap['primary']
 
-  return (variantColorClassMap[props.variant] ?? defaultClass) as string;
-});
+  return (variantColorClassMap[props.variant] ?? defaultClass) as string
+})
 
-const preparedPercent = computed(()=> props.percent > 100 || props.percent < 0 ? 100 : props.percent)
-
+const preparedPercent = computed(() =>
+  props.percent > 100 || props.percent < 0 ? 100 : props.percent
+)
 </script>
 
 <style scoped lang="scss">
-@import "src/app/assets/styles/theme/index.scss";
+@import 'src/app/assets/styles/theme/index.scss';
 
 .progress-bar {
   width: 100%;

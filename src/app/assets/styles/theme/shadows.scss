@@ -1,7 +1,7 @@
 @mixin shadow-light-blue-float {
-    box-shadow: 0px 1px 8px 0px rgba(103, 123, 147, 0.35);
+  box-shadow: 0px 1px 8px 0px rgba(103, 123, 147, 0.35);
 }
 
 @mixin shadow-dark-inset {
-    box-shadow: 0px -8px 8px -4px rgba(0, 0, 0, 0.1);
+  box-shadow: 0px -8px 8px -4px rgba(0, 0, 0, 0.1);
 }

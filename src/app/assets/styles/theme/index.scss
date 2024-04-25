@@ -5,11 +5,11 @@
 @import 'grid';
 @import 'shadows';
 @import 'spaces';
-@import "globalOverride";
+@import 'globalOverride';
 
 :root {
-    @include colors();
-    @include cornerRadius();
-    @include spaces();
-    @include font-sizes();
+  @include colors();
+  @include cornerRadius();
+  @include spaces();
+  @include font-sizes();
 }
