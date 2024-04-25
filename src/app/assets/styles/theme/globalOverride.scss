@@ -19,4 +19,12 @@
     text-indent: 0;
     list-style-type: none;
   }
+
+  a {
+    color: var(--color-main-blue);
+
+    &:hover {
+      color: var(--color-hover-blue);
+    }
+  }
 }

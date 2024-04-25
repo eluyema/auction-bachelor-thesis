@@ -1,5 +1,5 @@
 <template>
-  <span class="material-icons icon" :class="colorVariantClass">{{ iconName }}</span>
+  <span class="material-icons material-symbols-outlined icon" :class="colorVariantClass">{{ iconName }}</span>
 </template>
 
 <script setup lang="ts">
@@ -46,4 +46,13 @@ const colorVariantClass = computed(() => {
 .active-success {
   color: var(--color-stroke-green);
 }
+
+.material-symbols-outlined {
+     font-variation-settings:
+         'FILL' 0,
+         'wght' 400,
+         'GRAD' 0,
+         'opsz' 24
+}
+
 </style>

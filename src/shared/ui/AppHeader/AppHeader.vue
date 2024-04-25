@@ -1,106 +1,160 @@
 <template>
-    <header class='header'>
-        <div class='header-body'>
-            <a class='header-logo' :href='prozzoroUrl' target='_self'>
-                <img :src='prozorroLogo' alt='Логотип Прозорро'/>
-            </a>
-            <div class='header-content'>
-                <ul class='social-list' >
-                    <li class='social-item' v-for='item in socialItems'>
-                        <a target='_blank' class='social-link' :href='item.src'><img class='social-image' :src='item.image' :alt='item.alt'/></a>
-                    </li>
-                </ul>
-                <CustomIcon iconName='account_circle'/>
-            </div>
+  <header class="header">
+    <div class="header-body">
+      <a class="header-logo" :href="prozzoroUrl" target="_self">
+        <img :src="prozorroLogo" class="header-logo-image" alt="Логотип Прозорро" />
+      </a>
+      <div class="header-content">
+        <!--TODO: add logic for localization here-->
+        <div class="lang-block">
+          <span class="language-text">UA</span>
+          <div class="lang-divider" />
+          <a class="language-text" target="_self" href="/en">ENG</a>
         </div>
-    </header>
+        <ul class="social-list">
+          <li class="social-item" v-for="item in socialItems" :key="item.src">
+            <a target="_blank" class="social-link" :href="item.src"
+              ><img class="social-image" :src="item.image" :alt="item.alt"
+            /></a>
+          </li>
+        </ul>
+        <CustomIcon class="account-icon" iconName="account_circle" />
+      </div>
+    </div>
+  </header>
+  <ProgressBar v-show="showProgressBar" v-bind="progressBarProps" />
 </template>
 
-<script setup lang='ts'>
-import CustomIcon from 'src/shared/ui/CustomIcon/CustomIcon.vue';
-import prozorroLogo from 'src/app/assets/images/prozorro-logo.svg';
-import facebookSocial from 'src/app/assets/images/social-images/facebook-social.svg';
-import telegramSocial from 'src/app/assets/images/social-images/telegram-social.svg';
-import youtubeSocial from 'src/app/assets/images/social-images/youtube-social.svg';
-import { config } from 'src/config';
+<script setup lang="ts">
+import CustomIcon from 'src/shared/ui/CustomIcon/CustomIcon.vue'
+import prozorroLogo from 'src/app/assets/images/prozorro-logo.svg'
+import facebookSocial from 'src/app/assets/images/social-images/facebook-social.svg'
+import telegramSocial from 'src/app/assets/images/social-images/telegram-social.svg'
+import youtubeSocial from 'src/app/assets/images/social-images/youtube-social.svg'
+import ProgressBar, { ProgressBarProps } from 'src/shared/ui/ProgressBar/ProgressBar.vue'
+import { config } from 'src/config'
 
-const { prozzoroUrl } = config;
+const { prozzoroUrl } = config
+
+export type AppHeaderProps = {
+  showProgressBar?: boolean
+  progressBarProps?: ProgressBarProps
+}
+
+const { showProgressBar, progressBarProps } = withDefaults(defineProps<AppHeaderProps>(), {
+  showProgressBar: false,
+  progressBarProps: () => ({ variant: 'primary' })
+})
 
 const socialItems = [
-    {
-        image: facebookSocial,
-        src: 'https://www.facebook.com/prozorro.gov.ua',
-        alt: 'facebook'
-    },
-    {
-        image: telegramSocial,
-        src: 'https://t.me/tendernya',
-        alt: 'telegram'
-    },
-    {
-        image: youtubeSocial,
-        src: 'https://www.youtube.com/channel/UCI-2twjrz8C4dYiQXDGZf5g',
-        alt: 'youtube'
-    },
-] as const;
-
-
+  {
+    image: facebookSocial,
+    src: 'https://www.facebook.com/prozorro.gov.ua',
+    alt: 'facebook'
+  },
+  {
+    image: telegramSocial,
+    src: 'https://t.me/tendernya',
+    alt: 'telegram'
+  },
+  {
+    image: youtubeSocial,
+    src: 'https://www.youtube.com/channel/UCI-2twjrz8C4dYiQXDGZf5g',
+    alt: 'youtube'
+  }
+] as const
 </script>
 
-<style scoped lang='scss'>
+<style scoped lang="scss">
 @import 'src/app/assets/styles/theme/index.scss';
 
 .header {
-    display: flex;
-    height: 64px;
-    padding: 8px 12px;
-    background: var(--background-color-white);
+  display: flex;
+  height: 64px;
+  padding: 8px 12px;
+  background: var(--background-color-white);
 
-    @include desktop() {
-        padding-right: 40px;
-        padding-left: 40px;
-    }
+  @include desktop() {
+    padding-right: 40px;
+    padding-left: 40px;
+  }
 }
 
 .header-body {
-    flex: 1;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
 .header-logo {
+  padding-top: 10px;
+}
+
+.header-logo-image {
+  display: block;
 }
 
 .header-content {
-    display: flex;
+  display: flex;
 }
 
 .social-list {
-    display: none;
-    align-items: center;
+  display: none;
+  align-items: center;
 
-    @include desktop() {
-        margin-right: 32px;
-        display: flex;
-    }
+  @include desktop() {
+    margin-right: 32px;
+    display: flex;
+  }
 }
 
 .social-item:not(:last-child) {
-    margin-right: 20px;
+  margin-right: 20px;
 }
 
 .social-link {
-    background-repeat: no-repeat;
-    background-position: 50%;
+  background-repeat: no-repeat;
+  background-position: 50%;
 }
 
 .social-image {
-    display: block;
-    transition: transform .2s;
-    
-    &:hover {
-        transform: scale(1.1);
-    }
+  display: block;
+  transition: transform 0.2s;
+
+  &:hover {
+    transform: scale(1.1);
+  }
+}
+
+.lang-block {
+  display: flex;
+  align-items: center;
+  margin-right: 12px;
+
+  @include desktop() {
+    margin-right: 32px;
+  }
+}
+
+.language-text {
+  @include font-text-medium();
+
+  text-decoration: none;
+
+  @include desktop() {
+    font-size: var(--size-s);
+  }
+}
+
+.lang-divider {
+  height: 13px;
+  border-left: var(--color-text-gray) 2px solid;
+  margin-left: 8px;
+  margin-right: 8px;
+}
+
+.account-icon {
+  margin-right: 10px;
 }
 </style>

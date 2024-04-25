@@ -47,6 +47,7 @@ const preparedPercent = computed(() =>
 .progress-bar {
   width: 100%;
   height: 20px;
+  background: var(--background-color-grey);
 
   @include desktop {
     height: 24px;
