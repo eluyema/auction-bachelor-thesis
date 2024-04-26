@@ -8,8 +8,9 @@
 @import 'globalOverride';
 
 :root {
-  @include colors();
-  @include cornerRadius();
-  @include spaces();
-  @include font-sizes();
+    @include colors();
+    @include cornerRadius();
+    @include spaces();
+    @include font-sizes();
+    @include breakpoints();
 }

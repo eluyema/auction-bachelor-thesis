@@ -1,30 +1,30 @@
 * {
-  box-sizing: border-box;
+    box-sizing: border-box;
 
-  button {
-    border: unset;
-    background: transparent;
-    padding: 0;
+    button {
+        border: unset;
+        background: transparent;
+        padding: 0;
 
-    &:hover {
-      background: transparent;
+        &:hover {
+            background: transparent;
+        }
     }
-  }
 
-  ul,
-  ul li,
-  ul ul li {
-    margin:0;
-    padding: 0;
-    text-indent: 0;
-    list-style-type: none;
-  }
-
-  a {
-    color: var(--color-main-blue);
-
-    &:hover {
-      color: var(--color-hover-blue);
+    ul,
+    ul li,
+    ul ul li {
+        margin: 0;
+        padding: 0;
+        text-indent: 0;
+        list-style-type: none;
     }
-  }
+
+    a {
+        color: var(--color-main-blue);
+
+        &:hover {
+            color: var(--color-hover-blue);
+        }
+    }
 }

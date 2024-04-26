@@ -1,5 +1,5 @@
-import { Meta, StoryObj } from '@storybook/vue3';
-import AppHeader from './AppHeader.vue';
+import { Meta, StoryObj } from '@storybook/vue3'
+import AppHeader from './AppHeader.vue'
 
 const meta: Meta<typeof AppHeader> = {
     title: 'Components/AppHeader',
@@ -17,17 +17,17 @@ const meta: Meta<typeof AppHeader> = {
             description: 'Properties for the progress bar, if shown'
         }
     }
-};
+}
 
-export default meta;
+export default meta
 
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj<typeof meta>
 
 export const Default: Story = {
     args: {
         showProgressBar: false
     }
-};
+}
 
 export const WithProgressBarWaiting: Story = {
     args: {
@@ -38,7 +38,7 @@ export const WithProgressBarWaiting: Story = {
             message: 'Очікування'
         }
     }
-};
+}
 
 export const WithProgressFirstRound: Story = {
     args: {
@@ -49,7 +49,7 @@ export const WithProgressFirstRound: Story = {
             message: 'Раунд 1'
         }
     }
-};
+}
 
 export const WithProgressBarComplete: Story = {
     args: {
@@ -60,4 +60,4 @@ export const WithProgressBarComplete: Story = {
             message: 'Завершено'
         }
     }
-};
+}

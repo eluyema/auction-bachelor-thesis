@@ -1,30 +1,30 @@
 @mixin colors {
-  // Solid Colors
-  --color-text-black: #242638;
-  --color-text-gray: #939393;
-  --color-main-blue: #2070d1;
-  --color-hover-blue: #014da8;
-  --color-text-green: #599a4f;
-  --color-hover-green: #2f8c2f;
-  --color-button-green: #5cb85c;
-  --color-stroke-green: #4acd4a;
-  --color-stroke-red: #d70c17;
-  --color-hover-red: #be010b;
-  --color-text-red: #e85d57;
-  --color-alert: #ff831a;
-  --color-stroke-grey: #d6dade;
+    // Solid Colors
+    --color-text-black: #242638;
+    --color-text-gray: #939393;
+    --color-main-blue: #2070d1;
+    --color-hover-blue: #014da8;
+    --color-text-green: #599a4f;
+    --color-hover-green: #2f8c2f;
+    --color-button-green: #5cb85c;
+    --color-stroke-green: #4acd4a;
+    --color-stroke-red: #d70c17;
+    --color-hover-red: #be010b;
+    --color-text-red: #e85d57;
+    --color-alert: #ff831a;
+    --color-stroke-grey: #d6dade;
 
-  // Gradients
-  --color-gradient-blue: linear-gradient(90deg, #0082fc 0%, rgba(0, 130, 252, 0.1) 100%);
-  --color-gradient-orange: linear-gradient(90deg, #ff831a 0%, rgba(255, 131, 26, 0.1) 100%);
-  --color-gradient-green: linear-gradient(89.85deg, #599a4f 0.1%, rgba(89, 154, 79, 0.1) 99.84%);
+    // Gradients
+    --color-gradient-blue: linear-gradient(90deg, #0082fc 0%, rgba(0, 130, 252, 0.1) 100%);
+    --color-gradient-orange: linear-gradient(90deg, #ff831a 0%, rgba(255, 131, 26, 0.1) 100%);
+    --color-gradient-green: linear-gradient(89.85deg, #599a4f 0.1%, rgba(89, 154, 79, 0.1) 99.84%);
 
-  // Backgrounds
-  --background-color-frame: #f8f8f8;
-  --background-color-grey: #f5f5f5;
-  --background-color-white: #ffffff;
-  --background-color-dark-grey: #c2d8de;
-  --background-color-blue: #f0f4f5;
-  --background-color-green: #e2f7dc;
-  --background-color-red: #f7dcdc;
+    // Backgrounds
+    --background-color-frame: #f8f8f8;
+    --background-color-grey: #f5f5f5;
+    --background-color-white: #ffffff;
+    --background-color-dark-grey: #c2d8de;
+    --background-color-blue: #f0f4f5;
+    --background-color-green: #e2f7dc;
+    --background-color-red: #f7dcdc;
 }

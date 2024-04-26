@@ -1,14 +1,16 @@
-$maximalMobileWidth: 1024px;
-$minimalDesktopWidth: 1025px;
+@mixin breakpoints {
+    --max-mobile-width: 1024px;
+    --min-desktop-width: 1025px;
+}
 
 @mixin mobile {
-  @media (max-width: $maximalMobileWidth) {
-    @content;
-  }
+    @media (max-width: var(--max-mobile-width)) {
+        @content;
+    }
 }
 
 @mixin desktop {
-  @media (min-width: $minimalDesktopWidth) {
-    @content;
-  }
+    @media (min-width: var(--min-desktop-width)) {
+        @content;
+    }
 }
