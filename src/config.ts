@@ -3,9 +3,9 @@ export type AppConfig = {
     rootAppId: string
     theme: {
         breakpoints: {
-            maxMobileWidth: number;
+            maxMobileWidth: number
             minDesktopWidth: number
-        },
+        }
     }
 }
 
@@ -16,6 +16,6 @@ export const config: AppConfig = {
         breakpoints: {
             maxMobileWidth: 1024,
             minDesktopWidth: 1025
-        },
+        }
     }
 }

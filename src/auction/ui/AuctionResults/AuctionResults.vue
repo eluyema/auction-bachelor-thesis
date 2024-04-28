@@ -1,31 +1,30 @@
 <template>
-<div class='container'>
-    <h4 class='title'>Результати</h4>
-    <Desktop>
-        <DesktopList :list='list'/>
-    </Desktop>
-    <Mobile>
-        <MobileList :list='list' />
-    </Mobile>
-</div>
+    <div class="container">
+        <h4 class="title">Результати</h4>
+        <DesktopOnly>
+            <DesktopList :list="list" />
+        </DesktopOnly>
+        <MobileOnly>
+            <MobileList :list="list" />
+        </MobileOnly>
+    </div>
 </template>
 
-<script setup lang='ts'>
-import {AuctionResult} from 'src/entities/auction';
-import Desktop from 'src/shared/ui/Desktop/Desktop.vue';
-import Mobile from 'src/shared/ui/Mobile/Mobile.vue';
+<script setup lang="ts">
+import { AuctionResult } from 'src/entities/auction'
+import DesktopOnly from 'src/shared/ui/DesktopOnly/DesktopOnly.vue'
+import MobileOnly from 'src/shared/ui/MobileOnly/MobileOnly.vue'
 import DesktopList from './DesktopList.vue'
 import MobileList from './MobileList.vue'
 
 export type AuctionResultsProps = {
-    list: AuctionResult[];
-};
+    list: AuctionResult[]
+}
 
-const { list } = defineProps<AuctionResultsProps>();
-
+const { list } = defineProps<AuctionResultsProps>()
 </script>
 
-<style scoped lang='scss'>
+<style scoped lang="scss">
 @import 'src/app/assets/styles/theme/index.scss';
 
 .title {

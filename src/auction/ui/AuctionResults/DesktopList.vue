@@ -1,47 +1,52 @@
 <template>
-        <table class='table'>
-            <tr class='table-head'>
-                <th class='table-head-cell table-head-name'></th>
-                <th class='table-head-cell table-head-full-price'>Повна ціна, грн</th>
-                <th class='table-head-cell table-head-coefficient' v-if='!!firstItem.coefficient'>Коефіцієнт</th>
-                <th class='table-head-cell table-head-entered-price' v-if='!!firstItem.enteredPrice'>Приведена ціна, грн</th>
-                <th class='table-head-cell table-head-winner'></th>
-            </tr>
-            <tr v-for='item of list' class='item' :class='{winner: item.isWinner}'>
-                <td class='table-data-cell'>
-                    <h6 class='item-title'>
-                        <CustomIcon iconName='done' colorVariant='success' class='item-title-icon' />{{item.name}}
-                    </h6>
-                </td>
-                <td class='table-data-cell'>{{item.fullPrice}}</td>
-                <td class='table-data-cell' v-if='item.coefficient'>{{item.coefficient}}</td>
-                <td class='table-data-cell' v-if='item.enteredPrice'>{{item.enteredPrice}}</td>
-                <td class='table-data-cell winner'>{{item.isWinner ? 'Переможець' : ''}}</td>
-            </tr>
-        </table>
+    <table class="table">
+        <tr class="table-head">
+            <th class="table-head-cell table-head-name"></th>
+            <th class="table-head-cell table-head-full-price">Повна ціна, грн</th>
+            <th class="table-head-cell table-head-coefficient" v-if="!!firstItem.coefficient">
+                Коефіцієнт
+            </th>
+            <th class="table-head-cell table-head-entered-price" v-if="!!firstItem.enteredPrice">
+                Приведена ціна, грн
+            </th>
+            <th class="table-head-cell table-head-winner"></th>
+        </tr>
+        <tr v-for="item of list" class="item" :class="{ winner: item.isWinner }" :key="item.id">
+            <td class="table-data-cell">
+                <h6 class="item-title">
+                    <CustomIcon iconName="done" colorVariant="success" class="item-title-icon" />{{
+                        item.name
+                    }}
+                </h6>
+            </td>
+            <td class="table-data-cell">{{ item.fullPrice }}</td>
+            <td class="table-data-cell" v-if="item.coefficient">{{ item.coefficient }}</td>
+            <td class="table-data-cell" v-if="item.enteredPrice">{{ item.enteredPrice }}</td>
+            <td class="table-data-cell winner">{{ item.isWinner ? 'Переможець' : '' }}</td>
+        </tr>
+    </table>
 </template>
-<script setup lang='ts'>
-import { AuctionResult } from 'src/entities/auction';
+<script setup lang="ts">
+import { AuctionResult } from 'src/entities/auction'
 import CustomIcon from 'src/shared/ui/CustomIcon/CustomIcon.vue'
 
 export type MobileListProps = {
-    list: AuctionResult[];
-};
+    list: AuctionResult[]
+}
 
-const { list } = defineProps<MobileListProps>();
+const { list } = defineProps<MobileListProps>()
 
 const defaultFirstItem: AuctionResult = {
     id: '',
     name: '',
     fullPrice: '',
-    isWinner: false,
-};
+    isWinner: false
+}
 
-const firstItem: AuctionResult = list.length && list[0] || defaultFirstItem;
-
+const firstItem: AuctionResult = (list.length && list[0]) || defaultFirstItem
 </script>
 
-<style scoped lang='scss'>
+<style scoped lang="scss">
 @import 'src/app/assets/styles/theme/index.scss';
 
 .table {
@@ -84,12 +89,10 @@ const firstItem: AuctionResult = list.length && list[0] || defaultFirstItem;
     align-items: center;
 }
 
-
 .item-title-icon {
     margin-right: var(--spacing-16);
     margin-left: var(--spacing-12);
 }
-
 
 .table-head-cell {
     @include font-text-medium();
@@ -98,13 +101,14 @@ const firstItem: AuctionResult = list.length && list[0] || defaultFirstItem;
     color: var(--color-text-gray);
 }
 
-.table-data-cell, .item-title {
+.table-data-cell,
+.item-title {
     @include font-text-medium();
 
     height: 48px;
 
     &.winner {
-        color: var(--color-stroke-green)
+        color: var(--color-stroke-green);
     }
 
     @include desktop() {
