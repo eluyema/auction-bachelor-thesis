@@ -71,12 +71,12 @@ const socialItems = [
 .header {
     display: flex;
     height: 64px;
-    padding: 8px 12px;
+    padding: var(--spacing-8) var(--spacing-12);
     background: var(--background-color-white);
 
     @include desktop() {
-        padding-right: 40px;
-        padding-left: 40px;
+        padding-right: var(--spacing-40);
+        padding-left: var(--spacing-40);
     }
 }
 
@@ -88,7 +88,7 @@ const socialItems = [
 }
 
 .header-logo {
-    padding-top: 10px;
+    padding-top: var(--spacing-10);
 }
 
 .header-logo-image {
@@ -104,13 +104,13 @@ const socialItems = [
     align-items: center;
 
     @include desktop() {
-        margin-right: 32px;
+        margin-right: var(--spacing-32);
         display: flex;
     }
 }
 
 .social-item:not(:last-child) {
-    margin-right: 20px;
+    margin-right: var(--spacing-20);
 }
 
 .social-link {
@@ -130,10 +130,10 @@ const socialItems = [
 .lang-block {
     display: flex;
     align-items: center;
-    margin-right: 12px;
+    margin-right: var(--spacing-12);
 
     @include desktop() {
-        margin-right: 32px;
+        margin-right: var(--spacing-32);
     }
 }
 
@@ -150,11 +150,11 @@ const socialItems = [
 .lang-divider {
     height: 13px;
     border-left: var(--color-text-gray) 2px solid;
-    margin-left: 8px;
-    margin-right: 8px;
+    margin-left: var(--spacing-8);
+    margin-right: var(--spacing-8);
 }
 
 .account-icon {
-    margin-right: 10px;
+    margin-right: var(--spacing-10);
 }
 </style>

@@ -1,11 +1,12 @@
 import { ref, onMounted, onUnmounted, computed } from 'vue'
+import { config } from 'src/config';
 
-export function useDetectBreakpoint(minWidth: number) {
+export function useDetectBreakpoint() {
     const desktopVisible = ref(false)
-    const mobileVisible = computed(()=> !desktopVisible);
+    const mobileVisible = computed(()=> !desktopVisible.value);
 
     function updateVisibility() {
-        desktopVisible.value = window.innerWidth >= minWidth
+        desktopVisible.value = window.innerWidth >= config.theme.breakpoints.minDesktopWidth;
     }
 
     onMounted(() => {
