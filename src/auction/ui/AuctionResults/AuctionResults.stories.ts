@@ -1,6 +1,7 @@
 import { Meta, StoryObj } from '@storybook/vue3'
 import AuctionResults from './AuctionResults.vue'
-import { AuctionResult } from '../../../entities/auction'
+import { AuctionResult } from 'src/entities/auction'
+import { AuctionType } from 'src/entities/auction/auctionType'
 
 const meta: Meta<typeof AuctionResults> = {
     title: 'Components/AuctionResults',
@@ -25,12 +26,14 @@ type Story = StoryObj<typeof meta>
 const defaultList: AuctionResult[] = [
     {
         id: '1',
+        auctionType: AuctionType.DEFAULT,
         name: `ТОВ "БУДРЕМСЕРВІС"`,
         fullPrice: '46 005 000,00',
         isWinner: false
     },
     {
         id: '2',
+        auctionType: AuctionType.DEFAULT,
         name: `ТОВ ДУВК`,
         fullPrice: '45 005 000,00',
         isWinner: true
@@ -40,6 +43,7 @@ const defaultList: AuctionResult[] = [
 const NonPriceList: AuctionResult[] = [
     {
         id: '1',
+        auctionType: AuctionType.NON_PRICE_CRITERIA,
         name: `ТОВ "БК"Ізобуд"`,
         fullPrice: '23 030 880,29',
         enteredPrice: '20 000 000,00',
@@ -48,6 +52,7 @@ const NonPriceList: AuctionResult[] = [
     },
     {
         id: '2',
+        auctionType: AuctionType.NON_PRICE_CRITERIA,
         name: `ТОВ "БУДРЕМСЕРВІС"`,
         fullPrice: '20 000 000,00',
         enteredPrice: '16 448 000,00',
@@ -55,7 +60,8 @@ const NonPriceList: AuctionResult[] = [
         isWinner: false
     },
     {
-        id: '1',
+        id: '3',
+        auctionType: AuctionType.NON_PRICE_CRITERIA,
         name: `ТОВ ДУВК`,
         fullPrice: '15 000 000,00',
         enteredPrice: '15 000 000,00',
@@ -67,12 +73,14 @@ const NonPriceList: AuctionResult[] = [
 const ESCOList: AuctionResult[] = [
     {
         id: '1',
+        auctionType: AuctionType.ESCO,
         name: `ТОВ "БУДРЕМСЕРВІС"`,
         fullPrice: '46 005 000,00',
         isWinner: false
     },
     {
         id: '2',
+        auctionType: AuctionType.ESCO,
         name: `ТОВ ДУВК`,
         fullPrice: '45 005 000,00',
         isWinner: true

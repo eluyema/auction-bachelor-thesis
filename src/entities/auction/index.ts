@@ -1,1 +1,2 @@
-export * from './auctionResults'
+export * from './auctionResult'
+export * from './auctionInitialBid';
