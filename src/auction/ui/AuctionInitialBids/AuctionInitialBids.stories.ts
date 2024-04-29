@@ -15,6 +15,14 @@ const meta: Meta<typeof AuctionInitialBids> = {
         list: {
             control: 'array',
             description: 'List of auction results'
+        },
+        disabled: {
+            control: 'boolean',
+            description: 'Make all text disabled colored'
+        },
+        showMax: {
+            control: 'boolean',
+            description: 'Show max label, otherwise min'
         }
     }
 }
@@ -30,7 +38,7 @@ const defaultList: AuctionInitialBid[] = [
         name: `ТОВ "БУДРЕМСЕРВІС"`,
         fullPrice: '46 005 000,00',
         isMin: false,
-        isMax: true,
+        isMax: true
     },
     {
         id: '6',
@@ -38,7 +46,7 @@ const defaultList: AuctionInitialBid[] = [
         name: `ТОВ ДУВК`,
         fullPrice: '45 005 000,00',
         isMin: true,
-        isMax: false,
+        isMax: false
     }
 ]
 
@@ -49,7 +57,7 @@ const defaultListLarge: AuctionInitialBid[] = [
         name: `ТОВ ВКП "ЕСКО"`,
         fullPrice: '58 500,00',
         isMin: false,
-        isMax: true,
+        isMax: true
     },
     {
         id: '2',
@@ -57,7 +65,7 @@ const defaultListLarge: AuctionInitialBid[] = [
         name: `ФОП "РУСАНОВ МИХАЙЛО ОЛЕКСІЙОВИЧ"`,
         fullPrice: '57 597,00',
         isMin: false,
-        isMax: false,
+        isMax: false
     },
     {
         id: '3',
@@ -65,7 +73,7 @@ const defaultListLarge: AuctionInitialBid[] = [
         name: `ТОВ "КИЇВСЬКА НАСОСНА КОМПАНІЯ"`,
         fullPrice: '57 006,00',
         isMin: false,
-        isMax: false,
+        isMax: false
     },
     {
         id: '4',
@@ -73,7 +81,7 @@ const defaultListLarge: AuctionInitialBid[] = [
         name: `ТОВАРИСТВО З ОБМЕЖЕНОЮ ВІДПОВІДАЛЬНІСТЮ "ТОРГОВЕЛЬНА КОМПАНІЯ "СЕК"`,
         fullPrice: '53 025,00',
         isMin: false,
-        isMax: false,
+        isMax: false
     },
     {
         id: '5',
@@ -81,7 +89,7 @@ const defaultListLarge: AuctionInitialBid[] = [
         name: `ТОВ "ВКС АВТО"`,
         fullPrice: '52 119,00',
         isMin: false,
-        isMax: false,
+        isMax: false
     },
     {
         id: '6',
@@ -89,7 +97,7 @@ const defaultListLarge: AuctionInitialBid[] = [
         name: `ТОВАРИСТВО З ОБМЕЖЕНОЮ ВІДПОВІДАЛЬНІСТЮ "ПРОФІЦЕНТР КВІТКА З ОБМЕЖЕНОЮ ВІДПОВІДАЛЬНІСТЮ НАУКОВО-ВИРОБНИЧИЙ ЦЕНТР ЕНЕРГІЯ ПЛЮС"`,
         fullPrice: '50 757,00',
         isMin: false,
-        isMax: false,
+        isMax: false
     },
     {
         id: '7',
@@ -97,7 +105,7 @@ const defaultListLarge: AuctionInitialBid[] = [
         name: `ТОВ "МАСТ КОМПАНІ"`,
         fullPrice: '49 500,00',
         isMin: false,
-        isMax: false,
+        isMax: false
     },
     {
         id: '8',
@@ -105,7 +113,7 @@ const defaultListLarge: AuctionInitialBid[] = [
         name: `ТОВ "ФОТОМАКС"`,
         fullPrice: '49 500,00',
         isMin: false,
-        isMax: false,
+        isMax: false
     },
     {
         id: '9',
@@ -113,7 +121,7 @@ const defaultListLarge: AuctionInitialBid[] = [
         name: `ТОВАРИСТВО З ОБМЕЖЕНОЮ ВІДПОВІДАЛЬНІСТЮ "СМАРТ ГРІД"`,
         fullPrice: '48 093,00',
         isMin: false,
-        isMax: false,
+        isMax: false
     },
     {
         id: '10',
@@ -121,7 +129,7 @@ const defaultListLarge: AuctionInitialBid[] = [
         name: `ФОП "Вітюк Юрій Петрович"`,
         fullPrice: '43 656,00',
         isMin: false,
-        isMax: false,
+        isMax: false
     },
     {
         id: '11',
@@ -129,10 +137,9 @@ const defaultListLarge: AuctionInitialBid[] = [
         name: `ТОВАРИСТВО З ОБМЕЖЕНОЮ ВІДПОВІДАЛЬНІСТЮ "НАУКОВО-ВИРОБНИЧЕ ПІДПРИЄМСТВО "ЕНЕРГОЗБЕРІГАЮЧІ ВИМІРЮВАЛЬНІ ТЕХНОЛОГІЇ"`,
         fullPrice: '42 000,00',
         isMin: true,
-        isMax: false,
-    },
+        isMax: false
+    }
 ]
-
 
 const NonPriceList: AuctionInitialBid[] = [
     {
@@ -143,7 +150,7 @@ const NonPriceList: AuctionInitialBid[] = [
         enteredPrice: '20 000 000,00',
         coefficient: '1,25',
         isMin: false,
-        isMax: true,
+        isMax: true
     },
     {
         id: '8',
@@ -153,7 +160,7 @@ const NonPriceList: AuctionInitialBid[] = [
         enteredPrice: '16 448 000,00',
         coefficient: '1,25',
         isMin: false,
-        isMax: false,
+        isMax: false
     },
     {
         id: '9',
@@ -163,7 +170,7 @@ const NonPriceList: AuctionInitialBid[] = [
         enteredPrice: '15 000 000,00',
         coefficient: '1,00',
         isMin: true,
-        isMax: false,
+        isMax: false
     }
 ]
 
@@ -174,7 +181,7 @@ const ESCOList: AuctionInitialBid[] = [
         name: `ТОВ "БУДРЕМСЕРВІС"`,
         fullPrice: '46 005 000,00',
         isMin: false,
-        isMax: true,
+        isMax: true
     },
     {
         id: '11',
@@ -182,7 +189,7 @@ const ESCOList: AuctionInitialBid[] = [
         name: `ТОВ ДУВК`,
         fullPrice: '45 005 000,00',
         isMin: true,
-        isMax: false,
+        isMax: false
     }
 ]
 
@@ -195,7 +202,7 @@ export const Default: Story = {
 export const DefaultDisabled: Story = {
     args: {
         list: defaultList,
-        disabled: true,
+        disabled: true
     }
 }
 
@@ -214,14 +221,14 @@ export const NonPrice: Story = {
 export const NonPriceDisabled: Story = {
     args: {
         list: NonPriceList,
-        disabled: true,
+        disabled: true
     }
 }
 
-
 export const ESCO: Story = {
     args: {
-        list: ESCOList
+        list: ESCOList,
+        showMax: true,
     }
 }
 
@@ -229,5 +236,6 @@ export const ESCODisabled: Story = {
     args: {
         list: ESCOList,
         disabled: true,
+        showMax: true,
     }
 }

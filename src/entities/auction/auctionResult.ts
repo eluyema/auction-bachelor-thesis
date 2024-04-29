@@ -1,8 +1,8 @@
-import { AuctionType } from "./auctionType";
+import { AuctionType } from './auctionType'
 
 export type AuctionResult = {
     id: string
-    auctionType: AuctionType;
+    auctionType: AuctionType
     name: string
     isWinner: boolean
     fullPrice: string

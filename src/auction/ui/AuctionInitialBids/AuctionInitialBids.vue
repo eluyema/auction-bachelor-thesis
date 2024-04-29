@@ -23,11 +23,12 @@ import VerticalList from 'src/shared/ui/VerticalList/VerticalList.vue'
 export type AuctionInitialBidsProps = {
     list: AuctionInitialBid[]
     disabled?: boolean
+    showMax?: boolean
 }
 
-const { list, disabled } = defineProps<AuctionInitialBidsProps>()
+const { list, disabled, showMax } = defineProps<AuctionInitialBidsProps>()
 
-const verticalListItems = mapper.mapToVerticalListItems(list)
+const verticalListItems = mapper.mapToVerticalListItems(list, { showLabelForMax: !!showMax })
 const tableColumns = mapper.mapToTableDataColumns(list)
-const tableRows = mapper.mapToTableDataRows(list)
+const tableRows = mapper.mapToTableDataRows(list, { showLabelForMax: !!showMax })
 </script>
