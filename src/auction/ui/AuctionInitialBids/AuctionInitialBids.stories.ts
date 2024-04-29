@@ -228,7 +228,7 @@ export const NonPriceDisabled: Story = {
 export const ESCO: Story = {
     args: {
         list: ESCOList,
-        showMax: true,
+        showMax: true
     }
 }
 
@@ -236,6 +236,6 @@ export const ESCODisabled: Story = {
     args: {
         list: ESCOList,
         disabled: true,
-        showMax: true,
+        showMax: true
     }
 }

@@ -4,7 +4,7 @@ import { AuctionResult } from 'src/entities/auction'
 import { AuctionType } from 'src/entities/auction/auctionType'
 
 const meta: Meta<typeof AuctionResults> = {
-    title: 'Components/AuctionResults',
+    title: 'Organisms/AuctionResults',
     component: AuctionResults,
     parameters: {
         background: {

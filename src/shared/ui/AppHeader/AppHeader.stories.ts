@@ -2,7 +2,7 @@ import { Meta, StoryObj } from '@storybook/vue3'
 import AppHeader from './AppHeader.vue'
 
 const meta: Meta<typeof AppHeader> = {
-    title: 'Components/AppHeader',
+    title: 'Organisms/AppHeader',
     component: AppHeader,
     parameters: {
         layout: 'fullscreen'
