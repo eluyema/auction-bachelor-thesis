@@ -37,8 +37,8 @@ class AuctionResultsMapper {
 
         if (result.auctionType === AuctionType.NON_PRICE_CRITERIA) {
             tableData.push(
-                { key: 'Коефіцієнт: ', value: result.coefficient  },
-                { key: 'Приведена ціна, грн:', value: result.enteredPrice  }
+                { key: 'Коефіцієнт: ', value: result.coefficient },
+                { key: 'Приведена ціна, грн:', value: result.enteredPrice }
             )
         }
 
@@ -79,7 +79,8 @@ class AuctionResultsMapper {
             if (result.auctionType === AuctionType.NON_PRICE_CRITERIA) {
                 data.push(
                     { id: getUuid(), value: result.coefficient },
-                    { id: getUuid(), value: result.enteredPrice })
+                    { id: getUuid(), value: result.enteredPrice }
+                )
             }
 
             if (result.isWinner) {

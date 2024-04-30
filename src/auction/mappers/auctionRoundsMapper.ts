@@ -2,25 +2,27 @@ import { AuctionRound, AuctionRoundStatus, AuctionType } from 'src/entities/auct
 import { VerticalListItemProps } from 'src/shared/ui/VerticalList/VerticalListItem.vue'
 
 class AuctionRoundsMapper {
-    static mapToVerticalListItems(results: AuctionRound[],
-        options = { showLabelForMax: false }): VerticalListItemProps[] {
+    static mapToVerticalListItems(
+        results: AuctionRound[],
+        options = { showLabelForMax: false }
+    ): VerticalListItemProps[] {
         return results.map((result) => this.mapRoundToVerticalListItem(result, options))
     }
 
-    private static mapRoundToVerticalListItem(result: AuctionRound,
-        options = { showLabelForMax: false }): VerticalListItemProps {
-
-        const { showLabelForMax } = options;    
-        if(!result.announced) {
+    private static mapRoundToVerticalListItem(
+        result: AuctionRound,
+        options = { showLabelForMax: false }
+    ): VerticalListItemProps {
+        const { showLabelForMax } = options
+        if (!result.announced) {
             return {
                 id: result.id,
                 iconProps: {
-                    iconName: 'circle',
+                    iconName: 'circle'
                 },
                 name: result.name,
-                tableData: [],
+                tableData: []
             }
-
         }
 
         const tableData = [{ key: 'Повна ціна, грн:', value: result.fullPrice }]
@@ -32,9 +34,9 @@ class AuctionRoundsMapper {
             )
         }
 
-        const labelValue = this.getLabelValue(result, showLabelForMax);
-        const iconProps = this.getIconProps(result);
-        const bordered = this.getBorderedValue(result);
+        const labelValue = this.getLabelValue(result, showLabelForMax)
+        const iconProps = this.getIconProps(result)
+        const bordered = this.getBorderedValue(result)
 
         return {
             id: result.id,
@@ -47,9 +49,12 @@ class AuctionRoundsMapper {
         }
     }
 
-    private static getLabelValue(data: AuctionRound, showLabelForMax: boolean): 'максимум' | 'мінімум' | null {
-        if(!data.announced) {
-            return null;
+    private static getLabelValue(
+        data: AuctionRound,
+        showLabelForMax: boolean
+    ): 'максимум' | 'мінімум' | null {
+        if (!data.announced) {
+            return null
         }
 
         if (showLabelForMax && data.isMax) {
@@ -63,24 +68,24 @@ class AuctionRoundsMapper {
         return null
     }
 
-    private static getIconProps(data: AuctionRound): VerticalListItemProps["iconProps"] {
-        const roundStatus: AuctionRoundStatus = data.status;
+    private static getIconProps(data: AuctionRound): VerticalListItemProps['iconProps'] {
+        const roundStatus: AuctionRoundStatus = data.status
 
-        switch(roundStatus) {
+        switch (roundStatus) {
             case AuctionRoundStatus.PENDING:
                 return {
-                    iconName: 'circle',
-                };
+                    iconName: 'circle'
+                }
             case AuctionRoundStatus.ACTIVE_BIDDING:
                 return {
                     iconName: 'arrow_circle_down',
                     colorVariant: 'success'
                 }
-            case AuctionRoundStatus.ABOUT_TO_CLOSE: 
+            case AuctionRoundStatus.ABOUT_TO_CLOSE:
                 return {
                     iconName: 'schedule',
                     colorVariant: 'primary'
-                };
+                }
             default:
                 return {
                     iconName: 'done',
@@ -90,15 +95,15 @@ class AuctionRoundsMapper {
     }
 
     private static getBorderedValue(data: AuctionRound) {
-        if(!data.announced) {
-            return false;
+        if (!data.announced) {
+            return false
         }
 
-        if(data.status === AuctionRoundStatus.ABOUT_TO_CLOSE) {
-            return true;
+        if (data.status === AuctionRoundStatus.ABOUT_TO_CLOSE) {
+            return true
         }
 
-        return false;
+        return false
     }
 }
 

@@ -1,4 +1,4 @@
-import { AuctionInitialBid, AuctionType} from 'src/entities/auction'
+import { AuctionInitialBid, AuctionType } from 'src/entities/auction'
 import { VerticalListItemProps } from 'src/shared/ui/VerticalList/VerticalListItem.vue'
 import { TableRowProps, TableColumnProps } from 'src/shared/ui/TableData/index'
 import { getUuid } from 'src/shared/utils/getUuid'
@@ -44,8 +44,8 @@ class AuctionInitialBidsMapper {
 
         if (result.auctionType === AuctionType.NON_PRICE_CRITERIA) {
             tableData.push(
-                { key: 'Коефіцієнт: ', value: result.coefficient  },
-                { key: 'Приведена ціна, грн:', value: result.enteredPrice  }
+                { key: 'Коефіцієнт: ', value: result.coefficient },
+                { key: 'Приведена ціна, грн:', value: result.enteredPrice }
             )
         }
 
@@ -101,8 +101,8 @@ class AuctionInitialBidsMapper {
 
             if (result.auctionType === AuctionType.NON_PRICE_CRITERIA) {
                 data.push(
-                    { id: getUuid(), value: result.coefficient  },
-                    { id: getUuid(), value: result.enteredPrice  }
+                    { id: getUuid(), value: result.coefficient },
+                    { id: getUuid(), value: result.enteredPrice }
                 )
             }
 

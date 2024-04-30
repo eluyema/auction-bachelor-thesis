@@ -1,7 +1,7 @@
 <template>
     <div class="container">
         <h4 class="title" :class="{ disabled: disabledText }">{{ name }}</h4>
-        <ul>
+        <ul class="list">
             <VerticalListItem
                 v-for="item of list"
                 :key="item.id"
@@ -40,7 +40,7 @@ const { name, disabledText, disabledIcons, list } = defineProps<VerticalListProp
     }
 
     @include desktop() {
-        margin-left: 0;
+        margin-left: var(--spacing-24);
         margin-right: 0;
     }
 }
@@ -51,7 +51,8 @@ const { name, disabledText, disabledIcons, list } = defineProps<VerticalListProp
     padding-bottom: var(--spacing-16);
 
     @include desktop() {
-        padding: var(--spacing-24);
+        padding-top: var(--spacing-24);
+        padding-bottom: var(--spacing-24);
     }
 }
 </style>

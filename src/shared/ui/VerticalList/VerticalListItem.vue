@@ -15,9 +15,21 @@
         </h6>
         <div class="content">
             <table class="table" v-if="tableData.length">
-                <tr v-for="row of tableData" :key="row.key">
+                <tr v-for="(row, index) of tableData" :key="row.key">
                     <th class="table-head-cell">{{ row.key }}</th>
                     <td class="table-data-cell">{{ row.value }}</td>
+                    <DesktopOnly v-if="labelProps && index === tableData.length - 1">
+                        <td class="table-data-cell">
+                            <CustomLabel
+                                v-if="labelValue"
+                                :textShape="labelProps.textShape"
+                                :colorVariant="labelProps.colorVariant"
+                                class="label"
+                            >
+                                {{ labelValue }}
+                            </CustomLabel>
+                        </td>
+                    </DesktopOnly>
                 </tr>
                 <MobileOnly>
                     <tr v-if="labelProps">
@@ -35,16 +47,6 @@
                     </tr>
                 </MobileOnly>
             </table>
-            <DesktopOnly>
-                <CustomLabel
-                    v-if="labelValue && labelProps"
-                    :textShape="labelProps.textShape"
-                    :colorVariant="labelProps.colorVariant"
-                    class="label"
-                >
-                    {{ labelValue }}
-                </CustomLabel>
-            </DesktopOnly>
         </div>
     </li>
 </template>
@@ -85,10 +87,17 @@ const {
 @import 'src/app/assets/styles/theme/index.scss';
 
 .item {
-    padding: 0 var(--spacing-8) var(--spacing-16);
+    padding-left: var(--spacing-8);
+    padding-right: var(--spacing);
+    padding-bottom: var(--spacing-16);
 
     &:not(:first-child) .divider {
         border-top: var(--color-stroke-grey) 1px solid;
+    }
+
+    @include desktop() {
+        padding-left: var(--spacing-24);
+        padding-right: var(--spacing-24);
     }
 }
 
@@ -114,6 +123,10 @@ const {
     &.disabled {
         color: var(--color-text-gray);
     }
+
+    @include desktop() {
+        font-size: var(--size-m);
+    }
 }
 
 .content {
@@ -130,14 +143,26 @@ const {
 
     padding-right: var(--spacing-16);
     color: var(--color-text-gray);
+
+    @include desktop() {
+        font-size: var(--size-s);
+    }
 }
 
-.table-data-cell,
-.label {
+.table-data-cell {
     @include font-text-large();
 
     @include desktop() {
+        font-size: var(--size-m);
+    }
+}
+
+.label {
+    @include font-text-medium();
+
+    @include desktop() {
         margin-left: var(--spacing-40);
+        font-size: var(--size-s);
     }
 }
 </style>

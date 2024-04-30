@@ -236,7 +236,7 @@ const defaultListLarge: AuctionRound[] = [
         fullPrice: '49 500,00',
         isMin: true,
         isMax: false
-    },
+    }
 ]
 
 const nonPriceListBeforeRoundBegins: AuctionRound[] = [
@@ -270,7 +270,7 @@ const nonPriceListRoundStarted: AuctionRound[] = [
         announced: true,
         auctionType: AuctionType.NON_PRICE_CRITERIA,
         name: `Учасник №2`,
-        enteredPrice:  '26 000 000,00',
+        enteredPrice: '26 000 000,00',
         fullPrice: '...',
         coefficient: '...',
         isMin: false,
@@ -309,7 +309,7 @@ const nonPriceList1Bids: AuctionRound[] = [
         announced: true,
         auctionType: AuctionType.NON_PRICE_CRITERIA,
         name: `Учасник №2`,
-        enteredPrice:  '26 000 000,00',
+        enteredPrice: '26 000 000,00',
         fullPrice: '...',
         coefficient: '...',
         isMin: false,
@@ -348,7 +348,7 @@ const nonPriceList2Bids: AuctionRound[] = [
         announced: true,
         auctionType: AuctionType.NON_PRICE_CRITERIA,
         name: `Учасник №2`,
-        enteredPrice:  '26 000 000,00',
+        enteredPrice: '26 000 000,00',
         fullPrice: '...',
         coefficient: '...',
         isMin: false,
@@ -387,7 +387,7 @@ const nonPriceListRoundEnds: AuctionRound[] = [
         announced: true,
         auctionType: AuctionType.NON_PRICE_CRITERIA,
         name: `Учасник №2`,
-        enteredPrice:  '26 000 000,00',
+        enteredPrice: '26 000 000,00',
         fullPrice: '...',
         coefficient: '...',
         isMin: false,
@@ -426,7 +426,7 @@ const nonPriceListAuctionEnds: AuctionRound[] = [
         announced: true,
         auctionType: AuctionType.NON_PRICE_CRITERIA,
         name: `ТОВ ДУВК`,
-        enteredPrice:  '26 000 000,00',
+        enteredPrice: '26 000 000,00',
         fullPrice: '26 000 000,00',
         coefficient: '1,00',
         isMin: false,
@@ -521,7 +521,6 @@ const ESCOList1Bids: AuctionRound[] = [
     }
 ]
 
-
 const ESCOList2Bids: AuctionRound[] = [
     {
         id: '5',
@@ -602,7 +601,7 @@ export const DefaultBeforeRoundBegins: Story = {
 export const DefaultRoundStarted: Story = {
     args: {
         title: 'Раунд 1',
-        list: defaultListRoundStarted,
+        list: defaultListRoundStarted
     }
 }
 
@@ -656,21 +655,21 @@ export const NonPriceBeforeRoundBegins: Story = {
 export const NonPriceRoundStarted: Story = {
     args: {
         title: 'Раунд 1',
-        list: nonPriceListRoundStarted,
+        list: nonPriceListRoundStarted
     }
 }
 
 export const NonPrice1Bids: Story = {
     args: {
         title: 'Раунд 1',
-        list: nonPriceList1Bids,
+        list: nonPriceList1Bids
     }
 }
 
 export const NonPrice2Bids: Story = {
     args: {
         title: 'Раунд 2',
-        list: nonPriceList2Bids,
+        list: nonPriceList2Bids
     }
 }
 
@@ -706,7 +705,7 @@ export const ESCORoundStarted: Story = {
     args: {
         title: 'Раунд 1',
         list: ESCOListRoundStarted,
-        showMax: true,
+        showMax: true
     }
 }
 
@@ -714,7 +713,7 @@ export const ESCO1Bids: Story = {
     args: {
         title: 'Раунд 1',
         list: ESCOList1Bids,
-        showMax: true,
+        showMax: true
     }
 }
 
@@ -722,7 +721,7 @@ export const ESCO2Bids: Story = {
     args: {
         title: 'Раунд 2',
         list: ESCOList2Bids,
-        showMax: true,
+        showMax: true
     }
 }
 
@@ -744,4 +743,3 @@ export const ESCOAuctionEnds: Story = {
         disabledIcons: true
     }
 }
-

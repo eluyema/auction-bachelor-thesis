@@ -1,4 +1,4 @@
 export * from './auctionResult'
 export * from './auctionInitialBid'
-export * from './auctionRound';
-export * from './auctionType';
+export * from './auctionRound'
+export * from './auctionType'
