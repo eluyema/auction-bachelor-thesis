@@ -136,6 +136,7 @@ const {
 
 .table {
     margin-top: var(--spacing-12);
+    width: 100%;
 }
 
 .table-head-cell {
@@ -161,7 +162,6 @@ const {
     @include font-text-medium();
 
     @include desktop() {
-        margin-left: var(--spacing-40);
         font-size: var(--size-s);
     }
 }

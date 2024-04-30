@@ -645,7 +645,7 @@ export const DefaultLarge: Story = {
 
 export const NonPriceBeforeRoundBegins: Story = {
     args: {
-        title: 'text',
+        title: 'Раунд 1',
         list: nonPriceListBeforeRoundBegins,
         disabledText: true,
         disabledIcons: true
