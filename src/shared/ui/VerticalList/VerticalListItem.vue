@@ -1,42 +1,58 @@
 <template>
     <li
         class="item"
-        :class="{ bordered: !!borderColor, 'active-background': !!activeBackground }"
+        :class="{ bordered: !!bordered, 'active-background': !!activeBackground }"
         :key="id"
     >
-        <div class="divider" />
-        <h6 class="item-title">
+        <div class="divider" v-if="!bordered" />
+        <h6 class="item-title" :class="{ disabled: !!disabledText }">
             <CustomIcon
                 :iconName="iconProps.iconName"
-                :colorVariant="iconProps.colorVariant"
+                :colorVariant="disabledIcons ? null : iconProps.colorVariant"
                 class="icon"
             />
             {{ name }}
         </h6>
-        <table>
-            <tr v-for="row of tableData" :key="row.key">
-                <th class="table-head-cell">{{ row.key }}</th>
-                <td class="table-data-cell">{{ row.value }}</td>
-            </tr>
-            <tr v-if="labelProps">
-                <th class="table-head-cell"></th>
-                <td class="table-data-cell">
-                    <CustomLabel
-                        v-if="labelValue"
-                        :textShape="labelProps.textShape"
-                        :colorVariant="labelProps.colorVariant"
-                        class="label"
-                    >
-                        {{ labelValue }}
-                    </CustomLabel>
-                </td>
-            </tr>
-        </table>
+        <div class="content">
+            <table class="table" v-if="tableData.length">
+                <tr v-for="row of tableData" :key="row.key">
+                    <th class="table-head-cell">{{ row.key }}</th>
+                    <td class="table-data-cell">{{ row.value }}</td>
+                </tr>
+                <MobileOnly>
+                    <tr v-if="labelProps">
+                        <th class="table-head-cell"></th>
+                        <td class="table-data-cell">
+                            <CustomLabel
+                                v-if="labelValue"
+                                :textShape="labelProps.textShape"
+                                :colorVariant="labelProps.colorVariant"
+                                class="label"
+                            >
+                                {{ labelValue }}
+                            </CustomLabel>
+                        </td>
+                    </tr>
+                </MobileOnly>
+            </table>
+            <DesktopOnly>
+                <CustomLabel
+                    v-if="labelValue && labelProps"
+                    :textShape="labelProps.textShape"
+                    :colorVariant="labelProps.colorVariant"
+                    class="label"
+                >
+                    {{ labelValue }}
+                </CustomLabel>
+            </DesktopOnly>
+        </div>
     </li>
 </template>
 <script setup lang="ts">
 import CustomIcon, { CustomIconProps } from 'src/shared/ui/CustomIcon/CustomIcon.vue'
 import CustomLabel, { CustomLabelProps } from 'src/shared/ui/CustomLabel/CustomLabel.vue'
+import MobileOnly from '../MobileOnly/MobileOnly.vue'
+import DesktopOnly from '../DesktopOnly/DesktopOnly.vue'
 
 export type VerticalListItemProps = {
     id: string
@@ -46,12 +62,23 @@ export type VerticalListItemProps = {
     tableData: { key: string; value: string }[]
     labelProps?: CustomLabelProps | null
     labelValue?: string | null
+    disabledText?: boolean
+    disabledIcons?: boolean
     activeBackground?: boolean
-    borderColor?: boolean
+    bordered?: boolean
 }
 
-const { iconProps, name, tableData, labelProps, labelValue, activeBackground, borderColor } =
-    defineProps<VerticalListItemProps>()
+const {
+    iconProps,
+    name,
+    tableData,
+    labelProps,
+    labelValue,
+    disabledIcons,
+    disabledText,
+    activeBackground,
+    bordered
+} = defineProps<VerticalListItemProps>()
 </script>
 
 <style scoped lang="scss">
@@ -70,7 +97,7 @@ const { iconProps, name, tableData, labelProps, labelValue, activeBackground, bo
 }
 
 .item.bordered {
-    border: var(--color-stroke-green) 1px solid;
+    outline: var(--color-stroke-green) 2px solid;
 }
 
 .icon {
@@ -80,10 +107,22 @@ const { iconProps, name, tableData, labelProps, labelValue, activeBackground, bo
 .item-title {
     @include font-text-large();
 
-    margin-top: var(--spacing-12);
+    padding-top: var(--spacing-12);
     display: flex;
     align-items: center;
-    margin-bottom: var(--spacing-12);
+
+    &.disabled {
+        color: var(--color-text-gray);
+    }
+}
+
+.content {
+    display: flex;
+    align-items: end;
+}
+
+.table {
+    margin-top: var(--spacing-12);
 }
 
 .table-head-cell {
@@ -96,5 +135,9 @@ const { iconProps, name, tableData, labelProps, labelValue, activeBackground, bo
 .table-data-cell,
 .label {
     @include font-text-large();
+
+    @include desktop() {
+        margin-left: var(--spacing-40);
+    }
 }
 </style>

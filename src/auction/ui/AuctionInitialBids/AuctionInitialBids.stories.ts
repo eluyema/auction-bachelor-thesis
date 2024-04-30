@@ -1,10 +1,9 @@
 import { Meta, StoryObj } from '@storybook/vue3'
 import AuctionInitialBids from './AuctionInitialBids.vue'
-import { AuctionInitialBid } from 'src/entities/auction'
-import { AuctionType } from 'src/entities/auction/auctionType'
+import { AuctionInitialBid, AuctionType } from 'src/entities/auction'
 
 const meta: Meta<typeof AuctionInitialBids> = {
-    title: 'Components/AuctionInitialBids',
+    title: 'Organisms/AuctionInitialBids',
     component: AuctionInitialBids,
     parameters: {
         background: {

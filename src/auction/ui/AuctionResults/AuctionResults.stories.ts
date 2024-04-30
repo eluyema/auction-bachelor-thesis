@@ -1,7 +1,6 @@
 import { Meta, StoryObj } from '@storybook/vue3'
 import AuctionResults from './AuctionResults.vue'
-import { AuctionResult } from 'src/entities/auction'
-import { AuctionType } from 'src/entities/auction/auctionType'
+import { AuctionResult, AuctionType } from 'src/entities/auction'
 
 const meta: Meta<typeof AuctionResults> = {
     title: 'Organisms/AuctionResults',

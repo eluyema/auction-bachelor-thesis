@@ -1,8 +1,14 @@
 <template>
     <div class="container">
-        <h4 class="title" :class="{ disabled: disabled }">{{ name }}</h4>
+        <h4 class="title" :class="{ disabled: disabledText }">{{ name }}</h4>
         <ul>
-            <VerticalListItem v-for="item of list" :key="item.id" v-bind="item" />
+            <VerticalListItem
+                v-for="item of list"
+                :key="item.id"
+                v-bind="item"
+                :disabledText="disabledText"
+                :disabledIcons="disabledIcons"
+            />
         </ul>
     </div>
 </template>
@@ -11,11 +17,12 @@ import VerticalListItem, { VerticalListItemProps } from './VerticalListItem.vue'
 
 export type VerticalListProps = {
     name: string
-    disabled?: boolean
+    disabledText?: boolean
+    disabledIcons?: boolean
     list: VerticalListItemProps[]
 }
 
-const { name, disabled, list } = defineProps<VerticalListProps>()
+const { name, disabledText, disabledIcons, list } = defineProps<VerticalListProps>()
 </script>
 
 <style scoped lang="scss">
@@ -27,6 +34,10 @@ const { name, disabled, list } = defineProps<VerticalListProps>()
     margin-left: var(--spacing-8);
     margin-right: var(--spacing-8);
     margin-bottom: var(--spacing-8);
+
+    &.disabled {
+        color: var(--color-text-gray);
+    }
 
     @include desktop() {
         margin-left: 0;

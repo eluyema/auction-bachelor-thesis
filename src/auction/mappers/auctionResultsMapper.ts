@@ -2,7 +2,7 @@ import { AuctionResult } from 'src/entities/auction'
 import { VerticalListItemProps } from 'src/shared/ui/VerticalList/VerticalListItem.vue'
 import { TableRowProps, TableColumnProps } from 'src/shared/ui/TableData/index'
 import { getUuid } from 'src/shared/utils/getUuid'
-import { AuctionType } from 'src/entities/auction/auctionType'
+import { AuctionType } from 'src/entities/auction'
 
 class AuctionResultsMapper {
     private static tableColumns: Record<AuctionType, TableColumnProps[]> = {
@@ -37,8 +37,8 @@ class AuctionResultsMapper {
 
         if (result.auctionType === AuctionType.NON_PRICE_CRITERIA) {
             tableData.push(
-                { key: 'Коефіцієнт: ', value: result.coefficient || '...' },
-                { key: 'Приведена ціна, грн:', value: result.enteredPrice || '...' }
+                { key: 'Коефіцієнт: ', value: result.coefficient  },
+                { key: 'Приведена ціна, грн:', value: result.enteredPrice  }
             )
         }
 
@@ -76,12 +76,10 @@ class AuctionResultsMapper {
                 }
             ]
 
-            if (result.coefficient) {
-                data.push({ id: getUuid(), value: result.coefficient })
-            }
-
-            if (result.enteredPrice) {
-                data.push({ id: getUuid(), value: result.enteredPrice })
+            if (result.auctionType === AuctionType.NON_PRICE_CRITERIA) {
+                data.push(
+                    { id: getUuid(), value: result.coefficient },
+                    { id: getUuid(), value: result.enteredPrice })
             }
 
             if (result.isWinner) {

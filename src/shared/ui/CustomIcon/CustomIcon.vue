@@ -10,7 +10,7 @@ import { computed } from 'vue'
 
 export type CustomIconProps = {
     iconName: string
-    colorVariant?: ColorVariants
+    colorVariant?: ColorVariants | null
 }
 
 const props = defineProps<CustomIconProps>()

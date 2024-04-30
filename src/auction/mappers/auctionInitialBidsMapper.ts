@@ -1,8 +1,7 @@
-import { AuctionInitialBid } from 'src/entities/auction'
+import { AuctionInitialBid, AuctionType} from 'src/entities/auction'
 import { VerticalListItemProps } from 'src/shared/ui/VerticalList/VerticalListItem.vue'
 import { TableRowProps, TableColumnProps } from 'src/shared/ui/TableData/index'
 import { getUuid } from 'src/shared/utils/getUuid'
-import { AuctionType } from 'src/entities/auction/auctionType'
 
 class AuctionInitialBidsMapper {
     private static tableColumns: Record<AuctionType, TableColumnProps[]> = {
@@ -32,10 +31,10 @@ class AuctionInitialBidsMapper {
         results: AuctionInitialBid[],
         options = { showLabelForMax: false }
     ): VerticalListItemProps[] {
-        return results.map((result) => this.mapResultToVerticalListItem(result, options))
+        return results.map((result) => this.mapInitialBidsToVerticalListItem(result, options))
     }
 
-    private static mapResultToVerticalListItem(
+    private static mapInitialBidsToVerticalListItem(
         result: AuctionInitialBid,
         options = { showLabelForMax: false }
     ): VerticalListItemProps {
@@ -45,8 +44,8 @@ class AuctionInitialBidsMapper {
 
         if (result.auctionType === AuctionType.NON_PRICE_CRITERIA) {
             tableData.push(
-                { key: 'Коефіцієнт: ', value: result.coefficient || '...' },
-                { key: 'Приведена ціна, грн:', value: result.enteredPrice || '...' }
+                { key: 'Коефіцієнт: ', value: result.coefficient  },
+                { key: 'Приведена ціна, грн:', value: result.enteredPrice  }
             )
         }
 
@@ -102,8 +101,8 @@ class AuctionInitialBidsMapper {
 
             if (result.auctionType === AuctionType.NON_PRICE_CRITERIA) {
                 data.push(
-                    { id: getUuid(), value: result.coefficient || '...' },
-                    { id: getUuid(), value: result.enteredPrice || '...' }
+                    { id: getUuid(), value: result.coefficient  },
+                    { id: getUuid(), value: result.enteredPrice  }
                 )
             }
 
