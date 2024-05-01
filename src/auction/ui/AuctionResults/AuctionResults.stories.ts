@@ -5,11 +5,6 @@ import { AuctionResult, AuctionType } from 'src/entities/auction'
 const meta: Meta<typeof AuctionResults> = {
     title: 'Organisms/AuctionResults',
     component: AuctionResults,
-    parameters: {
-        background: {
-            default: 'dark'
-        }
-    },
     argTypes: {
         list: {
             control: 'array',

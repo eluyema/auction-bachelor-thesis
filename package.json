@@ -14,8 +14,10 @@
     "prepare": "husky"
   },
   "dependencies": {
+    "@storybook/addon-backgrounds": "^8.0.9",
     "uuid": "^9.0.1",
-    "vue": "^3.4.15"
+    "vue": "^3.4.15",
+    "yup": "^1.4.0"
   },
   "devDependencies": {
     "@rushstack/eslint-patch": "^1.8.0",

@@ -33,6 +33,8 @@ export type TextTimerProps = {
     time?: number
 }
 
+const emit = defineEmits(['timerEnded'])
+
 const props = withDefaults(defineProps<TextTimerProps>(), { time: 60 })
 
 const FULL_DASH_ARRAY = 283
@@ -87,6 +89,7 @@ const onTimesUp = () => {
     if (timerInterval.value === null) {
         return
     }
+    emit('timerEnded')
     clearInterval(timerInterval.value)
 }
 

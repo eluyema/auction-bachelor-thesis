@@ -5,11 +5,6 @@ import { AuctionType, AuctionRound, AuctionRoundStatus } from 'src/entities/auct
 const meta: Meta<typeof AuctionRounds> = {
     title: 'Organisms/AuctionRounds',
     component: AuctionRounds,
-    parameters: {
-        background: {
-            default: 'dark'
-        }
-    },
     argTypes: {
         list: {
             control: 'array',

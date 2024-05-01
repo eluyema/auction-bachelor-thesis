@@ -11,6 +11,8 @@ export type TextTimerProps = {
     time?: number
 }
 
+const emit = defineEmits(['timerEnded'])
+
 const props = withDefaults(defineProps<TextTimerProps>(), {
     time: 86400
 })
@@ -85,6 +87,7 @@ const onTimesUp = () => {
     if (timerInterval.value === null) {
         return
     }
+    emit('timerEnded')
     clearInterval(timerInterval.value)
 }
 

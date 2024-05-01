@@ -162,6 +162,10 @@ const classes = computed(() => {
         }
     }
 
+    &:disabled {
+        cursor: unset;
+    }
+
     &:focus,
     &.shape-contained:focus,
     &.shape-text:focus {
