@@ -30,7 +30,7 @@ export type CustomInputProps = {
     error?: boolean
 }
 
-const props = defineProps<CustomInputProps>()
+defineProps<CustomInputProps>()
 
 const emits = defineEmits(['update:modelValue'])
 
