@@ -1,5 +1,5 @@
-import { Meta, StoryObj } from '@storybook/vue3';
-import CustomInput from './CustomInput.vue';
+import { Meta, StoryObj } from '@storybook/vue3'
+import CustomInput from './CustomInput.vue'
 
 const meta: Meta<typeof CustomInput> = {
     title: 'Components/CustomInput',
@@ -8,12 +8,12 @@ const meta: Meta<typeof CustomInput> = {
         modelValue: { control: 'text' },
         label: { control: 'text' },
         error: { control: 'boolean' }
-    },
+    }
 }
 
-export default meta;
+export default meta
 
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj<typeof meta>
 
 export const WithoutLabel: Story = {
     args: {

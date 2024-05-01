@@ -1,15 +1,45 @@
 <template>
-    <div class="bidding-form-container">
+    <div class="bidding-form-container" :class="{ success: showSuccessBidding }">
         <button @click="collapsedMobile = !collapsedMobile" class="drag-button">
             <img :src="dragHandleIcon" alt="drag handle icon" />
         </button>
         <div class="content">
-            <BiddingPreview v-if="showPreview" :date="nearestDate" :message="previewMessage" />
+            <BiddingPreview
+                v-if="showPreview"
+                class="hide-mobile"
+                :date="nearestDate"
+                :message="previewMessage"
+            />
             <template v-if="state == BiddingFormState.ACTIVE_BIDDING_TIME">
                 <DefaultVariant
+                    v-if="settings.auctionType === AuctionType.DEFAULT"
                     :endAt="yourTurnEndAt"
-                    :fullPriceMin="fullPriceMin"
+                    :fullPriceMin="settings.fullPriceMin"
                     :currentBid="currentBid"
+                    :collapsedMobile="collapsedMobile"
+                    @bidSent="handleBidSent"
+                    @bidAbort="handleBidAbort"
+                />
+                <NonPriceVariant
+                    v-else-if="settings.auctionType === AuctionType.NON_PRICE_CRITERIA"
+                    :endAt="yourTurnEndAt"
+                    :fullPriceMin="settings.fullPriceMin"
+                    :coefficient="settings.coefficient"
+                    :currentBid="currentBid"
+                    :collapsedMobile="collapsedMobile"
+                    @bidSent="handleBidSent"
+                    @bidAbort="handleBidAbort"
+                />
+                <ESCOVariant
+                    v-else-if="settings.auctionType === AuctionType.ESCO"
+                    :endAt="yourTurnEndAt"
+                    :basePrice="settings.basePrice"
+                    :defaultYears="settings.defaultYears"
+                    :defaultDays="settings.defaultDays"
+                    :defaultPercent="settings.defaultPercent"
+                    :fullPriceMin="settings.fullPriceMin"
+                    :currentBid="currentBid"
+                    :collapsedMobile="collapsedMobile"
                     @bidSent="handleBidSent"
                     @bidAbort="handleBidAbort"
                 />
@@ -22,7 +52,9 @@ import { computed, onMounted, onUnmounted, ref, watch } from 'vue'
 import BiddingPreview from './BiddingPreview.vue'
 import dragHandleIcon from 'src/app/assets/images/drag-handle-icon.svg'
 import DefaultVariant from './DefaultVariant.vue'
-import { AuctionBid } from 'src/entities/auction'
+import { AuctionBid, AuctionType, AuctionBidSettings } from 'src/entities/auction'
+import NonPriceVariant from './NonPriceVariant.vue'
+import ESCOVariant from './ESCOVariant.vue'
 
 enum BiddingFormState {
     BEFORE_AUCTION_START,
@@ -37,7 +69,7 @@ export interface BiddingForm {
     roundStartAt: Date
     yourTurnStartAt: Date
     yourTurnEndAt: Date
-    fullPriceMin: number
+    settings: AuctionBidSettings
     currentBid?: AuctionBid | null
 }
 
@@ -46,7 +78,8 @@ const emit = defineEmits<{
     (event: 'bidAbort'): void
 }>()
 
-const { auctionStartAt, roundStartAt, yourTurnStartAt, yourTurnEndAt } = defineProps<BiddingForm>()
+const { auctionStartAt, roundStartAt, yourTurnStartAt, yourTurnEndAt, currentBid } =
+    defineProps<BiddingForm>()
 
 const calculateCurrentState = () => {
     const currentDate = new Date()
@@ -106,6 +139,8 @@ const showPreview = computed(() =>
     ].includes(state.value)
 )
 
+const showSuccessBidding = computed(() => (currentBid ? !currentBid.aborted : false))
+
 const previewMessage = computed(
     () => previewMessageMap[state.value as keyof typeof previewMessageMap] || ''
 )
@@ -128,7 +163,6 @@ const handleBidAbort = () => {
 }
 
 const restartTimer = () => {
-    console.log('RESTART')
     if (timerInterval.value !== null) {
         clearInterval(timerInterval.value)
     }
@@ -203,5 +237,10 @@ const collapsedMobile = ref(false)
     align-items: center;
     justify-content: center;
     background-color: var(--background-color-blue);
+}
+
+.success .content,
+.success .drag-button {
+    background-color: var(--background-color-green);
 }
 </style>

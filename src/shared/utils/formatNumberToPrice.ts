@@ -3,9 +3,9 @@ export function formatNumberToPrice(num: number) {
         style: 'decimal',
         minimumFractionDigits: 2,
         maximumFractionDigits: 2
-    }).format(num);
+    }).format(num)
 
-    formatted = formatted.replace(/\./g, ' ');
+    formatted = formatted.replace(/\./g, ' ')
 
-    return formatted;
+    return formatted
 }

@@ -3,14 +3,15 @@
         <input
             class="input"
             :value="modelValue"
+            :disabled="disabled"
             @input="handleInput($event)"
             :class="{ 'empty-label': !label }"
             placeholder=" "
             type="text"
         />
-        <span>{{ label }}</span>
+        <span class="label">{{ label }}</span>
         <IconButton
-            v-if="!!modelValue"
+            v-if="!!modelValue && !disabled"
             class="clear-button"
             iconName="close"
             @click="onClearText"
@@ -19,14 +20,17 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, defineProps, defineEmits } from 'vue'
+import { defineProps, defineEmits } from 'vue'
 import IconButton from '../IconButton/IconButton.vue'
 
-const props = defineProps({
-    modelValue: String, // Accepts modelValue as prop
-    label: String,
-    error: Boolean
-})
+export type CustomInputProps = {
+    modelValue: string
+    label?: string
+    disabled?: boolean
+    error?: boolean
+}
+
+const props = defineProps<CustomInputProps>()
 
 const emits = defineEmits(['update:modelValue'])
 
@@ -84,8 +88,7 @@ const onClearText = () => {
     border-top-color: transparent;
 }
 
-/* Span */
-.label-block > .input + span {
+.label-block > .input + .label {
     @include font-label();
 
     position: absolute;
@@ -104,8 +107,8 @@ const onClearText = () => {
 }
 
 /* Corners */
-.label-block > .input + span::before,
-.label-block > .input + span::after {
+.label-block > .input + .label::before,
+.label-block > .input + .label::after {
     content: '';
     display: block;
     box-sizing: border-box;
@@ -118,18 +121,18 @@ const onClearText = () => {
     transition: border-color 0.2s;
 }
 
-.label-block.error > .input + span::before,
-.label-block.error > .input + span::after {
+.label-block.error > .input + .label::before,
+.label-block.error > .input + .label::after {
     border-color: var(--color-stroke-red);
 }
 
-.label-block > .input + span::before {
+.label-block > .input + .label::before {
     margin-right: var(--spacing-4);
     border-left: solid 1px transparent;
     border-radius: var(--radius-small) 0;
 }
 
-.label-block > .input + span::after {
+.label-block > .input + .label::after {
     flex-grow: 1;
     margin-left: var(--spacing-4);
     border-right: solid 1px transparent;
@@ -137,15 +140,15 @@ const onClearText = () => {
 }
 
 .label-block > .input.empty-label {
-    & + span::after {
+    & + .label::after {
         margin-left: 0;
     }
 
-    & + span::before {
+    & + .label::before {
         margin-right: 0;
     }
 }
-.label-block > .input:focus + span {
+.label-block > .input:focus + .label {
     color: var(--color-text-black);
 }
 
@@ -160,13 +163,13 @@ const onClearText = () => {
     border-top-color: transparent;
 }
 
-.label-block:hover > .input + span::before,
-.label-block:hover > .input + span::after {
+.label-block:hover > .input + .label::before,
+.label-block:hover > .input + .label::after {
     border-top-color: var(--color-stroke-grey);
 }
 
-.label-block.error:hover > .input + span::before,
-.label-block.error:hover > .input + span::after {
+.label-block.error:hover > .input + .label::before,
+.label-block.error:hover > .input + .label::after {
     border-top-color: var(--color-stroke-red);
 }
 
@@ -187,20 +190,20 @@ const onClearText = () => {
     border-top-color: var(--color-stroke-red);
 }
 
-.label-block > .input:not(:focus):placeholder-shown + span {
+.label-block > .input:not(:focus):placeholder-shown + .label {
     @include font-text-medium();
 
     font-size: var(--size-s);
     color: var(--color-text-gray);
-    line-height: 70px;
+    line-height: 70px !important;
 
     @include desktop() {
         font-size: var(--size-m);
     }
 }
 
-.label-block > .input:not(:focus):placeholder-shown + span::before,
-.label-block > .input:not(:focus):placeholder-shown + span::after {
+.label-block > .input:not(:focus):placeholder-shown + .label::before,
+.label-block > .input:not(:focus):placeholder-shown + .label::after {
     border-top-color: transparent;
 }
 
@@ -211,8 +214,8 @@ const onClearText = () => {
     outline: none;
 }
 
-.label-block > .input:focus + span::before,
-.label-block > .input:focus + span::after {
+.label-block > .input:focus + .label::before,
+.label-block > .input:focus + .label::after {
     border-top-color: var(--color-stroke-green) !important;
 }
 
@@ -224,31 +227,32 @@ const onClearText = () => {
     outline: none;
 }
 
-.label-block.error > .input:focus + span::before,
-.label-block.error > .input:focus + span::after {
+.label-block.error > .input:focus + .label::before,
+.label-block.error > .input:focus + .label::after {
     border-top-color: var(--color-stroke-red) !important;
 }
 //
 /* Disabled */
 .label-block > .input:disabled,
-.label-block > .input:disabled + span {
+.label-block > .input:disabled + .label {
     border-color: var(--color-stroke-grey) !important;
     border-top-color: transparent !important;
+    background-color: var(--background-color-grey);
     pointer-events: none;
 }
 
-.label-block > .input:disabled + span::before,
-.label-block > .input:disabled + span::after {
+.label-block > .input:disabled + .label::before,
+.label-block > .input:disabled + .label::after {
     border-top-color: var(--color-stroke-grey) !important;
 }
 
 .label-block > .input:disabled:placeholder-shown,
-.label-block > .input:disabled:placeholder-shown + span {
+.label-block > .input:disabled:placeholder-shown + .label {
     border-top-color: var(--color-stroke-grey) !important;
 }
 
-.label-block > .input:disabled:placeholder-shown + span::before,
-.label-block > .input:disabled:placeholder-shown + span::after {
+.label-block > .input:disabled:placeholder-shown + .label::before,
+.label-block > .input:disabled:placeholder-shown + .label::after {
     border-top-color: transparent !important;
 }
 
@@ -264,9 +268,9 @@ const onClearText = () => {
 @media not all and (min-resolution: 0.001dpcm) {
     @supports (-webkit-appearance: none) {
         .label-block > .input,
-        .label-block > .input + span,
-        .label-block > .input + span::before,
-        .label-block > .input + span::after {
+        .label-block > .input + .label,
+        .label-block > .input + .label::before,
+        .label-block > .input + .label::after {
             transition-duration: 0.1s;
         }
     }
