@@ -233,11 +233,14 @@ const onClearText = () => {
 }
 //
 /* Disabled */
+.label-block > .input:disabled {
+    background-color: var(--background-color-grey);
+}
+
 .label-block > .input:disabled,
 .label-block > .input:disabled + .label {
     border-color: var(--color-stroke-grey) !important;
     border-top-color: transparent !important;
-    background-color: var(--background-color-grey);
     pointer-events: none;
 }
 
