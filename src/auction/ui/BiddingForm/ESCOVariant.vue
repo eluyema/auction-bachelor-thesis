@@ -88,6 +88,27 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="full-price-block">
+                            <span
+                                v-if="
+                                    currentBid ? currentBid.fullPrice && currentBid.aborted : true
+                                "
+                                :class="{ 'hide-mobile': !!collapsedMobile }"
+                                class="calculated-full-price-title hide-desktop"
+                            >
+                                Ваша можлива заявка:<span class="calculated-full-price">{{
+                                    formattedCalculatedFullPrice
+                                }}</span>
+                            </span>
+                            <span
+                                v-if="currentBid && currentBid.fullPrice && !currentBid.aborted"
+                                class="calculated-full-price-title hide-desktop"
+                            >
+                                Ваша заявка:<span class="calculated-full-price">{{
+                                    currentBid.fullPrice
+                                }}</span>
+                            </span>
+                        </div>
                         <div class="buttons-block">
                             <CustomButton type="submit" class="button" colorVariant="success">
                                 {{ showAbortButton ? 'Оновити заявку' : 'Зробити заявку' }}
@@ -109,25 +130,6 @@
                     </form>
                     <BiddingStatus :currentBid="currentBid" class="hide-mobile" />
                 </div>
-            </div>
-            <div class="content-footer">
-                <span
-                    v-if="currentBid ? currentBid.fullPrice && currentBid.aborted : true"
-                    :class="{ 'hide-mobile': !!collapsedMobile }"
-                    class="calculated-full-price-title hide-desktop"
-                >
-                    Ваша можлива заявка:<span class="calculated-full-price">{{
-                        formattedCalculatedFullPrice
-                    }}</span>
-                </span>
-                <span
-                    v-if="currentBid && currentBid.fullPrice && !currentBid.aborted"
-                    class="calculated-full-price-title hide-desktop"
-                >
-                    Ваша заявка:<span class="calculated-full-price">{{
-                        currentBid.fullPrice
-                    }}</span>
-                </span>
             </div>
         </div>
     </div>
@@ -360,7 +362,7 @@ watch(
     }
 }
 
-.content-footer {
+.full-price-block {
     margin-top: var(--spacing-16);
 }
 
@@ -443,12 +445,11 @@ watch(
 .buttons-block {
     display: flex;
     flex-direction: column;
-    margin-top: var(--spacing-28);
+    margin-top: var(--spacing-12);
     width: 100%;
-    padding-left: var(--spacing-4);
-    padding-right: var(--spacing-4);
 
     @include desktop() {
+        margin-top: var(--spacing-28);
         padding-left: 0;
         padding-right: 0;
         height: 54px;
