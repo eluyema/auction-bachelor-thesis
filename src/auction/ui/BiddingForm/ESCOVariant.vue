@@ -6,12 +6,14 @@
                 <RestrictionText
                     class="total-price-restriction"
                     title="Заявка має бути:"
+                    :class="{ 'hide-mobile': !!collapsedMobile }"
                     :minValue="formattedFullPriceMin"
                     mobileInline
                 />
                 <span
                     v-if="currentBid ? currentBid.fullPrice && currentBid.aborted : true"
                     class="calculated-full-price-title hide-mobile"
+                    :class="{ 'hide-mobile': !!collapsedMobile }"
                 >
                     Ваша можлива заявка:<span class="calculated-full-price">{{
                         formattedCalculatedFullPrice
@@ -20,6 +22,7 @@
                 <span
                     v-if="currentBid && currentBid.fullPrice && !currentBid.aborted"
                     class="calculated-full-price-title hide-mobile"
+                    :class="{ 'hide-mobile': !!collapsedMobile }"
                 >
                     Ваша заявка:<span class="calculated-full-price">{{
                         currentBid.fullPrice
@@ -88,7 +91,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="full-price-block">
+                        <div class="full-price-block" :class="{ 'hide-mobile': !!collapsedMobile }">
                             <span
                                 v-if="
                                     currentBid ? currentBid.fullPrice && currentBid.aborted : true
@@ -363,6 +366,7 @@ watch(
 }
 
 .full-price-block {
+    width: 100%;
     margin-top: var(--spacing-16);
 }
 
