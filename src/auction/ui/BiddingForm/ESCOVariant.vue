@@ -64,7 +64,7 @@
                                     <CustomInput
                                         class="input"
                                         label="від 0 до 364"
-                                        :isError="isError"
+                                        :error="isError"
                                         v-model="formInput.days"
                                     />
                                     <span class="default-text"
@@ -112,12 +112,20 @@
             </div>
             <div class="content-footer">
                 <span
-                    v-if="formattedCalculatedFullPrice"
+                    v-if="currentBid ? currentBid.fullPrice && currentBid.aborted : true"
                     :class="{ 'hide-mobile': !!collapsedMobile }"
                     class="calculated-full-price-title hide-desktop"
                 >
                     Ваша можлива заявка:<span class="calculated-full-price">{{
                         formattedCalculatedFullPrice
+                    }}</span>
+                </span>
+                <span
+                    v-if="currentBid && currentBid.fullPrice && !currentBid.aborted"
+                    class="calculated-full-price-title hide-desktop"
+                >
+                    Ваша заявка:<span class="calculated-full-price">{{
+                        currentBid.fullPrice
                     }}</span>
                 </span>
             </div>

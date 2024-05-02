@@ -70,7 +70,7 @@ const onClearText = () => {
     border-color: var(--color-stroke-grey);
     border-top-color: transparent;
     border-radius: var(--radius-small);
-    padding: var(--spacing-16) var(--spacing-12) var(--spacing-16);
+    padding: var(--spacing-8) var(--spacing-12);
     width: 100%;
     height: inherit;
     color: var(--color-text-black);
@@ -79,6 +79,8 @@ const onClearText = () => {
     transition: border 0.2s;
 
     @include desktop() {
+        padding-top: var(--spacing-16);
+        padding-bottom: var(--spacing-16);
         font-size: var(--size-m);
     }
 }
@@ -195,9 +197,11 @@ const onClearText = () => {
 
     font-size: var(--size-s);
     color: var(--color-text-gray);
-    line-height: 70px !important;
-
+    @include mobile() {
+        line-height: 56px !important;
+    }
     @include desktop() {
+        line-height: 70px !important;
         font-size: var(--size-m);
     }
 }
