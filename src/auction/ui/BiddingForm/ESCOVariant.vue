@@ -121,7 +121,7 @@
                                 type="button"
                                 class="button"
                                 :class="{
-                                    hidden: !showAbortButton || !!collapsedMobile
+                                    hidden: !showAbortButton || !!collapsedMobile,
                                 }"
                                 @click="onBidAbort"
                                 colorVariant="error"
@@ -139,70 +139,70 @@
 </template>
 
 <script setup lang="ts">
-import { AuctionBid, AuctionType } from 'src/entities/auction'
-import CustomButton from 'src/shared/ui/CustomButton/CustomButton.vue'
-import CustomInput from 'src/shared/ui/CustomInput/CustomInput.vue'
-import DesktopOnly from 'src/shared/ui/DesktopOnly/DesktopOnly.vue'
-import CircleTimer from 'src/shared/ui/Timers/CircleTimer/CircleTimer.vue'
-import { formatNumberToPrice } from 'src/shared/utils/formatNumberToPrice'
-import { getSecondsBetweenDates } from 'src/shared/utils/getSecondsBetweenDates'
-import { getUuid } from 'src/shared/utils/getUuid'
-import { computed, reactive, ref, watch } from 'vue'
-import { number, object } from 'yup'
-import RestrictionText from './components/RestrictionText.vue'
-import MobileOnly from 'src/shared/ui/MobileOnly/MobileOnly.vue'
-import BiddingStatus from './components/BiddingStatus.vue'
+import { AuctionBid, AuctionType } from 'src/entities/auction';
+import CustomButton from 'src/shared/ui/CustomButton/CustomButton.vue';
+import CustomInput from 'src/shared/ui/CustomInput/CustomInput.vue';
+import DesktopOnly from 'src/shared/ui/DesktopOnly/DesktopOnly.vue';
+import CircleTimer from 'src/shared/ui/Timers/CircleTimer/CircleTimer.vue';
+import { formatNumberToPrice } from 'src/shared/utils/formatNumberToPrice';
+import { getSecondsBetweenDates } from 'src/shared/utils/getSecondsBetweenDates';
+import { getUuid } from 'src/shared/utils/getUuid';
+import { computed, reactive, ref, watch } from 'vue';
+import { number, object } from 'yup';
+import RestrictionText from './components/RestrictionText.vue';
+import MobileOnly from 'src/shared/ui/MobileOnly/MobileOnly.vue';
+import BiddingStatus from './components/BiddingStatus.vue';
 
 export type ESCOVariantProps = {
-    endAt: Date
-    basePrice: number
-    fullPriceMin: number
-    collapsedMobile: boolean
-    defaultYears: number
-    defaultDays: number
-    defaultPercent: number
-    currentBid?: AuctionBid | null
-}
+    endAt: Date;
+    basePrice: number;
+    fullPriceMin: number;
+    collapsedMobile: boolean;
+    defaultYears: number;
+    defaultDays: number;
+    defaultPercent: number;
+    currentBid?: AuctionBid | null;
+};
 
 const emit = defineEmits<{
-    (event: 'bidSent', bidding: AuctionBid): void
-    (event: 'bidAbort'): void
-}>()
+    (event: 'bidSent', bidding: AuctionBid): void;
+    (event: 'bidAbort'): void;
+}>();
 
 const { endAt, basePrice, currentBid, fullPriceMin, defaultYears, defaultDays, defaultPercent } =
-    defineProps<ESCOVariantProps>()
+    defineProps<ESCOVariantProps>();
 
-const showAbortButton = computed(() => !!currentBid && !currentBid.aborted)
+const showAbortButton = computed(() => !!currentBid && !currentBid.aborted);
 
-const formattedFullPriceMin = computed(() => formatNumberToPrice(fullPriceMin))
+const formattedFullPriceMin = computed(() => formatNumberToPrice(fullPriceMin));
 
 const formattedCalculatedFullPrice = computed(() => {
-    const { years, days, percent } = getValuesOrDefault()
+    const { years, days, percent } = getValuesOrDefault();
 
-    const value = calculateFullPrice(basePrice, years, days, percent)
+    const value = calculateFullPrice(basePrice, years, days, percent);
 
-    return formatNumberToPrice(value)
-})
+    return formatNumberToPrice(value);
+});
 
-const diffInSeconds = computed(() => getSecondsBetweenDates(endAt, new Date()))
+const diffInSeconds = computed(() => getSecondsBetweenDates(endAt, new Date()));
 
 const getValuesOrDefault = () => {
-    const currentYears = isNaN(+formInput.years) ? defaultYears : +formInput.years
-    const currentDays = isNaN(+formInput.days) ? defaultDays : +formInput.days
-    const currentPercent = isNaN(+formInput.percent) ? defaultPercent : +formInput.percent
+    const currentYears = isNaN(+formInput.years) ? defaultYears : +formInput.years;
+    const currentDays = isNaN(+formInput.days) ? defaultDays : +formInput.days;
+    const currentPercent = isNaN(+formInput.percent) ? defaultPercent : +formInput.percent;
 
     return {
         years: currentYears,
         days: currentDays,
-        percent: currentPercent
-    }
-}
+        percent: currentPercent,
+    };
+};
 
-const isError = ref(false)
+const isError = ref(false);
 
 const onBidAbort = () => {
-    emit('bidAbort')
-}
+    emit('bidAbort');
+};
 
 const getFormSchema = () => {
     return object({
@@ -220,30 +220,30 @@ const getFormSchema = () => {
             .min(0, `Percent must be at least ${fullPriceMin}`)
             .max(100, `Percent must be at least ${fullPriceMin}`)
             .integer()
-            .required('Percent is required')
-    })
-}
+            .required('Percent is required'),
+    });
+};
 
-const formSchema = ref(getFormSchema())
+const formSchema = ref(getFormSchema());
 
 const formInput = reactive({
     years: '',
     days: '',
-    percent: ''
-})
+    percent: '',
+});
 
 function calculateFullPrice(
     contractYears: number,
     contractDays: number,
     annualSavingsPercentage: number,
-    basePrice: number
+    basePrice: number,
 ) {
     // TODO: add real logic here
     return (
         basePrice +
         (contractYears * 1000 + contractDays * 100) *
             (1 + 100 / (annualSavingsPercentage + 0.000001))
-    )
+    );
 }
 
 const sendBid = (fullPrice: number) => {
@@ -254,45 +254,45 @@ const sendBid = (fullPrice: number) => {
         years: +formInput.years,
         days: +formInput.days,
         percent: +formInput.percent,
-        aborted: false
-    }
+        aborted: false,
+    };
 
-    console.log(bid)
+    console.log(bid);
 
-    emit('bidSent', bid)
-}
+    emit('bidSent', bid);
+};
 
 const validateAndSendBid = async () => {
     try {
-        await formSchema.value.validate(formInput)
+        await formSchema.value.validate(formInput);
 
         const fullPrice = calculateFullPrice(
             basePrice,
             +formInput.years,
             +formInput.days,
-            +formInput.percent
-        )
+            +formInput.percent,
+        );
 
         if (fullPrice < fullPriceMin) {
-            isError.value = true
-            return
+            isError.value = true;
+            return;
         }
 
-        isError.value = false
+        isError.value = false;
 
-        sendBid(fullPrice)
+        sendBid(fullPrice);
     } catch (error) {
-        isError.value = true
-        console.error('Validation error:', error)
+        isError.value = true;
+        console.error('Validation error:', error);
     }
-}
+};
 
 watch(
     () => fullPriceMin,
     () => {
-        formSchema.value = getFormSchema()
-    }
-)
+        formSchema.value = getFormSchema();
+    },
+);
 </script>
 <style scoped lang="scss">
 @import 'src/app/assets/styles/theme/index.scss';

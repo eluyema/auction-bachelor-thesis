@@ -9,13 +9,13 @@
 
 <script setup lang="ts">
 export type InputNameProps = {
-    title: string
-    minValue?: string
-    mobileInline?: boolean
-    isError?: boolean
-}
+    title: string;
+    minValue?: string;
+    mobileInline?: boolean;
+    isError?: boolean;
+};
 
-defineProps<InputNameProps>()
+defineProps<InputNameProps>();
 </script>
 
 <style scoped lang="scss">

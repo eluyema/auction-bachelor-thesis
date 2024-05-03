@@ -27,89 +27,89 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted, onUnmounted, watch } from 'vue'
+import { ref, computed, onMounted, onUnmounted, watch } from 'vue';
 
 export type TextTimerProps = {
-    time?: number
-}
+    time?: number;
+};
 
-const emit = defineEmits(['timerEnded'])
+const emit = defineEmits(['timerEnded']);
 
-const props = withDefaults(defineProps<TextTimerProps>(), { time: 60 })
+const props = withDefaults(defineProps<TextTimerProps>(), { time: 60 });
 
-const FULL_DASH_ARRAY = 283
+const FULL_DASH_ARRAY = 283;
 
-const timePassed = ref(0)
+const timePassed = ref(0);
 
-let timerInterval = ref<null | ReturnType<typeof setTimeout>>(null)
+let timerInterval = ref<null | ReturnType<typeof setTimeout>>(null);
 
 const timeLeft = computed(() => {
-    return props.time - timePassed.value
-})
+    return props.time - timePassed.value;
+});
 
 const timeFraction = computed(() => {
-    const rawTimeFraction = timeLeft.value / props.time
-    return rawTimeFraction - (1 / props.time) * (1 - rawTimeFraction)
-})
+    const rawTimeFraction = timeLeft.value / props.time;
+    return rawTimeFraction - (1 / props.time) * (1 - rawTimeFraction);
+});
 
 const circleDasharray = computed(() => {
-    const rawFractionValue = timeFraction.value * FULL_DASH_ARRAY
+    const rawFractionValue = timeFraction.value * FULL_DASH_ARRAY;
 
-    const fractionValue = rawFractionValue > 0 ? rawFractionValue : 0
+    const fractionValue = rawFractionValue > 0 ? rawFractionValue : 0;
 
-    return `${fractionValue.toFixed(0)} 283`
-})
+    return `${fractionValue.toFixed(0)} 283`;
+});
 
-const progressHide = computed(() => timeFraction.value * FULL_DASH_ARRAY < 0)
+const progressHide = computed(() => timeFraction.value * FULL_DASH_ARRAY < 0);
 
 const formattedTimeLeft = computed(() => {
-    const timeLeftValue = timeLeft.value
-    const minutes = Math.floor(timeLeftValue / 60)
-    let seconds: number | string = timeLeftValue % 60
+    const timeLeftValue = timeLeft.value;
+    const minutes = Math.floor(timeLeftValue / 60);
+    let seconds: number | string = timeLeftValue % 60;
 
     if (seconds < 10) {
-        seconds = `0${seconds}`
+        seconds = `0${seconds}`;
     }
 
-    return `${minutes}:${seconds}`
-})
+    return `${minutes}:${seconds}`;
+});
 
 onMounted(() => {
-    startTimer()
-})
+    startTimer();
+});
 
 onUnmounted(() => {
     if (timerInterval.value === null) {
-        return
+        return;
     }
-    clearInterval(timerInterval.value)
-})
+    clearInterval(timerInterval.value);
+});
 
 const onTimesUp = () => {
     if (timerInterval.value === null) {
-        return
+        return;
     }
-    emit('timerEnded')
-    clearInterval(timerInterval.value)
-}
+    emit('timerEnded');
+    clearInterval(timerInterval.value);
+};
 
 const startTimer = () => {
     timerInterval.value = setInterval(() => {
-        timePassed.value += 1
-        if (timeLeft.value <= 0) onTimesUp()
-    }, 1000)
-}
+        timePassed.value += 1;
+        if (timeLeft.value <= 0) onTimesUp();
+    }, 1000);
+};
 
 watch(
     () => props.time,
     () => {
         if (timerInterval.value !== null) {
-            clearInterval(timerInterval.value)
+            clearInterval(timerInterval.value);
         }
-        timePassed.value = 0
-        startTimer()
-    }
-)
+        timePassed.value = 0;
+        startTimer();
+    },
+);
 </script>
 
 <style scoped lang="scss">

@@ -24,23 +24,23 @@
 </template>
 
 <script setup lang="ts">
-import CustomLabel, { CustomLabelProps } from '../CustomLabel/CustomLabel.vue'
-import CustomIcon, { CustomIconProps } from '../CustomIcon/CustomIcon.vue'
+import CustomLabel, { CustomLabelProps } from '../CustomLabel/CustomLabel.vue';
+import CustomIcon, { CustomIconProps } from '../CustomIcon/CustomIcon.vue';
 
 export type TableRowProps = {
-    id: string
-    disabled?: boolean
+    id: string;
+    disabled?: boolean;
     data: {
-        id: string
-        value?: string
-        iconProps?: CustomIconProps
-        labelProps?: CustomLabelProps | null
-    }[]
-    bordered?: boolean
-    activeBackground?: boolean
-}
+        id: string;
+        value?: string;
+        iconProps?: CustomIconProps;
+        labelProps?: CustomLabelProps | null;
+    }[];
+    bordered?: boolean;
+    activeBackground?: boolean;
+};
 
-const { data, bordered, activeBackground, disabled } = defineProps<TableRowProps>()
+const { data, bordered, activeBackground, disabled } = defineProps<TableRowProps>();
 </script>
 
 <style scoped lang="scss">

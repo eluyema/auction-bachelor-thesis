@@ -80,53 +80,53 @@
 </template>
 
 <script setup lang="ts">
-import { AuctionBid, AuctionType } from 'src/entities/auction'
-import CustomButton from 'src/shared/ui/CustomButton/CustomButton.vue'
-import CustomInput from 'src/shared/ui/CustomInput/CustomInput.vue'
-import DesktopOnly from 'src/shared/ui/DesktopOnly/DesktopOnly.vue'
-import CircleTimer from 'src/shared/ui/Timers/CircleTimer/CircleTimer.vue'
-import { formatNumberToPrice } from 'src/shared/utils/formatNumberToPrice'
-import { getSecondsBetweenDates } from 'src/shared/utils/getSecondsBetweenDates'
-import { getUuid } from 'src/shared/utils/getUuid'
-import { computed, reactive, ref, watch } from 'vue'
-import { number, object } from 'yup'
-import RestrictionText from './components/RestrictionText.vue'
-import MobileOnly from 'src/shared/ui/MobileOnly/MobileOnly.vue'
-import BiddingStatus from './components/BiddingStatus.vue'
+import { AuctionBid, AuctionType } from 'src/entities/auction';
+import CustomButton from 'src/shared/ui/CustomButton/CustomButton.vue';
+import CustomInput from 'src/shared/ui/CustomInput/CustomInput.vue';
+import DesktopOnly from 'src/shared/ui/DesktopOnly/DesktopOnly.vue';
+import CircleTimer from 'src/shared/ui/Timers/CircleTimer/CircleTimer.vue';
+import { formatNumberToPrice } from 'src/shared/utils/formatNumberToPrice';
+import { getSecondsBetweenDates } from 'src/shared/utils/getSecondsBetweenDates';
+import { getUuid } from 'src/shared/utils/getUuid';
+import { computed, reactive, ref, watch } from 'vue';
+import { number, object } from 'yup';
+import RestrictionText from './components/RestrictionText.vue';
+import MobileOnly from 'src/shared/ui/MobileOnly/MobileOnly.vue';
+import BiddingStatus from './components/BiddingStatus.vue';
 
 export type NonPriceVariantProps = {
-    endAt: Date
-    fullPriceMin: number
-    coefficient: number
-    currentBid?: AuctionBid | null
-    collapsedMobile: boolean
-}
+    endAt: Date;
+    fullPriceMin: number;
+    coefficient: number;
+    currentBid?: AuctionBid | null;
+    collapsedMobile: boolean;
+};
 
 const emit = defineEmits<{
-    (event: 'bidSent', bidding: AuctionBid): void
-    (event: 'bidAbort'): void
-}>()
+    (event: 'bidSent', bidding: AuctionBid): void;
+    (event: 'bidAbort'): void;
+}>();
 
-const { endAt, fullPriceMin, currentBid, coefficient } = defineProps<NonPriceVariantProps>()
+const { endAt, fullPriceMin, currentBid, coefficient } = defineProps<NonPriceVariantProps>();
 
-const showAbortButton = computed(() => !!currentBid && !currentBid.aborted)
+const showAbortButton = computed(() => !!currentBid && !currentBid.aborted);
 
-const coefficientFormatted = computed(() => coefficient.toFixed(2))
+const coefficientFormatted = computed(() => coefficient.toFixed(2));
 
-const formattedFullPriceMin = computed(() => formatNumberToPrice(fullPriceMin))
+const formattedFullPriceMin = computed(() => formatNumberToPrice(fullPriceMin));
 
-const diffInSeconds = computed(() => getSecondsBetweenDates(endAt, new Date()))
+const diffInSeconds = computed(() => getSecondsBetweenDates(endAt, new Date()));
 
-const minEnteredPrice = computed(() => formatNumberToPrice(fullPriceMin / coefficient))
+const minEnteredPrice = computed(() => formatNumberToPrice(fullPriceMin / coefficient));
 
-const isError = ref(false)
+const isError = ref(false);
 
 const onBidAbort = () => {
-    emit('bidAbort')
-}
+    emit('bidAbort');
+};
 
 const getFormSchema = () => {
-    const calculatedMinEnteredPrice = fullPriceMin / coefficient
+    const calculatedMinEnteredPrice = fullPriceMin / coefficient;
 
     return object({
         fullPrice: number()
@@ -135,18 +135,18 @@ const getFormSchema = () => {
         enteredPrice: number()
             .min(
                 calculatedMinEnteredPrice,
-                `Entered price must be at least ${calculatedMinEnteredPrice}`
+                `Entered price must be at least ${calculatedMinEnteredPrice}`,
             )
-            .required('Entered price is required')
-    })
-}
+            .required('Entered price is required'),
+    });
+};
 
-const formSchema = ref(getFormSchema())
+const formSchema = ref(getFormSchema());
 
 const formInput = reactive({
     fullPrice: '',
-    enteredPrice: ''
-})
+    enteredPrice: '',
+});
 
 const sendBid = () => {
     const bid: AuctionBid = {
@@ -155,77 +155,77 @@ const sendBid = () => {
         fullPrice: formatNumberToPrice(+formInput.fullPrice),
         coefficient: coefficient,
         enteredPrice: formatNumberToPrice(+formInput.enteredPrice),
-        aborted: false
-    }
+        aborted: false,
+    };
 
-    console.log(bid)
+    console.log(bid);
 
-    emit('bidSent', bid)
-}
+    emit('bidSent', bid);
+};
 
 const validateAndSendBid = async () => {
     try {
-        await formSchema.value.validate(formInput)
-        isError.value = false
+        await formSchema.value.validate(formInput);
+        isError.value = false;
 
-        sendBid()
+        sendBid();
     } catch (error) {
-        isError.value = true
-        console.error('Validation error:', error)
+        isError.value = true;
+        console.error('Validation error:', error);
     }
-}
+};
 
 watch(
     () => formInput.enteredPrice,
     () => {
-        const enteredPriceNum = +formInput.enteredPrice
+        const enteredPriceNum = +formInput.enteredPrice;
 
         if (isNaN(enteredPriceNum)) {
-            return
+            return;
         }
 
-        const updatedValue = (enteredPriceNum * coefficient).toFixed(2)
+        const updatedValue = (enteredPriceNum * coefficient).toFixed(2);
 
         if (updatedValue === (+formInput.fullPrice).toFixed(2)) {
-            return
+            return;
         }
 
-        formInput.fullPrice = updatedValue
-    }
-)
+        formInput.fullPrice = updatedValue;
+    },
+);
 
 watch(
     () => formInput.fullPrice,
     () => {
-        const fullPriceNum = +formInput.fullPrice
+        const fullPriceNum = +formInput.fullPrice;
 
         if (isNaN(fullPriceMin)) {
-            return
+            return;
         }
 
-        const updatedValue = (fullPriceNum / coefficient).toFixed(2)
+        const updatedValue = (fullPriceNum / coefficient).toFixed(2);
 
         if (updatedValue === (+formInput.enteredPrice).toFixed(2)) {
-            return
+            return;
         }
 
-        formInput.enteredPrice = updatedValue
-    }
-)
+        formInput.enteredPrice = updatedValue;
+    },
+);
 
 watch(
     () => fullPriceMin,
     () => {
-        formSchema.value = getFormSchema()
-    }
-)
+        formSchema.value = getFormSchema();
+    },
+);
 
 watch(
     () => coefficient,
     () => {
-        formSchema.value = getFormSchema()
-    }
-)
+        formSchema.value = getFormSchema();
+    },
+);
 </script>
 <style scoped lang="scss">
 @import 'src/app/assets/styles/theme/index.scss';

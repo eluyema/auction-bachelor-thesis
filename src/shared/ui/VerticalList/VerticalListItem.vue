@@ -51,24 +51,24 @@
     </li>
 </template>
 <script setup lang="ts">
-import CustomIcon, { CustomIconProps } from 'src/shared/ui/CustomIcon/CustomIcon.vue'
-import CustomLabel, { CustomLabelProps } from 'src/shared/ui/CustomLabel/CustomLabel.vue'
-import MobileOnly from '../MobileOnly/MobileOnly.vue'
-import DesktopOnly from '../DesktopOnly/DesktopOnly.vue'
+import CustomIcon, { CustomIconProps } from 'src/shared/ui/CustomIcon/CustomIcon.vue';
+import CustomLabel, { CustomLabelProps } from 'src/shared/ui/CustomLabel/CustomLabel.vue';
+import MobileOnly from '../MobileOnly/MobileOnly.vue';
+import DesktopOnly from '../DesktopOnly/DesktopOnly.vue';
 
 export type VerticalListItemProps = {
-    id: string
-    disabled?: boolean
-    iconProps: CustomIconProps
-    name: string
-    tableData: { key: string; value: string }[]
-    labelProps?: CustomLabelProps | null
-    labelValue?: string | null
-    disabledText?: boolean
-    disabledIcons?: boolean
-    activeBackground?: boolean
-    bordered?: boolean
-}
+    id: string;
+    disabled?: boolean;
+    iconProps: CustomIconProps;
+    name: string;
+    tableData: { key: string; value: string }[];
+    labelProps?: CustomLabelProps | null;
+    labelValue?: string | null;
+    disabledText?: boolean;
+    disabledIcons?: boolean;
+    activeBackground?: boolean;
+    bordered?: boolean;
+};
 
 const {
     iconProps,
@@ -79,8 +79,8 @@ const {
     disabledIcons,
     disabledText,
     activeBackground,
-    bordered
-} = defineProps<VerticalListItemProps>()
+    bordered,
+} = defineProps<VerticalListItemProps>();
 </script>
 
 <style scoped lang="scss">

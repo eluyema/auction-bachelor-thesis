@@ -20,38 +20,38 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue'
-import Icon from '../CustomIcon/CustomIcon.vue'
+import { ref, computed } from 'vue';
+import Icon from '../CustomIcon/CustomIcon.vue';
 
 export type CustomAccordionProps = {
-    title: string
-}
+    title: string;
+};
 
-defineProps<CustomAccordionProps>()
+defineProps<CustomAccordionProps>();
 
-const accordionContent = ref<HTMLDivElement | null>(null)
+const accordionContent = ref<HTMLDivElement | null>(null);
 
-const isOpen = ref(false)
+const isOpen = ref(false);
 
 function toggle(): void {
-    isOpen.value = !isOpen.value
+    isOpen.value = !isOpen.value;
 }
 
 const contentStyles = computed(() => {
-    const element = accordionContent.value
+    const element = accordionContent.value;
 
     if (!isOpen.value || !element) {
-        return { maxHeight: '0px' }
+        return { maxHeight: '0px' };
     }
 
-    return { maxHeight: element.scrollHeight + 'px' }
-})
+    return { maxHeight: element.scrollHeight + 'px' };
+});
 
 const iconClass = computed(() => {
     return {
-        'rotate-icon': isOpen.value
-    }
-})
+        'rotate-icon': isOpen.value,
+    };
+});
 </script>
 <style scoped lang="scss">
 @import 'src/app/assets/styles/theme/index.scss';

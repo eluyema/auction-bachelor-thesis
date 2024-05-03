@@ -1,33 +1,33 @@
-import { Meta, StoryObj } from '@storybook/vue3'
-import AppHeader from './AppHeader.vue'
+import { Meta, StoryObj } from '@storybook/vue3';
+import AppHeader from './AppHeader.vue';
 
 const meta: Meta<typeof AppHeader> = {
     title: 'Organisms/AppHeader',
     component: AppHeader,
     parameters: {
-        layout: 'fullscreen'
+        layout: 'fullscreen',
     },
     argTypes: {
         showProgressBar: {
             control: 'boolean',
-            description: 'Whether to show the progress bar'
+            description: 'Whether to show the progress bar',
         },
         progressBarProps: {
             control: 'object',
-            description: 'Properties for the progress bar, if shown'
-        }
-    }
-}
+            description: 'Properties for the progress bar, if shown',
+        },
+    },
+};
 
-export default meta
+export default meta;
 
-type Story = StoryObj<typeof meta>
+type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
     args: {
-        showProgressBar: false
-    }
-}
+        showProgressBar: false,
+    },
+};
 
 export const WithProgressBarWaiting: Story = {
     args: {
@@ -35,10 +35,10 @@ export const WithProgressBarWaiting: Story = {
         progressBarProps: {
             percent: 70,
             variant: 'warning',
-            message: 'Очікування'
-        }
-    }
-}
+            message: 'Очікування',
+        },
+    },
+};
 
 export const WithProgressFirstRound: Story = {
     args: {
@@ -46,10 +46,10 @@ export const WithProgressFirstRound: Story = {
         progressBarProps: {
             percent: 70,
             variant: 'primary',
-            message: 'Раунд 1'
-        }
-    }
-}
+            message: 'Раунд 1',
+        },
+    },
+};
 
 export const WithProgressBarComplete: Story = {
     args: {
@@ -57,7 +57,7 @@ export const WithProgressBarComplete: Story = {
         progressBarProps: {
             percent: 100,
             variant: 'success',
-            message: 'Завершено'
-        }
-    }
-}
+            message: 'Завершено',
+        },
+    },
+};

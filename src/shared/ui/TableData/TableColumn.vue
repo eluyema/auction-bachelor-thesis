@@ -5,9 +5,9 @@
 </template>
 
 <script setup lang="ts">
-export type TableColumnProps = { id: string; name: string; width?: 'min' | 'default' | 'max' }
+export type TableColumnProps = { id: string; name: string; width?: 'min' | 'default' | 'max' };
 
-const { name, width } = defineProps<TableColumnProps>()
+const { name, width } = defineProps<TableColumnProps>();
 </script>
 
 <style scoped lang="scss">

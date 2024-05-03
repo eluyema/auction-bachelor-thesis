@@ -5,98 +5,98 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch, onMounted, onUnmounted } from 'vue'
+import { ref, computed, watch, onMounted, onUnmounted } from 'vue';
 
 export type TextTimerProps = {
-    time?: number
-}
+    time?: number;
+};
 
-const emit = defineEmits(['timerEnded'])
+const emit = defineEmits(['timerEnded']);
 
 const props = withDefaults(defineProps<TextTimerProps>(), {
-    time: 86400
-})
+    time: 86400,
+});
 
-const timePassed = ref(0)
-let timerInterval = ref<null | ReturnType<typeof setTimeout>>(null)
+const timePassed = ref(0);
+let timerInterval = ref<null | ReturnType<typeof setTimeout>>(null);
 
 const timeLeftInSeconds = computed(() => {
-    return props.time - timePassed.value
-})
+    return props.time - timePassed.value;
+});
 
 const formattedTimeLeft = computed(() => {
-    const timeLeftValue = timeLeftInSeconds.value
-    const days = Math.floor(timeLeftValue / (60 * 60 * 24))
-    const hours = Math.floor((timeLeftValue % (60 * 60 * 24)) / (60 * 60))
-    const minutes = Math.floor((timeLeftValue % (60 * 60)) / 60)
-    const seconds = timeLeftValue % 60
+    const timeLeftValue = timeLeftInSeconds.value;
+    const days = Math.floor(timeLeftValue / (60 * 60 * 24));
+    const hours = Math.floor((timeLeftValue % (60 * 60 * 24)) / (60 * 60));
+    const minutes = Math.floor((timeLeftValue % (60 * 60)) / 60);
+    const seconds = timeLeftValue % 60;
 
-    let formattedString = ''
+    let formattedString = '';
 
     if (days > 0) {
-        formattedString += `${days}дн `
+        formattedString += `${days}дн `;
     }
     if (hours > 0 || days > 0) {
-        formattedString += `${hours}год `
+        formattedString += `${hours}год `;
 
         if (formattedString.split(' ').length > 2) {
-            return formattedString.trim()
+            return formattedString.trim();
         }
     }
     if (minutes > 0 || hours > 0) {
-        formattedString += `${minutes}хв `
+        formattedString += `${minutes}хв `;
 
         if (formattedString.split(' ').length > 2) {
-            return formattedString.trim()
+            return formattedString.trim();
         }
     }
     if (seconds > 0 || minutes > 0 || formattedString.length === 0) {
-        formattedString += `${seconds}сек`
+        formattedString += `${seconds}сек`;
 
         if (formattedString.split(' ').length > 2) {
-            return formattedString.trim()
+            return formattedString.trim();
         }
     }
 
-    return formattedString.trim()
-})
+    return formattedString.trim();
+});
 
 onMounted(() => {
-    startTimer()
-})
+    startTimer();
+});
 
 watch(
     () => props.time,
     () => {
         if (timerInterval.value !== null) {
-            clearInterval(timerInterval.value)
+            clearInterval(timerInterval.value);
         }
-        timePassed.value = 0
-        startTimer()
-    }
-)
+        timePassed.value = 0;
+        startTimer();
+    },
+);
 
 onUnmounted(() => {
     if (timerInterval.value === null) {
-        return
+        return;
     }
-    clearInterval(timerInterval.value)
-})
+    clearInterval(timerInterval.value);
+});
 
 const onTimesUp = () => {
     if (timerInterval.value === null) {
-        return
+        return;
     }
-    emit('timerEnded')
-    clearInterval(timerInterval.value)
-}
+    emit('timerEnded');
+    clearInterval(timerInterval.value);
+};
 
 const startTimer = () => {
     timerInterval.value = setInterval(() => {
-        timePassed.value += 1
-        if (timeLeftInSeconds.value <= 0) onTimesUp()
-    }, 1000)
-}
+        timePassed.value += 1;
+        if (timeLeftInSeconds.value <= 0) onTimesUp();
+    }, 1000);
+};
 </script>
 
 <style scoped lang="scss">

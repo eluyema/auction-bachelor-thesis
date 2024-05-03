@@ -10,35 +10,35 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
-import { ColorVariants } from 'src/entities/theme'
+import { computed } from 'vue';
+import { ColorVariants } from 'src/entities/theme';
 
 export type ProgressBarProps = {
-    percent?: number
-    variant: ColorVariants
-    message?: string
-}
+    percent?: number;
+    variant: ColorVariants;
+    message?: string;
+};
 
 const props = withDefaults(defineProps<ProgressBarProps>(), {
     percent: 100,
-    message: ''
-})
+    message: '',
+});
 
 const variantColorClassMap: Partial<Record<ColorVariants, string>> = {
     primary: 'primary-variant',
     warning: 'warning-variant',
-    success: 'success-variant'
-} as const
+    success: 'success-variant',
+} as const;
 
 const progressClasses = computed(() => {
-    const defaultClass = variantColorClassMap['primary']
+    const defaultClass = variantColorClassMap['primary'];
 
-    return (variantColorClassMap[props.variant] ?? defaultClass) as string
-})
+    return (variantColorClassMap[props.variant] ?? defaultClass) as string;
+});
 
 const preparedPercent = computed(() =>
-    props.percent > 100 || props.percent < 0 ? 100 : props.percent
-)
+    props.percent > 100 || props.percent < 0 ? 100 : props.percent,
+);
 </script>
 
 <style scoped lang="scss">

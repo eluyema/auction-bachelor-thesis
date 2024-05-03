@@ -20,31 +20,31 @@
 </template>
 
 <script lang="ts" setup>
-import { defineProps, defineEmits } from 'vue'
-import IconButton from '../IconButton/IconButton.vue'
+import { defineProps, defineEmits } from 'vue';
+import IconButton from '../IconButton/IconButton.vue';
 
 export type CustomInputProps = {
-    modelValue: string
-    label?: string
-    disabled?: boolean
-    error?: boolean
-}
+    modelValue: string;
+    label?: string;
+    disabled?: boolean;
+    error?: boolean;
+};
 
-defineProps<CustomInputProps>()
+defineProps<CustomInputProps>();
 
-const emits = defineEmits(['update:modelValue'])
+const emits = defineEmits(['update:modelValue']);
 
 const handleInput = (event: Event) => {
-    const target = event.target as HTMLInputElement | null
+    const target = event.target as HTMLInputElement | null;
 
     if (target) {
-        emits('update:modelValue', target.value)
+        emits('update:modelValue', target.value);
     }
-}
+};
 
 const onClearText = () => {
-    emits('update:modelValue', '') // Emit with empty string on clear
-}
+    emits('update:modelValue', ''); // Emit with empty string on clear
+};
 </script>
 
 <style scoped lang="scss">

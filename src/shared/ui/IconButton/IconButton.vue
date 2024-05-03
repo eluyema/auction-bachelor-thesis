@@ -10,38 +10,38 @@
 </template>
 
 <script setup lang="ts">
-import Icon from '../CustomIcon/CustomIcon.vue'
-import { ColorVariants } from 'src/entities/theme'
-import { computed } from 'vue'
+import Icon from '../CustomIcon/CustomIcon.vue';
+import { ColorVariants } from 'src/entities/theme';
+import { computed } from 'vue';
 
 export type IconButtonProps = {
-    iconName: string
-    colorVariant?: ColorVariants
-    iconClass?: string
-    paddingSize?: 'unset' | 'medium' | 'large'
-}
+    iconName: string;
+    colorVariant?: ColorVariants;
+    iconClass?: string;
+    paddingSize?: 'unset' | 'medium' | 'large';
+};
 
-const props = withDefaults(defineProps<IconButtonProps>(), { paddingSize: 'unset' })
+const props = withDefaults(defineProps<IconButtonProps>(), { paddingSize: 'unset' });
 
 const colorVariantHoverClassMap: Partial<Record<ColorVariants, string>> = {
-    primary: 'primary-hover' // new classes can be added here
-} as const
+    primary: 'primary-hover', // new classes can be added here
+} as const;
 
 const paddingSizeClassMap: Record<'unset' | 'medium' | 'large', string> = {
     unset: '',
     medium: 'padding-size-medium',
-    large: 'padding-size-large'
-} as const
+    large: 'padding-size-large',
+} as const;
 
 const hoverClass = computed(() => {
     return props.colorVariant
         ? colorVariantHoverClassMap[props.colorVariant] ?? 'default-hover'
-        : 'default-hover'
-})
+        : 'default-hover';
+});
 
 const paddingSizeClass = computed(() => {
-    return paddingSizeClassMap[props.paddingSize]
-})
+    return paddingSizeClassMap[props.paddingSize];
+});
 </script>
 
 <style scoped lang="scss">

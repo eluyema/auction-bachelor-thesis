@@ -1,6 +1,6 @@
-import { Meta, StoryObj } from '@storybook/vue3'
-import AuctionRounds from './AuctionRounds.vue'
-import { AuctionType, AuctionRound, AuctionRoundStatus } from 'src/entities/auction'
+import { Meta, StoryObj } from '@storybook/vue3';
+import AuctionRounds from './AuctionRounds.vue';
+import { AuctionType, AuctionRound, AuctionRoundStatus } from 'src/entities/auction';
 
 const meta: Meta<typeof AuctionRounds> = {
     title: 'Organisms/AuctionRounds',
@@ -8,26 +8,26 @@ const meta: Meta<typeof AuctionRounds> = {
     argTypes: {
         list: {
             control: 'array',
-            description: 'List of auction results'
+            description: 'List of auction results',
         },
         disabledText: {
             control: 'boolean',
-            description: 'Make all text disabled colored'
+            description: 'Make all text disabled colored',
         },
         showMax: {
             control: 'boolean',
-            description: 'Show max label, otherwise min'
+            description: 'Show max label, otherwise min',
         },
         disabledIcons: {
             control: 'boolean',
-            description: 'Make all icons disabled colored'
-        }
-    }
-}
+            description: 'Make all icons disabled colored',
+        },
+    },
+};
 
-export default meta
+export default meta;
 
-type Story = StoryObj<typeof meta>
+type Story = StoryObj<typeof meta>;
 
 const defaultListBeforeRoundBegins: AuctionRound[] = [
     {
@@ -35,16 +35,16 @@ const defaultListBeforeRoundBegins: AuctionRound[] = [
         auctionType: AuctionType.DEFAULT,
         name: `TBD`,
         status: AuctionRoundStatus.PENDING,
-        announced: false
+        announced: false,
     },
     {
         id: '6',
         auctionType: AuctionType.DEFAULT,
         name: `TBD`,
         status: AuctionRoundStatus.PENDING,
-        announced: false
-    }
-]
+        announced: false,
+    },
+];
 
 const defaultListRoundStarted: AuctionRound[] = [
     {
@@ -55,7 +55,7 @@ const defaultListRoundStarted: AuctionRound[] = [
         name: `Учасник №1`,
         fullPrice: '50 010 000,00',
         isMin: false,
-        isMax: true
+        isMax: true,
     },
     {
         id: '6',
@@ -65,9 +65,9 @@ const defaultListRoundStarted: AuctionRound[] = [
         name: `Ви`,
         fullPrice: '50 005 000,00',
         isMin: true,
-        isMax: false
-    }
-]
+        isMax: false,
+    },
+];
 
 const defaultList1Bids: AuctionRound[] = [
     {
@@ -78,7 +78,7 @@ const defaultList1Bids: AuctionRound[] = [
         name: `Учасник №1`,
         fullPrice: '50 010 000,00',
         isMin: false,
-        isMax: true
+        isMax: true,
     },
     {
         id: '6',
@@ -88,9 +88,9 @@ const defaultList1Bids: AuctionRound[] = [
         name: `Ви`,
         fullPrice: '50 005 000,00',
         isMin: true,
-        isMax: false
-    }
-]
+        isMax: false,
+    },
+];
 
 const defaultList2Bids: AuctionRound[] = [
     {
@@ -101,7 +101,7 @@ const defaultList2Bids: AuctionRound[] = [
         name: `Учасник №1`,
         fullPrice: '50 010 000,00',
         isMin: false,
-        isMax: true
+        isMax: true,
     },
     {
         id: '6',
@@ -111,9 +111,9 @@ const defaultList2Bids: AuctionRound[] = [
         name: `Ви`,
         fullPrice: '50 005 000,00',
         isMin: true,
-        isMax: false
-    }
-]
+        isMax: false,
+    },
+];
 
 const defaultListRoundEnds: AuctionRound[] = [
     {
@@ -124,7 +124,7 @@ const defaultListRoundEnds: AuctionRound[] = [
         name: `Учасник №1`,
         fullPrice: '50 010 000,00',
         isMin: false,
-        isMax: true
+        isMax: true,
     },
     {
         id: '6',
@@ -134,9 +134,9 @@ const defaultListRoundEnds: AuctionRound[] = [
         name: `Ви`,
         fullPrice: '50 005 000,00',
         isMin: true,
-        isMax: false
-    }
-]
+        isMax: false,
+    },
+];
 
 const defaultListAuctionEnds: AuctionRound[] = [
     {
@@ -147,7 +147,7 @@ const defaultListAuctionEnds: AuctionRound[] = [
         name: `ТОВ "БУДРЕМСЕРВІС"`,
         fullPrice: '50 010 000,00',
         isMin: false,
-        isMax: true
+        isMax: true,
     },
     {
         id: '6',
@@ -157,9 +157,9 @@ const defaultListAuctionEnds: AuctionRound[] = [
         name: `ТОВ ДУВК`,
         fullPrice: '48 000 000,00',
         isMin: true,
-        isMax: false
-    }
-]
+        isMax: false,
+    },
+];
 
 const defaultListLarge: AuctionRound[] = [
     {
@@ -170,7 +170,7 @@ const defaultListLarge: AuctionRound[] = [
         name: `ТОВАРИСТВО З ОБМЕЖЕНОЮ ВІДПОВІДА­ЛЬНІСТЮ «ЕНЕРГЕТИЧНА КОМПАНІЯ «ІНСОЛ»"`,
         fullPrice: '65 010 000,00',
         isMin: false,
-        isMax: true
+        isMax: true,
     },
     {
         id: '2',
@@ -180,7 +180,7 @@ const defaultListLarge: AuctionRound[] = [
         name: `ТОВ "ЗАПОРІЗЬКИЙ ТЕПЛО-ЕНЕРГО ПРОЕКТ"`,
         fullPrice: '57 597,00',
         isMin: false,
-        isMax: false
+        isMax: false,
     },
     {
         id: '3',
@@ -190,7 +190,7 @@ const defaultListLarge: AuctionRound[] = [
         name: `АТ "Альцест"`,
         fullPrice: '57 006,00',
         isMin: false,
-        isMax: false
+        isMax: false,
     },
     {
         id: '4',
@@ -200,7 +200,7 @@ const defaultListLarge: AuctionRound[] = [
         name: `ТОВ "БК СІМАКС"`,
         fullPrice: '53 025,00',
         isMin: false,
-        isMax: false
+        isMax: false,
     },
     {
         id: '5',
@@ -210,7 +210,7 @@ const defaultListLarge: AuctionRound[] = [
         name: `ФОП КУЗНЄЦОВ КИРИЛО ІГОРОВИЧ`,
         fullPrice: '52 119,00',
         isMin: false,
-        isMax: false
+        isMax: false,
     },
     {
         id: '6',
@@ -220,7 +220,7 @@ const defaultListLarge: AuctionRound[] = [
         name: `ФОП Литвиненко Христина Вікторівна`,
         fullPrice: '50 757,00',
         isMin: false,
-        isMax: false
+        isMax: false,
     },
     {
         id: '7',
@@ -230,9 +230,9 @@ const defaultListLarge: AuctionRound[] = [
         name: `ТОВАРИСТВО З ОБМЕЖЕНОЮ ВІДПОВІДАЛЬНІСТЮ «ТРЕЙД-КОМПАНІ 2021»`,
         fullPrice: '49 500,00',
         isMin: true,
-        isMax: false
-    }
-]
+        isMax: false,
+    },
+];
 
 const nonPriceListBeforeRoundBegins: AuctionRound[] = [
     {
@@ -240,23 +240,23 @@ const nonPriceListBeforeRoundBegins: AuctionRound[] = [
         auctionType: AuctionType.NON_PRICE_CRITERIA,
         name: `TBD`,
         status: AuctionRoundStatus.PENDING,
-        announced: false
+        announced: false,
     },
     {
         id: '6',
         auctionType: AuctionType.NON_PRICE_CRITERIA,
         name: `TBD`,
         status: AuctionRoundStatus.PENDING,
-        announced: false
+        announced: false,
     },
     {
         id: '7',
         auctionType: AuctionType.NON_PRICE_CRITERIA,
         name: `TBD`,
         status: AuctionRoundStatus.PENDING,
-        announced: false
-    }
-]
+        announced: false,
+    },
+];
 
 const nonPriceListRoundStarted: AuctionRound[] = [
     {
@@ -269,7 +269,7 @@ const nonPriceListRoundStarted: AuctionRound[] = [
         fullPrice: '...',
         coefficient: '...',
         isMin: false,
-        isMax: true
+        isMax: true,
     },
     {
         id: '6',
@@ -281,7 +281,7 @@ const nonPriceListRoundStarted: AuctionRound[] = [
         fullPrice: '...',
         coefficient: '...',
         isMin: false,
-        isMax: false
+        isMax: false,
     },
     {
         id: '7',
@@ -293,9 +293,9 @@ const nonPriceListRoundStarted: AuctionRound[] = [
         fullPrice: '...',
         coefficient: '...',
         isMin: true,
-        isMax: false
-    }
-]
+        isMax: false,
+    },
+];
 
 const nonPriceList1Bids: AuctionRound[] = [
     {
@@ -308,7 +308,7 @@ const nonPriceList1Bids: AuctionRound[] = [
         fullPrice: '...',
         coefficient: '...',
         isMin: false,
-        isMax: true
+        isMax: true,
     },
     {
         id: '6',
@@ -320,7 +320,7 @@ const nonPriceList1Bids: AuctionRound[] = [
         fullPrice: '...',
         coefficient: '...',
         isMin: false,
-        isMax: false
+        isMax: false,
     },
     {
         id: '7',
@@ -332,9 +332,9 @@ const nonPriceList1Bids: AuctionRound[] = [
         fullPrice: '...',
         coefficient: '...',
         isMin: true,
-        isMax: false
-    }
-]
+        isMax: false,
+    },
+];
 
 const nonPriceList2Bids: AuctionRound[] = [
     {
@@ -347,7 +347,7 @@ const nonPriceList2Bids: AuctionRound[] = [
         fullPrice: '...',
         coefficient: '...',
         isMin: false,
-        isMax: true
+        isMax: true,
     },
     {
         id: '6',
@@ -359,7 +359,7 @@ const nonPriceList2Bids: AuctionRound[] = [
         fullPrice: '...',
         coefficient: '...',
         isMin: false,
-        isMax: false
+        isMax: false,
     },
     {
         id: '7',
@@ -371,9 +371,9 @@ const nonPriceList2Bids: AuctionRound[] = [
         fullPrice: '...',
         coefficient: '...',
         isMin: true,
-        isMax: false
-    }
-]
+        isMax: false,
+    },
+];
 
 const nonPriceListRoundEnds: AuctionRound[] = [
     {
@@ -386,7 +386,7 @@ const nonPriceListRoundEnds: AuctionRound[] = [
         fullPrice: '...',
         coefficient: '...',
         isMin: false,
-        isMax: true
+        isMax: true,
     },
     {
         id: '6',
@@ -398,7 +398,7 @@ const nonPriceListRoundEnds: AuctionRound[] = [
         fullPrice: '...',
         coefficient: '...',
         isMin: false,
-        isMax: false
+        isMax: false,
     },
     {
         id: '7',
@@ -410,9 +410,9 @@ const nonPriceListRoundEnds: AuctionRound[] = [
         fullPrice: '...',
         coefficient: '...',
         isMin: true,
-        isMax: false
-    }
-]
+        isMax: false,
+    },
+];
 
 const nonPriceListAuctionEnds: AuctionRound[] = [
     {
@@ -425,7 +425,7 @@ const nonPriceListAuctionEnds: AuctionRound[] = [
         fullPrice: '26 000 000,00',
         coefficient: '1,00',
         isMin: false,
-        isMax: true
+        isMax: true,
     },
     {
         id: '6',
@@ -437,7 +437,7 @@ const nonPriceListAuctionEnds: AuctionRound[] = [
         fullPrice: '25 712 078,84',
         coefficient: '1,25',
         isMin: false,
-        isMax: false
+        isMax: false,
     },
     {
         id: '7',
@@ -449,9 +449,9 @@ const nonPriceListAuctionEnds: AuctionRound[] = [
         fullPrice: '26 030 880,29',
         coefficient: '1,25',
         isMin: true,
-        isMax: false
-    }
-]
+        isMax: false,
+    },
+];
 
 const ESCOListBeforeRoundBegins: AuctionRound[] = [
     {
@@ -459,16 +459,16 @@ const ESCOListBeforeRoundBegins: AuctionRound[] = [
         auctionType: AuctionType.ESCO,
         name: `TBD`,
         status: AuctionRoundStatus.PENDING,
-        announced: false
+        announced: false,
     },
     {
         id: '6',
         auctionType: AuctionType.ESCO,
         name: `TBD`,
         status: AuctionRoundStatus.PENDING,
-        announced: false
-    }
-]
+        announced: false,
+    },
+];
 
 const ESCOListRoundStarted: AuctionRound[] = [
     {
@@ -479,7 +479,7 @@ const ESCOListRoundStarted: AuctionRound[] = [
         name: `Учасник №1`,
         fullPrice: '50 010 000,00',
         isMin: false,
-        isMax: true
+        isMax: true,
     },
     {
         id: '6',
@@ -489,9 +489,9 @@ const ESCOListRoundStarted: AuctionRound[] = [
         name: `Ви`,
         fullPrice: '50 005 000,00',
         isMin: true,
-        isMax: false
-    }
-]
+        isMax: false,
+    },
+];
 
 const ESCOList1Bids: AuctionRound[] = [
     {
@@ -502,7 +502,7 @@ const ESCOList1Bids: AuctionRound[] = [
         name: `Учасник №1`,
         fullPrice: '50 010 000,00',
         isMin: false,
-        isMax: true
+        isMax: true,
     },
     {
         id: '6',
@@ -512,9 +512,9 @@ const ESCOList1Bids: AuctionRound[] = [
         name: `Ви`,
         fullPrice: '50 005 000,00',
         isMin: true,
-        isMax: false
-    }
-]
+        isMax: false,
+    },
+];
 
 const ESCOList2Bids: AuctionRound[] = [
     {
@@ -525,7 +525,7 @@ const ESCOList2Bids: AuctionRound[] = [
         name: `Учасник №1`,
         fullPrice: '50 010 000,00',
         isMin: false,
-        isMax: true
+        isMax: true,
     },
     {
         id: '6',
@@ -535,9 +535,9 @@ const ESCOList2Bids: AuctionRound[] = [
         name: `Ви`,
         fullPrice: '50 005 000,00',
         isMin: true,
-        isMax: false
-    }
-]
+        isMax: false,
+    },
+];
 
 const ESCOListRoundEnds: AuctionRound[] = [
     {
@@ -548,7 +548,7 @@ const ESCOListRoundEnds: AuctionRound[] = [
         name: `Учасник №1`,
         fullPrice: '50 010 000,00',
         isMin: false,
-        isMax: true
+        isMax: true,
     },
     {
         id: '6',
@@ -558,9 +558,9 @@ const ESCOListRoundEnds: AuctionRound[] = [
         name: `Ви`,
         fullPrice: '50 005 000,00',
         isMin: true,
-        isMax: false
-    }
-]
+        isMax: false,
+    },
+];
 
 const ESCOListAuctionEnds: AuctionRound[] = [
     {
@@ -571,7 +571,7 @@ const ESCOListAuctionEnds: AuctionRound[] = [
         name: `ТОВ "БУДРЕМСЕРВІС"`,
         fullPrice: '50 010 000,00',
         isMin: false,
-        isMax: true
+        isMax: true,
     },
     {
         id: '6',
@@ -581,110 +581,110 @@ const ESCOListAuctionEnds: AuctionRound[] = [
         name: `ТОВ ДУВК`,
         fullPrice: '48 000 000,00',
         isMin: true,
-        isMax: false
-    }
-]
+        isMax: false,
+    },
+];
 
 export const DefaultBeforeRoundBegins: Story = {
     args: {
         title: 'Раунд 1',
         list: defaultListBeforeRoundBegins,
-        disabledText: true
-    }
-}
+        disabledText: true,
+    },
+};
 
 export const DefaultRoundStarted: Story = {
     args: {
         title: 'Раунд 1',
-        list: defaultListRoundStarted
-    }
-}
+        list: defaultListRoundStarted,
+    },
+};
 
 export const Default1Bids: Story = {
     args: {
         title: 'Раунд 2',
-        list: defaultList1Bids
-    }
-}
+        list: defaultList1Bids,
+    },
+};
 
 export const Default2Bids: Story = {
     args: {
         title: 'Раунд 2',
-        list: defaultList2Bids
-    }
-}
+        list: defaultList2Bids,
+    },
+};
 
 export const DefaultRoundEnds: Story = {
     args: {
         title: 'Раунд 2',
         list: defaultListRoundEnds,
         disabledText: true,
-        disabledIcons: true
-    }
-}
+        disabledIcons: true,
+    },
+};
 
 export const DefaultAuctionEnds: Story = {
     args: {
         title: 'Раунд 2',
         list: defaultListAuctionEnds,
-        disabledIcons: true
-    }
-}
+        disabledIcons: true,
+    },
+};
 
 export const DefaultLarge: Story = {
     args: {
         title: 'Раунд 2',
-        list: defaultListLarge
-    }
-}
+        list: defaultListLarge,
+    },
+};
 
 export const NonPriceBeforeRoundBegins: Story = {
     args: {
         title: 'Раунд 1',
         list: nonPriceListBeforeRoundBegins,
         disabledText: true,
-        disabledIcons: true
-    }
-}
+        disabledIcons: true,
+    },
+};
 
 export const NonPriceRoundStarted: Story = {
     args: {
         title: 'Раунд 1',
-        list: nonPriceListRoundStarted
-    }
-}
+        list: nonPriceListRoundStarted,
+    },
+};
 
 export const NonPrice1Bids: Story = {
     args: {
         title: 'Раунд 1',
-        list: nonPriceList1Bids
-    }
-}
+        list: nonPriceList1Bids,
+    },
+};
 
 export const NonPrice2Bids: Story = {
     args: {
         title: 'Раунд 2',
-        list: nonPriceList2Bids
-    }
-}
+        list: nonPriceList2Bids,
+    },
+};
 
 export const NonPriceRoundEnds: Story = {
     args: {
         title: 'Раунд 2',
         list: nonPriceListRoundEnds,
         disabledText: true,
-        disabledIcons: true
-    }
-}
+        disabledIcons: true,
+    },
+};
 
 export const NonPriceAuctionEnds: Story = {
     args: {
         title: 'Раунд 2',
         list: nonPriceListAuctionEnds,
         disabledText: true,
-        disabledIcons: true
-    }
-}
+        disabledIcons: true,
+    },
+};
 
 export const ESCOBeforeRoundBegins: Story = {
     args: {
@@ -692,33 +692,33 @@ export const ESCOBeforeRoundBegins: Story = {
         list: ESCOListBeforeRoundBegins,
         showMax: true,
         disabledText: true,
-        disabledIcons: true
-    }
-}
+        disabledIcons: true,
+    },
+};
 
 export const ESCORoundStarted: Story = {
     args: {
         title: 'Раунд 1',
         list: ESCOListRoundStarted,
-        showMax: true
-    }
-}
+        showMax: true,
+    },
+};
 
 export const ESCO1Bids: Story = {
     args: {
         title: 'Раунд 1',
         list: ESCOList1Bids,
-        showMax: true
-    }
-}
+        showMax: true,
+    },
+};
 
 export const ESCO2Bids: Story = {
     args: {
         title: 'Раунд 2',
         list: ESCOList2Bids,
-        showMax: true
-    }
-}
+        showMax: true,
+    },
+};
 
 export const ESCORoundEnds: Story = {
     args: {
@@ -726,15 +726,15 @@ export const ESCORoundEnds: Story = {
         list: ESCOListRoundEnds,
         showMax: true,
         disabledText: true,
-        disabledIcons: true
-    }
-}
+        disabledIcons: true,
+    },
+};
 
 export const ESCOAuctionEnds: Story = {
     args: {
         title: 'Раунд 2',
         list: ESCOListAuctionEnds,
         showMax: true,
-        disabledIcons: true
-    }
-}
+        disabledIcons: true,
+    },
+};

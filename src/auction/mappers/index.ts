@@ -1,3 +1,3 @@
-export * from './auctionResultsMapper'
-export * from './auctionInitialBidsMapper'
-export * from './auctionRoundsMapper'
+export * from './auctionResultsMapper';
+export * from './auctionInitialBidsMapper';
+export * from './auctionRoundsMapper';

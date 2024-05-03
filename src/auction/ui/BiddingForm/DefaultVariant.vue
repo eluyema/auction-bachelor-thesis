@@ -57,91 +57,91 @@
 </template>
 
 <script setup lang="ts">
-import { AuctionBid, AuctionType } from 'src/entities/auction'
-import CustomButton from 'src/shared/ui/CustomButton/CustomButton.vue'
-import CustomInput from 'src/shared/ui/CustomInput/CustomInput.vue'
-import DesktopOnly from 'src/shared/ui/DesktopOnly/DesktopOnly.vue'
-import CircleTimer from 'src/shared/ui/Timers/CircleTimer/CircleTimer.vue'
-import { formatNumberToPrice } from 'src/shared/utils/formatNumberToPrice'
-import { getSecondsBetweenDates } from 'src/shared/utils/getSecondsBetweenDates'
-import { getUuid } from 'src/shared/utils/getUuid'
-import { computed, reactive, ref, watch } from 'vue'
-import { number, object } from 'yup'
-import RestrictionText from './components/RestrictionText.vue'
-import MobileOnly from 'src/shared/ui/MobileOnly/MobileOnly.vue'
-import BiddingStatus from './components/BiddingStatus.vue'
+import { AuctionBid, AuctionType } from 'src/entities/auction';
+import CustomButton from 'src/shared/ui/CustomButton/CustomButton.vue';
+import CustomInput from 'src/shared/ui/CustomInput/CustomInput.vue';
+import DesktopOnly from 'src/shared/ui/DesktopOnly/DesktopOnly.vue';
+import CircleTimer from 'src/shared/ui/Timers/CircleTimer/CircleTimer.vue';
+import { formatNumberToPrice } from 'src/shared/utils/formatNumberToPrice';
+import { getSecondsBetweenDates } from 'src/shared/utils/getSecondsBetweenDates';
+import { getUuid } from 'src/shared/utils/getUuid';
+import { computed, reactive, ref, watch } from 'vue';
+import { number, object } from 'yup';
+import RestrictionText from './components/RestrictionText.vue';
+import MobileOnly from 'src/shared/ui/MobileOnly/MobileOnly.vue';
+import BiddingStatus from './components/BiddingStatus.vue';
 
 export type DefaultVariantProps = {
-    endAt: Date
-    fullPriceMin: number
-    currentBid?: AuctionBid | null
-    collapsedMobile: boolean
-}
+    endAt: Date;
+    fullPriceMin: number;
+    currentBid?: AuctionBid | null;
+    collapsedMobile: boolean;
+};
 
 const emit = defineEmits<{
-    (event: 'bidSent', bidding: AuctionBid): void
-    (event: 'bidAbort'): void
-}>()
+    (event: 'bidSent', bidding: AuctionBid): void;
+    (event: 'bidAbort'): void;
+}>();
 
-const { endAt, fullPriceMin, currentBid } = defineProps<DefaultVariantProps>()
+const { endAt, fullPriceMin, currentBid } = defineProps<DefaultVariantProps>();
 
-const showAbortButton = computed(() => !!currentBid && !currentBid.aborted)
+const showAbortButton = computed(() => !!currentBid && !currentBid.aborted);
 
-const formattedFullPriceMin = computed(() => formatNumberToPrice(fullPriceMin))
+const formattedFullPriceMin = computed(() => formatNumberToPrice(fullPriceMin));
 
-const diffInSeconds = computed(() => getSecondsBetweenDates(endAt, new Date()))
+const diffInSeconds = computed(() => getSecondsBetweenDates(endAt, new Date()));
 
-const isError = ref(false)
+const isError = ref(false);
 
 const onBidAbort = () => {
-    emit('bidAbort')
-}
+    emit('bidAbort');
+};
 
 const getFormSchema = () => {
     return object({
         fullPrice: number()
             .min(fullPriceMin, `Full price must be at least ${fullPriceMin}`)
-            .required('Full price is required')
-    })
-}
+            .required('Full price is required'),
+    });
+};
 
-const formSchema = ref(getFormSchema())
+const formSchema = ref(getFormSchema());
 
 watch(
     () => fullPriceMin,
     () => {
-        formSchema.value = getFormSchema()
-    }
-)
+        formSchema.value = getFormSchema();
+    },
+);
 
 const formInput = reactive({
-    fullPrice: ''
-})
+    fullPrice: '',
+});
 
 const sendBid = () => {
     const bid: AuctionBid = {
         id: getUuid(),
         auctionType: AuctionType.DEFAULT,
         fullPrice: formatNumberToPrice(+formInput.fullPrice),
-        aborted: false
-    }
+        aborted: false,
+    };
 
-    console.log(bid)
+    console.log(bid);
 
-    emit('bidSent', bid)
-}
+    emit('bidSent', bid);
+};
 
 const validateAndSendBid = async () => {
     try {
-        await formSchema.value.validate(formInput)
-        isError.value = false
+        await formSchema.value.validate(formInput);
+        isError.value = false;
 
-        sendBid()
+        sendBid();
     } catch (error) {
-        isError.value = true
-        console.error('Validation error:', error)
+        isError.value = true;
+        console.error('Validation error:', error);
     }
-}
+};
 </script>
 <style scoped lang="scss">
 @import 'src/app/assets/styles/theme/index.scss';

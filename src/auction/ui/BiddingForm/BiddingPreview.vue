@@ -8,28 +8,28 @@
     </div>
 </template>
 <script setup lang="ts">
-import TextTimer from 'src/shared/ui/Timers/TextTimer/TextTimer.vue'
-import { getSecondsBetweenDates } from 'src/shared/utils/getSecondsBetweenDates'
-import { computed, ref, watchEffect } from 'vue'
+import TextTimer from 'src/shared/ui/Timers/TextTimer/TextTimer.vue';
+import { getSecondsBetweenDates } from 'src/shared/utils/getSecondsBetweenDates';
+import { computed, ref, watchEffect } from 'vue';
 
 export type BiddingPreviewProps = {
-    message: string | string[]
-    date: Date
-}
+    message: string | string[];
+    date: Date;
+};
 
-const { message, date } = defineProps<BiddingPreviewProps>()
+const { message, date } = defineProps<BiddingPreviewProps>();
 
-const diffInSeconds = computed(() => getSecondsBetweenDates(date, new Date()))
+const diffInSeconds = computed(() => getSecondsBetweenDates(date, new Date()));
 
-const show = ref(false)
+const show = ref(false);
 
 watchEffect(() => {
-    show.value = diffInSeconds.value > 0
-})
+    show.value = diffInSeconds.value > 0;
+});
 
 const onTimeEnd = () => {
-    show.value = false
-}
+    show.value = false;
+};
 </script>
 <style scoped lang="scss">
 @import 'src/app/assets/styles/theme/index.scss';

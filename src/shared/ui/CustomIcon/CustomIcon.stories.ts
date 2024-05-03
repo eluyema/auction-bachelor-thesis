@@ -1,5 +1,5 @@
-import { Meta, StoryObj } from '@storybook/vue3'
-import CustomIcon from './CustomIcon.vue'
+import { Meta, StoryObj } from '@storybook/vue3';
+import CustomIcon from './CustomIcon.vue';
 
 const meta: Meta<typeof CustomIcon> = {
     title: 'Components/Icon',
@@ -7,41 +7,41 @@ const meta: Meta<typeof CustomIcon> = {
     argTypes: {
         iconName: {
             control: 'select',
-            options: ['access_time', 'done', 'trending_down', 'trending_up']
+            options: ['access_time', 'done', 'trending_down', 'trending_up'],
         },
         colorVariant: {
             control: 'select',
-            options: ['', 'primary', 'success', 'warning']
-        }
-    }
-}
+            options: ['', 'primary', 'success', 'warning'],
+        },
+    },
+};
 
-export default meta
+export default meta;
 
-type Story = StoryObj<typeof meta>
+type Story = StoryObj<typeof meta>;
 
 export const AccessTime: Story = {
     args: {
-        iconName: 'access_time'
-    }
-}
+        iconName: 'access_time',
+    },
+};
 
 export const Done: Story = {
     args: {
         iconName: 'done',
-        colorVariant: 'warning'
-    }
-}
+        colorVariant: 'warning',
+    },
+};
 
 export const PriceReduction: Story = {
     args: {
         iconName: 'trending_down',
-        colorVariant: 'success'
-    }
-}
+        colorVariant: 'success',
+    },
+};
 
 export const PriceIncrease: Story = {
     args: {
-        iconName: 'trending_up'
-    }
-}
+        iconName: 'trending_up',
+    },
+};

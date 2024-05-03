@@ -9,14 +9,14 @@
 </template>
 
 <script setup lang="ts">
-import { AuctionBid } from 'src/entities/auction'
-import CustomIcon from 'src/shared/ui/CustomIcon/CustomIcon.vue'
+import { AuctionBid } from 'src/entities/auction';
+import CustomIcon from 'src/shared/ui/CustomIcon/CustomIcon.vue';
 
 export type BiddingStatusProps = {
-    currentBid?: AuctionBid | null
-}
+    currentBid?: AuctionBid | null;
+};
 
-defineProps<BiddingStatusProps>()
+defineProps<BiddingStatusProps>();
 </script>
 
 <style scoped lang="scss">

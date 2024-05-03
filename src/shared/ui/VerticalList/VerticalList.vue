@@ -13,16 +13,16 @@
     </div>
 </template>
 <script setup lang="ts">
-import VerticalListItem, { VerticalListItemProps } from './VerticalListItem.vue'
+import VerticalListItem, { VerticalListItemProps } from './VerticalListItem.vue';
 
 export type VerticalListProps = {
-    name: string
-    disabledText?: boolean
-    disabledIcons?: boolean
-    list: VerticalListItemProps[]
-}
+    name: string;
+    disabledText?: boolean;
+    disabledIcons?: boolean;
+    list: VerticalListItemProps[];
+};
 
-const { name, disabledText, disabledIcons, list } = defineProps<VerticalListProps>()
+const { name, disabledText, disabledIcons, list } = defineProps<VerticalListProps>();
 </script>
 
 <style scoped lang="scss">

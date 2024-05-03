@@ -5,29 +5,29 @@
 </template>
 
 <script setup lang="ts">
-import { ColorVariants } from 'src/entities/theme'
-import { computed } from 'vue'
+import { ColorVariants } from 'src/entities/theme';
+import { computed } from 'vue';
 
 export type CustomIconProps = {
-    iconName: string
-    colorVariant?: ColorVariants | null
-}
+    iconName: string;
+    colorVariant?: ColorVariants | null;
+};
 
-const props = defineProps<CustomIconProps>()
+const props = defineProps<CustomIconProps>();
 
 const colorVariantClassMap: Partial<Record<ColorVariants, string>> = {
     ['primary']: 'active-primary',
     ['warning']: 'active-warning',
-    ['success']: 'active-success'
-} as const
+    ['success']: 'active-success',
+} as const;
 
 const colorVariantClass = computed(() => {
     if (!props.colorVariant) {
-        return ''
+        return '';
     }
 
-    return colorVariantClassMap[props.colorVariant] ?? ''
-})
+    return colorVariantClassMap[props.colorVariant] ?? '';
+});
 </script>
 
 <style scoped lang="scss">

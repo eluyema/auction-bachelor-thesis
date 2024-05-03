@@ -5,38 +5,38 @@
 </template>
 
 <script setup lang="ts">
-import { ColorVariants } from 'src/entities/theme'
-import { computed } from 'vue'
+import { ColorVariants } from 'src/entities/theme';
+import { computed } from 'vue';
 
 export type CustomLabelProps = {
-    textShape?: 'contained' | 'text'
-    colorVariant: ColorVariants
-}
+    textShape?: 'contained' | 'text';
+    colorVariant: ColorVariants;
+};
 
 const props = withDefaults(defineProps<CustomLabelProps>(), {
-    textShape: 'contained'
-})
+    textShape: 'contained',
+});
 
 const colorVariantClassMap: Partial<Record<ColorVariants, string>> = {
     primary: 'primary',
     warning: 'warning',
-    success: 'success'
-} as const
+    success: 'success',
+} as const;
 
 const textShapeClassMap: Record<'contained' | 'text', string> = {
     contained: 'shape-contained',
-    text: 'shape-text'
-} as const
+    text: 'shape-text',
+} as const;
 
 const classes = computed(() => {
-    const defaultColorVariantClass = colorVariantClassMap['primary']
-    const defaultTextShapeClass = textShapeClassMap['contained']
+    const defaultColorVariantClass = colorVariantClassMap['primary'];
+    const defaultTextShapeClass = textShapeClassMap['contained'];
 
-    const textShapeClass = textShapeClassMap[props.textShape] ?? defaultTextShapeClass
-    const colorVariantClass = colorVariantClassMap[props.colorVariant] ?? defaultColorVariantClass
+    const textShapeClass = textShapeClassMap[props.textShape] ?? defaultTextShapeClass;
+    const colorVariantClass = colorVariantClassMap[props.colorVariant] ?? defaultColorVariantClass;
 
-    return [colorVariantClass, textShapeClass]
-})
+    return [colorVariantClass, textShapeClass];
+});
 </script>
 
 <style scoped lang="scss">

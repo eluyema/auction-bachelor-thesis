@@ -48,146 +48,146 @@
     </div>
 </template>
 <script setup lang="ts">
-import { computed, onMounted, onUnmounted, ref, watch } from 'vue'
-import BiddingPreview from './BiddingPreview.vue'
-import dragHandleIcon from 'src/app/assets/images/drag-handle-icon.svg'
-import DefaultVariant from './DefaultVariant.vue'
-import { AuctionBid, AuctionType, AuctionBidSettings } from 'src/entities/auction'
-import NonPriceVariant from './NonPriceVariant.vue'
-import ESCOVariant from './ESCOVariant.vue'
+import { computed, onMounted, onUnmounted, ref, watch } from 'vue';
+import BiddingPreview from './BiddingPreview.vue';
+import dragHandleIcon from 'src/app/assets/images/drag-handle-icon.svg';
+import DefaultVariant from './DefaultVariant.vue';
+import { AuctionBid, AuctionType, AuctionBidSettings } from 'src/entities/auction';
+import NonPriceVariant from './NonPriceVariant.vue';
+import ESCOVariant from './ESCOVariant.vue';
 
 enum BiddingFormState {
     BEFORE_AUCTION_START,
     BEFORE_ROUND_START,
     BEFORE_YOUR_TURN_START,
     ACTIVE_BIDDING_TIME,
-    BIDDING_TIME_END
+    BIDDING_TIME_END,
 }
 
 export interface BiddingForm {
-    auctionStartAt: Date
-    roundStartAt: Date
-    yourTurnStartAt: Date
-    yourTurnEndAt: Date
-    settings: AuctionBidSettings
-    currentBid?: AuctionBid | null
+    auctionStartAt: Date;
+    roundStartAt: Date;
+    yourTurnStartAt: Date;
+    yourTurnEndAt: Date;
+    settings: AuctionBidSettings;
+    currentBid?: AuctionBid | null;
 }
 
 const emit = defineEmits<{
-    (event: 'bidSent', bidding: AuctionBid): void
-    (event: 'bidAbort'): void
-}>()
+    (event: 'bidSent', bidding: AuctionBid): void;
+    (event: 'bidAbort'): void;
+}>();
 
 const { auctionStartAt, roundStartAt, yourTurnStartAt, yourTurnEndAt, currentBid } =
-    defineProps<BiddingForm>()
+    defineProps<BiddingForm>();
 
 const calculateCurrentState = () => {
-    const currentDate = new Date()
+    const currentDate = new Date();
 
     if (currentDate < auctionStartAt) {
-        return BiddingFormState.BEFORE_AUCTION_START
+        return BiddingFormState.BEFORE_AUCTION_START;
     }
     if (currentDate < roundStartAt) {
-        return BiddingFormState.BEFORE_ROUND_START
+        return BiddingFormState.BEFORE_ROUND_START;
     }
     if (currentDate < yourTurnStartAt) {
-        return BiddingFormState.BEFORE_YOUR_TURN_START
+        return BiddingFormState.BEFORE_YOUR_TURN_START;
     }
     if (currentDate < yourTurnEndAt) {
-        return BiddingFormState.ACTIVE_BIDDING_TIME
+        return BiddingFormState.ACTIVE_BIDDING_TIME;
     }
 
-    return BiddingFormState.BIDDING_TIME_END
-}
+    return BiddingFormState.BIDDING_TIME_END;
+};
 
 const getNearestDate = () => {
-    const currentDate = new Date()
+    const currentDate = new Date();
 
     if (currentDate < auctionStartAt) {
-        return auctionStartAt
+        return auctionStartAt;
     }
     if (currentDate < roundStartAt) {
-        return roundStartAt
+        return roundStartAt;
     }
     if (currentDate < yourTurnStartAt) {
-        return yourTurnStartAt
+        return yourTurnStartAt;
     }
     if (currentDate < yourTurnEndAt) {
-        return yourTurnEndAt
+        return yourTurnEndAt;
     }
 
-    return yourTurnEndAt
-}
+    return yourTurnEndAt;
+};
 
-const state = ref(calculateCurrentState())
-const nearestDate = ref(getNearestDate())
+const state = ref(calculateCurrentState());
+const nearestDate = ref(getNearestDate());
 
 const previewMessageMap = {
     [BiddingFormState.BEFORE_AUCTION_START]: [
         'Ви зареєстровані як учасник.',
-        'До початку аукціону:'
+        'До початку аукціону:',
     ],
     [BiddingFormState.BEFORE_ROUND_START]: 'До початку раунду 1:',
-    [BiddingFormState.BEFORE_YOUR_TURN_START]: 'Ваш хід о 18:14:13, через'
-}
+    [BiddingFormState.BEFORE_YOUR_TURN_START]: 'Ваш хід о 18:14:13, через',
+};
 
 const showPreview = computed(() =>
     [
         BiddingFormState.BEFORE_AUCTION_START,
         BiddingFormState.BEFORE_ROUND_START,
-        BiddingFormState.BEFORE_YOUR_TURN_START
-    ].includes(state.value)
-)
+        BiddingFormState.BEFORE_YOUR_TURN_START,
+    ].includes(state.value),
+);
 
-const showSuccessBidding = computed(() => (currentBid ? !currentBid.aborted : false))
+const showSuccessBidding = computed(() => (currentBid ? !currentBid.aborted : false));
 
 const previewMessage = computed(
-    () => previewMessageMap[state.value as keyof typeof previewMessageMap] || ''
-)
+    () => previewMessageMap[state.value as keyof typeof previewMessageMap] || '',
+);
 
-let timerInterval = ref<null | ReturnType<typeof setTimeout>>(null)
+let timerInterval = ref<null | ReturnType<typeof setTimeout>>(null);
 
 const startTimer = () => {
     timerInterval.value = setInterval(() => {
-        state.value = calculateCurrentState()
-        nearestDate.value = getNearestDate()
-    })
-}
+        state.value = calculateCurrentState();
+        nearestDate.value = getNearestDate();
+    });
+};
 
 const handleBidSent = (bid: AuctionBid) => {
-    emit('bidSent', bid)
-}
+    emit('bidSent', bid);
+};
 
 const handleBidAbort = () => {
-    emit('bidAbort')
-}
+    emit('bidAbort');
+};
 
 const restartTimer = () => {
     if (timerInterval.value !== null) {
-        clearInterval(timerInterval.value)
+        clearInterval(timerInterval.value);
     }
-    state.value = calculateCurrentState()
-    nearestDate.value = getNearestDate()
-    startTimer()
-}
+    state.value = calculateCurrentState();
+    nearestDate.value = getNearestDate();
+    startTimer();
+};
 
-watch(() => auctionStartAt, restartTimer)
-watch(() => roundStartAt, restartTimer)
-watch(() => yourTurnStartAt, restartTimer)
-watch(() => yourTurnEndAt, restartTimer)
+watch(() => auctionStartAt, restartTimer);
+watch(() => roundStartAt, restartTimer);
+watch(() => yourTurnStartAt, restartTimer);
+watch(() => yourTurnEndAt, restartTimer);
 
 onMounted(() => {
-    startTimer()
-})
+    startTimer();
+});
 
 onUnmounted(() => {
     if (timerInterval.value === null) {
-        return
+        return;
     }
-    clearInterval(timerInterval.value)
-})
+    clearInterval(timerInterval.value);
+});
 
-const collapsedMobile = ref(false)
+const collapsedMobile = ref(false);
 </script>
 <style scoped lang="scss">
 @import 'src/app/assets/styles/theme/index.scss';

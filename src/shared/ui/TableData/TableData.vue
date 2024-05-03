@@ -18,17 +18,17 @@
     </div>
 </template>
 <script setup lang="ts">
-import TableRow, { TableRowProps } from './TableRow.vue'
-import TableColumn, { TableColumnProps } from './TableColumn.vue'
+import TableRow, { TableRowProps } from './TableRow.vue';
+import TableColumn, { TableColumnProps } from './TableColumn.vue';
 
 export type TableDataProps = {
-    name: string
-    disabled?: boolean
-    columns: TableColumnProps[]
-    rows: TableRowProps[]
-}
+    name: string;
+    disabled?: boolean;
+    columns: TableColumnProps[];
+    rows: TableRowProps[];
+};
 
-const { rows, columns, name } = defineProps<TableDataProps>()
+const { rows, columns, name } = defineProps<TableDataProps>();
 </script>
 
 <style scoped lang="scss">
