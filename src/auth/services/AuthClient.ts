@@ -2,7 +2,6 @@ import HttpClient from 'src/app/services/HttpClient/HttpClient';
 import { RegistrationDto } from './dtos/RegistrationDto';
 import { LoginDto } from './dtos/LoginDto';
 import { LoginResponseDto } from './dtos/LoginResponseDto';
-import { config } from 'src/config';
 
 export class AuthClient extends HttpClient {
     async login(dto: LoginDto) {
