@@ -1,6 +1,5 @@
 import { ApiError } from 'src/app/errors';
 import { HttpClientConfig } from './HttpClientConfig';
-import { ResponseDto } from 'src/entities/app/ResponseDto';
 
 type Request = {
     url: string;
