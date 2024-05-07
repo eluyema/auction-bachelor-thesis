@@ -1,7 +1,7 @@
 <template>
     <header class="header">
         <div class="header-body">
-            <a class="header-logo" :href="prozzoroUrl" target="_self">
+            <a class="header-logo" href="/" target="_self">
                 <img :src="prozorroLogo" class="header-logo-image" alt="Логотип Прозорро" />
             </a>
             <div class="header-content">
@@ -18,7 +18,13 @@
                         /></a>
                     </li>
                 </ul>
-                <CustomIcon class="account-icon" iconName="account_circle" />
+                <div class="auth" v-if="!authStore.isAuthorized">
+                    <RouterLink to="/login">Вхід</RouterLink><span class="divider">|</span
+                    ><RouterLink to="/registration">Реєстрація</RouterLink>
+                </div>
+                <RouterLink v-else class="profile" to="/profile">
+                    <CustomIcon class="account-icon" iconName="account_circle" />
+                </RouterLink>
             </div>
         </div>
     </header>
@@ -32,14 +38,15 @@ import facebookSocial from 'src/app/assets/images/social-images/facebook-social.
 import telegramSocial from 'src/app/assets/images/social-images/telegram-social.svg';
 import youtubeSocial from 'src/app/assets/images/social-images/youtube-social.svg';
 import ProgressBar, { ProgressBarProps } from 'src/shared/ui/ProgressBar/ProgressBar.vue';
-import { config } from 'src/config';
-
-const { prozzoroUrl } = config;
+import { useAuthStore } from 'src/auth/store';
+import { RouterLink } from 'vue-router';
 
 export type AppHeaderProps = {
     showProgressBar?: boolean;
     progressBarProps?: ProgressBarProps;
 };
+
+const authStore = useAuthStore();
 
 const { showProgressBar, progressBarProps } = withDefaults(defineProps<AppHeaderProps>(), {
     showProgressBar: false,
@@ -156,5 +163,22 @@ const socialItems = [
 
 .account-icon {
     margin-right: var(--spacing-10);
+}
+
+.divider {
+    margin-left: var(--spacing-4);
+    margin-right: var(--spacing-4);
+}
+
+.link {
+    @include link();
+}
+
+.auth {
+    @include font-text-medium();
+}
+
+.profile {
+    cursor: pointer;
 }
 </style>

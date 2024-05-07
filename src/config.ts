@@ -1,6 +1,7 @@
 export type AppConfig = {
     prozzoroUrl: string;
     rootAppId: string;
+    apiUrl: string;
     theme: {
         breakpoints: {
             maxMobileWidth: number;
@@ -12,6 +13,7 @@ export type AppConfig = {
 export const config: AppConfig = {
     prozzoroUrl: 'https://prozorro.gov.ua',
     rootAppId: '#app',
+    apiUrl: 'https://online-auction-backend.com.ua',
     theme: {
         breakpoints: {
             maxMobileWidth: 1024,
@@ -19,3 +21,5 @@ export const config: AppConfig = {
         },
     },
 };
+
+//'https://online-auction-backend.com.ua' ||

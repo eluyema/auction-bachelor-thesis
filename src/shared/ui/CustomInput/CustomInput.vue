@@ -7,30 +7,60 @@
             @input="handleInput($event)"
             :class="{ 'empty-label': !label }"
             placeholder=" "
-            type="text"
+            :type="inputType"
         />
         <span class="label">{{ label }}</span>
         <IconButton
-            v-if="!!modelValue && !disabled"
+            v-if="showClearButton"
             class="clear-button"
+            type="button"
             iconName="close"
             @click="onClearText"
+        />
+        <IconButton
+            v-if="showPasswordButton"
+            class="clear-button"
+            type="button"
+            :iconName="showPasswordText ? 'visibility' : 'visibility_off'"
+            @mousedown="showPasswordText = true"
+            @mouseup="showPasswordText = false"
         />
     </label>
 </template>
 
 <script lang="ts" setup>
-import { defineProps, defineEmits } from 'vue';
+import { ref, computed } from 'vue';
 import IconButton from '../IconButton/IconButton.vue';
 
 export type CustomInputProps = {
     modelValue: string;
     label?: string;
     disabled?: boolean;
+    hideClearButton?: boolean;
+    type?: HTMLInputElement['type'];
     error?: boolean;
 };
 
-defineProps<CustomInputProps>();
+const props = defineProps<CustomInputProps>();
+
+const showClearButton = computed(
+    () =>
+        !!props.modelValue &&
+        !props.disabled &&
+        !props.hideClearButton &&
+        props.type !== 'password',
+);
+
+const showPasswordButton = computed(() => props.type === 'password');
+
+const showPasswordText = ref(false);
+
+const inputType = computed(() => {
+    if (props.type !== 'password') {
+        return props.type || 'text';
+    }
+    return showPasswordText.value ? 'text' : 'password';
+});
 
 const emits = defineEmits(['update:modelValue']);
 

@@ -65,6 +65,16 @@
     @include font-setup(12px, 16px);
 }
 
+@mixin link {
+    cursor: pointer;
+    color: var(--color-main-blue);
+    text-decoration: underline;
+
+    &:hover {
+        color: var(--color-hover-blue);
+    }
+}
+
 $config: ('s', 'm', 'l', 'xl', 'xxl');
 
 .font-size {
