@@ -22,7 +22,7 @@
                     <RouterLink to="/login">Вхід</RouterLink><span class="divider">|</span
                     ><RouterLink to="/registration">Реєстрація</RouterLink>
                 </div>
-                <RouterLink v-else class="profile" to="/profile">
+                <RouterLink v-else class="profile" to="/profile/my-info">
                     <CustomIcon class="account-icon" iconName="account_circle" />
                 </RouterLink>
             </div>
@@ -180,5 +180,8 @@ const socialItems = [
 
 .profile {
     cursor: pointer;
+    display: flex;
+    align-items: center;
+    text-decoration: none;
 }
 </style>
