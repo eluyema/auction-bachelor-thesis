@@ -40,7 +40,7 @@ class HttpClient {
     }
 
     async get<ResponseType = any>(url: string) {
-        return this.request<ResponseDto<ResponseType>>({
+        return this.request<ResponseType>({
             url,
             method: 'GET',
         });
@@ -51,7 +51,7 @@ class HttpClient {
         ResponseType = any,
         HeadersType extends Record<string, string> = any,
     >(url: string, payload: PayloadType, headers?: HeadersType) {
-        return this.request<ResponseDto<ResponseType>>({
+        return this.request<ResponseType>({
             url,
             method: 'POST',
             body: payload,
@@ -64,7 +64,7 @@ class HttpClient {
         ResponseType = any,
         HeadersType extends Record<string, string> = any,
     >(url: string, payload: PayloadType, headers?: HeadersType) {
-        return this.request<ResponseDto<ResponseType>>({
+        return this.request<ResponseType>({
             url,
             method: 'PUT',
             body: payload,

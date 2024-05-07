@@ -5,8 +5,10 @@ import { LoginResponseDto } from './dtos/LoginResponseDto';
 
 export class AuthClient extends HttpClient {
     async login(dto: LoginDto) {
-        const { result } = await this.post<LoginDto, LoginResponseDto>('/login', dto);
-        const { accessToken, refreshToken } = result;
+        const { accessToken, refreshToken } = await this.post<LoginDto, LoginResponseDto>(
+            '/login',
+            dto,
+        );
 
         localStorage.setItem('accessToken', accessToken);
         localStorage.setItem('refreshToken', refreshToken);
