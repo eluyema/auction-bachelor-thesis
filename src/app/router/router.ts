@@ -1,4 +1,4 @@
-import { createWebHistory, createRouter, NavigationGuardNext } from 'vue-router';
+import { createWebHistory, createRouter } from 'vue-router';
 
 import AuctionListPage from 'src/pages/auction/AuctionListPage/AuctionListPage.vue';
 import LoginPage from 'src/pages/auth/LoginPage/LoginPage.vue';
@@ -45,7 +45,7 @@ export const router = createRouter({
     routes,
 });
 
-router.beforeEach((to, from, next) => {
+router.beforeEach((to, _from, next) => {
     const authStore = useAuthStore();
 
     if (to.meta.requiresAuth && !authStore.isAuthorized) {
