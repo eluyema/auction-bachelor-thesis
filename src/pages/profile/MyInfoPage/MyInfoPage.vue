@@ -7,10 +7,14 @@
                     <div class="tab-header-block active-tab">
                         <span class="tab-header">Мої данні</span>
                     </div>
-                    <RouterLink to="/profile/auctions" class="tab-header-block">
+                    <RouterLink
+                        v-if="showAuctionsTab"
+                        to="/profile/auctions"
+                        class="tab-header-block"
+                    >
                         <span class="tab-header">Створені аукціони</span>
                     </RouterLink>
-                    <RouterLink to="/profile/users" class="tab-header-block">
+                    <RouterLink v-if="showUsersTab" to="/profile/users" class="tab-header-block">
                         <span class="tab-header">Пошук користувачів</span>
                     </RouterLink>
                 </div>
@@ -30,13 +34,40 @@
 </template>
 <script setup lang="ts">
 import { useAuthStore } from 'src/auth/store';
+import { AccessLevel } from 'src/entities/users/MyUser';
 import AppHeader from 'src/shared/ui/AppHeader/AppHeader.vue';
 import CustomButton from 'src/shared/ui/CustomButton/CustomButton.vue';
 import UserInfo from 'src/users/ui/UserInfo/UserInfo.vue';
-import { watch } from 'vue';
+import { computed, watch } from 'vue';
 import { RouterLink, useRouter } from 'vue-router';
 
 const authStore = useAuthStore();
+
+const showUsersTab = computed(() => {
+    const { user } = authStore.state;
+    if (!user) {
+        return false;
+    }
+
+    if (user.accessLevel === AccessLevel.ADMIN) {
+        return true;
+    }
+
+    return false;
+});
+
+const showAuctionsTab = computed(() => {
+    const { user } = authStore.state;
+    if (!user) {
+        return false;
+    }
+
+    if (user.accessLevel === AccessLevel.ADMIN || user.accessLevel === AccessLevel.MANAGER) {
+        return true;
+    }
+
+    return false;
+});
 
 const router = useRouter();
 
@@ -68,10 +99,6 @@ watch(
     padding-right: var(--spacing-20);
     margin-top: var(--spacing-24);
     padding: var(--spacing-16);
-}
-
-.tabs-head {
-    height: 70px;
 }
 
 .tabs-body {
@@ -112,6 +139,7 @@ watch(
 .tab-header-block {
     @include shadow-light-blue-float();
 
+    height: 70px;
     text-decoration: none;
     border-top-left-radius: var(--radius-large);
     border-top-right-radius: var(--radius-large);

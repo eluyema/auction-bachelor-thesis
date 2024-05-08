@@ -7,10 +7,10 @@
                     <RouterLink to="/profile/my-info" class="tab-header-block">
                         <span class="tab-header">Мої данні</span>
                     </RouterLink>
-                    <div class="tab-header-block active-tab">
+                    <div v-if="showAuctionsTab" class="tab-header-block active-tab">
                         <span class="tab-header">Створені аукціони</span>
                     </div>
-                    <RouterLink to="/profile/users" class="tab-header-block">
+                    <RouterLink v-if="showUsersTab" to="/profile/users" class="tab-header-block">
                         <span class="tab-header">Пошук користувачів</span>
                     </RouterLink>
                 </div>
@@ -20,8 +20,39 @@
     </div>
 </template>
 <script setup lang="ts">
+import { useAuthStore } from 'src/auth/store';
+import { AccessLevel } from 'src/entities/users/MyUser';
 import AppHeader from 'src/shared/ui/AppHeader/AppHeader.vue';
+import { computed } from 'vue';
 import { RouterLink } from 'vue-router';
+
+const authStore = useAuthStore();
+
+const showUsersTab = computed(() => {
+    const { user } = authStore.state;
+    if (!user) {
+        return false;
+    }
+
+    if (user.accessLevel === AccessLevel.ADMIN) {
+        return true;
+    }
+
+    return false;
+});
+
+const showAuctionsTab = computed(() => {
+    const { user } = authStore.state;
+    if (!user) {
+        return false;
+    }
+
+    if (user.accessLevel === AccessLevel.ADMIN || user.accessLevel === AccessLevel.MANAGER) {
+        return true;
+    }
+
+    return false;
+});
 </script>
 <style lang="scss" scoped>
 @import 'src/app/assets/styles/theme/index.scss';
