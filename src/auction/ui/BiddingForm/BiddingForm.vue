@@ -55,16 +55,10 @@ import DefaultVariant from './DefaultVariant.vue';
 import { AuctionBid, AuctionType, AuctionBidSettings } from 'src/entities/auction';
 import NonPriceVariant from './NonPriceVariant.vue';
 import ESCOVariant from './ESCOVariant.vue';
+import { BiddingFormState } from 'src/entities/auction/biddingFormState';
+import { previewMessageMap } from './data';
 
-enum BiddingFormState {
-    BEFORE_AUCTION_START,
-    BEFORE_ROUND_START,
-    BEFORE_YOUR_TURN_START,
-    ACTIVE_BIDDING_TIME,
-    BIDDING_TIME_END,
-}
-
-export interface BiddingForm {
+export interface BiddingFormProps {
     auctionStartAt: Date;
     roundStartAt: Date;
     yourTurnStartAt: Date;
@@ -79,7 +73,7 @@ const emit = defineEmits<{
 }>();
 
 const { auctionStartAt, roundStartAt, yourTurnStartAt, yourTurnEndAt, currentBid } =
-    defineProps<BiddingForm>();
+    defineProps<BiddingFormProps>();
 
 const calculateCurrentState = () => {
     const currentDate = new Date();
@@ -121,15 +115,6 @@ const getNearestDate = () => {
 
 const state = ref(calculateCurrentState());
 const nearestDate = ref(getNearestDate());
-
-const previewMessageMap = {
-    [BiddingFormState.BEFORE_AUCTION_START]: [
-        'Ви зареєстровані як учасник.',
-        'До початку аукціону:',
-    ],
-    [BiddingFormState.BEFORE_ROUND_START]: 'До початку раунду 1:',
-    [BiddingFormState.BEFORE_YOUR_TURN_START]: 'Ваш хід о 18:14:13, через',
-};
 
 const showPreview = computed(() =>
     [

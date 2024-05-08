@@ -3,31 +3,9 @@ import { VerticalListItemProps } from 'src/shared/ui/VerticalList/VerticalListIt
 import { TableRowProps, TableColumnProps } from 'src/shared/ui/TableData/index';
 import { getUuid } from 'src/shared/utils/getUuid';
 import { AuctionType } from 'src/entities/auction';
+import { tableColumns } from './data';
 
 class AuctionResultsMapper {
-    private static tableColumns: Record<AuctionType, TableColumnProps[]> = {
-        [AuctionType.DEFAULT]: [
-            { id: 'icon', name: '', width: 'min' },
-            { id: 'name', name: '', width: 'max' },
-            { id: 'fullPrice', name: 'Повна ціна, грн' },
-            { id: 'isWinner', name: '', width: 'min' },
-        ],
-        [AuctionType.NON_PRICE_CRITERIA]: [
-            { id: 'icon', name: '', width: 'min' },
-            { id: 'name', name: '', width: 'max' },
-            { id: 'fullPrice', name: 'Повна ціна, грн' },
-            { id: 'coefficient', name: 'Коефіцієнт' },
-            { id: 'enteredPrice', name: 'Приведена ціна, грн' },
-            { id: 'isWinner', name: '', width: 'min' },
-        ],
-        [AuctionType.ESCO]: [
-            { id: 'icon', name: '', width: 'min' },
-            { id: 'name', name: '', width: 'max' },
-            { id: 'fullPrice', name: 'Повна ціна, грн' },
-            { id: 'isWinner', name: '', width: 'min' },
-        ],
-    };
-
     static mapToVerticalListItems(results: AuctionResult[]): VerticalListItemProps[] {
         return results.map((result) => this.mapResultToVerticalListItem(result));
     }
@@ -107,7 +85,7 @@ class AuctionResultsMapper {
     static mapToTableDataColumns(results: AuctionResult[]): TableColumnProps[] {
         const auctionType = results[0].auctionType;
 
-        return this.tableColumns[auctionType];
+        return tableColumns[auctionType];
     }
 }
 

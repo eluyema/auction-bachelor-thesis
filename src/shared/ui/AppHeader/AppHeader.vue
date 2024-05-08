@@ -28,10 +28,8 @@
 <script setup lang="ts">
 import CustomIcon from 'src/shared/ui/CustomIcon/CustomIcon.vue';
 import prozorroLogo from 'src/app/assets/images/prozorro-logo.svg';
-import facebookSocial from 'src/app/assets/images/social-images/facebook-social.svg';
-import telegramSocial from 'src/app/assets/images/social-images/telegram-social.svg';
-import youtubeSocial from 'src/app/assets/images/social-images/youtube-social.svg';
 import ProgressBar, { ProgressBarProps } from 'src/shared/ui/ProgressBar/ProgressBar.vue';
+import { socialItems } from './data';
 import { config } from 'src/config';
 
 const { prozzoroUrl } = config;
@@ -45,24 +43,6 @@ const { showProgressBar, progressBarProps } = withDefaults(defineProps<AppHeader
     showProgressBar: false,
     progressBarProps: () => ({ variant: 'primary' }),
 });
-
-const socialItems = [
-    {
-        image: facebookSocial,
-        src: 'https://www.facebook.com/prozorro.gov.ua',
-        alt: 'facebook',
-    },
-    {
-        image: telegramSocial,
-        src: 'https://t.me/tendernya',
-        alt: 'telegram',
-    },
-    {
-        image: youtubeSocial,
-        src: 'https://www.youtube.com/channel/UCI-2twjrz8C4dYiQXDGZf5g',
-        alt: 'youtube',
-    },
-] as const;
 </script>
 
 <style scoped lang="scss">

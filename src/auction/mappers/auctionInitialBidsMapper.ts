@@ -2,31 +2,9 @@ import { AuctionInitialBid, AuctionType } from 'src/entities/auction';
 import { VerticalListItemProps } from 'src/shared/ui/VerticalList/VerticalListItem.vue';
 import { TableRowProps, TableColumnProps } from 'src/shared/ui/TableData/index';
 import { getUuid } from 'src/shared/utils/getUuid';
+import { tableColumns } from './data';
 
 class AuctionInitialBidsMapper {
-    private static tableColumns: Record<AuctionType, TableColumnProps[]> = {
-        [AuctionType.DEFAULT]: [
-            { id: 'icon', name: '', width: 'min' },
-            { id: 'name', name: '', width: 'max' },
-            { id: 'fullPrice', name: 'Повна ціна, грн' },
-            { id: 'isMax', name: '', width: 'min' },
-        ],
-        [AuctionType.NON_PRICE_CRITERIA]: [
-            { id: 'icon', name: '', width: 'min' },
-            { id: 'name', name: '', width: 'max' },
-            { id: 'fullPrice', name: 'Повна ціна, грн' },
-            { id: 'coefficient', name: 'Коефіцієнт' },
-            { id: 'enteredPrice', name: 'Приведена ціна, грн' },
-            { id: 'isMax', name: '', width: 'min' },
-        ],
-        [AuctionType.ESCO]: [
-            { id: 'icon', name: '', width: 'min' },
-            { id: 'name', name: '', width: 'max' },
-            { id: 'fullPrice', name: 'Повна ціна, грн' },
-            { id: 'isMax', name: '', width: 'min' },
-        ],
-    };
-
     static mapToVerticalListItems(
         results: AuctionInitialBid[],
         options = { showLabelForMax: false },
@@ -58,7 +36,7 @@ class AuctionInitialBidsMapper {
             },
             name: result.name,
             tableData,
-            labelValue: labelValue,
+            labelValue,
             labelProps: { colorVariant: 'primary', textShape: 'contained' },
         };
     }
@@ -124,7 +102,7 @@ class AuctionInitialBidsMapper {
     static mapToTableDataColumns(results: AuctionInitialBid[]): TableColumnProps[] {
         const auctionType = results[0].auctionType;
 
-        return this.tableColumns[auctionType];
+        return tableColumns[auctionType];
     }
 }
 
