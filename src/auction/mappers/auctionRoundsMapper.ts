@@ -43,7 +43,7 @@ class AuctionRoundsMapper {
             iconProps,
             name: result.name,
             tableData,
-            labelValue: labelValue,
+            labelValue,
             labelProps: { colorVariant: 'primary', textShape: 'contained' },
             bordered,
         };
