@@ -5,7 +5,7 @@
 @import 'grid';
 @import 'shadows';
 @import 'spaces';
-@import "globalOverride";
+@import 'globalOverride';
 
 :root {
     @include colors();

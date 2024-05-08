@@ -2,24 +2,24 @@ import { Meta, StoryObj } from '@storybook/vue3';
 import IconButton, { IconButtonProps } from './IconButton.vue';
 
 const meta: Meta<IconButtonProps> = {
-  title: 'Components/IconButton',
-  component: IconButton,
-  argTypes: {
-    iconName: {
-      control: 'text',
-      description: 'The name of the icon from Google Material Icons',
+    title: 'Components/IconButton',
+    component: IconButton,
+    argTypes: {
+        iconName: {
+            control: 'text',
+            description: 'The name of the icon from Google Material Icons',
+        },
+        colorVariant: {
+            control: 'select',
+            options: ['primary'],
+            description: 'The color variant of the icon',
+        },
+        paddingSize: {
+            control: 'select',
+            options: ['small', 'medium', 'large'],
+            description: 'The padding size of the button',
+        },
     },
-    colorVariant: {
-      control: 'select',
-      options: ['primary'],
-      description: 'The color variant of the icon',
-    },
-    paddingSize: {
-      control: 'select',
-      options: ['small', 'medium', 'large'],
-      description: 'The padding size of the button',
-    },
-  },
 };
 
 export default meta;
@@ -27,72 +27,72 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const PrimaryUnset: Story = {
-  args: {
-    iconName: 'home',
-    colorVariant: 'primary',
-    paddingSize: 'unset',
-  },
-  render: (args) => ({
-    components: { IconButton },
-    setup() {
-      return { args };
+    args: {
+        iconName: 'home',
+        colorVariant: 'primary',
+        paddingSize: 'unset',
     },
-    template: '<IconButton v-bind="args"/>',
-  }),
+    render: (args) => ({
+        components: { IconButton },
+        setup() {
+            return { args };
+        },
+        template: '<IconButton v-bind="args"/>',
+    }),
 };
 
 export const ErrorMedium: Story = {
-  args: {
-    iconName: 'error',
-    paddingSize: 'medium',
-  },
-  render: (args) => ({
-    components: { IconButton },
-    setup() {
-      return { args };
+    args: {
+        iconName: 'error',
+        paddingSize: 'medium',
     },
-    template: '<IconButton v-bind="args"/>',
-  }),
+    render: (args) => ({
+        components: { IconButton },
+        setup() {
+            return { args };
+        },
+        template: '<IconButton v-bind="args"/>',
+    }),
 };
 
 export const WarningLarge: Story = {
-  args: {
-    iconName: 'warning',
-    paddingSize: 'large',
-  },
-  render: (args) => ({
-    components: { IconButton },
-    setup() {
-      return { args };
+    args: {
+        iconName: 'warning',
+        paddingSize: 'large',
     },
-    template: '<IconButton v-bind="args"/>',
-  }),
+    render: (args) => ({
+        components: { IconButton },
+        setup() {
+            return { args };
+        },
+        template: '<IconButton v-bind="args"/>',
+    }),
 };
 
 export const SuccessNoPadding: Story = {
-  args: {
-    iconName: 'check_circle',
-    paddingSize: 'medium',
-  },
-  render: (args) => ({
-    components: { IconButton },
-    setup() {
-      return { args };
+    args: {
+        iconName: 'check_circle',
+        paddingSize: 'medium',
     },
-    template: '<IconButton v-bind="args"/>',
-  }),
+    render: (args) => ({
+        components: { IconButton },
+        setup() {
+            return { args };
+        },
+        template: '<IconButton v-bind="args"/>',
+    }),
 };
 
 export const SecondaryCustom: Story = {
-  args: {
-    iconName: 'face',
-    paddingSize: 'large',
-  },
-  render: (args) => ({
-    components: { IconButton },
-    setup() {
-      return { args };
+    args: {
+        iconName: 'face',
+        paddingSize: 'large',
     },
-    template: '<IconButton v-bind="args"/>',
-  }),
+    render: (args) => ({
+        components: { IconButton },
+        setup() {
+            return { args };
+        },
+        template: '<IconButton v-bind="args"/>',
+    }),
 };
