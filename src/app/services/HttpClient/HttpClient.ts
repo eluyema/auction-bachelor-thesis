@@ -141,7 +141,7 @@ class HttpClient {
             return;
         }
 
-        this.refreshAccessJob = this.rawRequest<void>(
+        this.refreshAccessJob = this.rawRequest<{ refreshToken: string; accessToken: string }>(
             {
                 url: '/auth/refresh',
                 method: 'POST',
@@ -151,6 +151,10 @@ class HttpClient {
             },
             { withoutPrefix: true },
         )
+            .then((res) => {
+                localStorage.setItem('accessToken', res.accessToken);
+                localStorage.setItem('refreshToken', res.refreshToken);
+            })
             .catch((err) => {
                 this.notifyUnauthorized();
 
