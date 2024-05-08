@@ -126,8 +126,6 @@ const sendBid = () => {
         aborted: false,
     };
 
-    console.log(bid);
-
     emit('bidSent', bid);
 };
 

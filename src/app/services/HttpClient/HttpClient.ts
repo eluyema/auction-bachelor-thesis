@@ -103,7 +103,7 @@ class HttpClient {
         };
         //@ts-ignore
         const isJsonContentType = mergedConfig.headers['content-type'] === 'application/json';
-        console.log(mergedConfig);
+
         const response = await fetch(`${this.apiUrl}${this.prefix}${url}`, {
             ...mergedConfig,
             //@ts-ignore

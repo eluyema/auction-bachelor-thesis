@@ -15,10 +15,10 @@
     </table>
 </template>
 <script setup lang="ts">
-import { AccessLevelType, MyUser } from 'src/entities/users/MyUser';
+import { AccessLevelType, User } from 'src/entities/users/MyUser';
 
 export type UserInfoProps = {
-    user: MyUser;
+    user: User;
 };
 
 const accessLevelMap: Record<AccessLevelType, string> = {

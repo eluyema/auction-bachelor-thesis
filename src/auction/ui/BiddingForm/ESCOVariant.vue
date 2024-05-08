@@ -257,8 +257,6 @@ const sendBid = (fullPrice: number) => {
         aborted: false,
     };
 
-    console.log(bid);
-
     emit('bidSent', bid);
 };
 

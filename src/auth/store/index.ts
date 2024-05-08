@@ -1,10 +1,10 @@
 import { defineStore } from 'pinia';
-import { MyUser } from 'src/entities/users/MyUser';
+import { User } from 'src/entities/users/MyUser';
 import { computed, inject, reactive } from 'vue';
 import { Services } from 'src/bootstrapServices';
 
 export interface AuthState {
-    user: MyUser | null;
+    user: User | null;
 }
 
 export const useAuthStore = defineStore('auth', () => {

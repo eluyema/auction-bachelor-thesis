@@ -18,19 +18,72 @@
                         <span class="tab-header">Пошук користувачів</span>
                     </div>
                 </div>
-                <div class="tabs-body"></div>
+                <div class="tabs-body">
+                    <UserSearchForm
+                        @search="onSearchUser"
+                        :pendingForm="usersStore.state.searchStatus === LoadingStatuses.PENDING"
+                    />
+                    <div class="user-container">
+                        <div v-if="usersStore.state.isNotFound">
+                            <span class="not-found-text"
+                                >Юзера з поштою "{{ usersStore.state.lastSearchEmail }}" не
+                                знайдено</span
+                            >
+                        </div>
+                        <UserEditorForm
+                            v-else-if="userUpdatedata"
+                            :user="userUpdatedata"
+                            @updateUser="onUpdateUser"
+                            updateError=""
+                        />
+                        <CustomLabel
+                            v-if="usersStore.state.updateStatus === LoadingStatuses.FULFILLED"
+                            class="success-updated-text"
+                            colorVariant="success"
+                            >Користувач успішно оновлений</CustomLabel
+                        >
+                    </div>
+                </div>
             </div>
         </main>
     </div>
 </template>
 <script setup lang="ts">
 import { useAuthStore } from 'src/auth/store';
-import { AccessLevel } from 'src/entities/users/MyUser';
+import { LoadingStatuses } from 'src/entities/application';
+import { AccessLevel, User } from 'src/entities/users/MyUser';
 import AppHeader from 'src/shared/ui/AppHeader/AppHeader.vue';
+import CustomLabel from 'src/shared/ui/CustomLabel/CustomLabel.vue';
+import { useUsersSettingsStore } from 'src/users/store/usersSettingsStore';
+import UserEditorForm from 'src/users/ui/UserEditorForm/UserEditorForm.vue';
+import UserSearchForm from 'src/users/ui/UserSearchForm/UserSearchForm.vue';
 import { computed } from 'vue';
 import { RouterLink } from 'vue-router';
 
 const authStore = useAuthStore();
+
+const usersStore = useUsersSettingsStore();
+
+const onSearchUser = (data: { email: string }) => {
+    usersStore.findByEmail(data);
+};
+
+const onUpdateUser = (data: Omit<User, 'id'>) => {
+    usersStore.updateUser(data);
+};
+
+const userUpdatedata = computed(() => {
+    const user = usersStore.state.user;
+
+    if (!user) {
+        return null;
+    }
+    return {
+        name: user.name,
+        email: user.email,
+        accessLevel: user.accessLevel,
+    };
+});
 
 const showUsersTab = computed(() => {
     const { user } = authStore.state;
@@ -89,6 +142,10 @@ const showAuctionsTab = computed(() => {
     flex: 1;
     height: 100%;
     clip-path: inset(0px -10px -10px -10px);
+    padding-top: var(--spacing-24);
+    padding-left: var(--spacing-28);
+    padding-right: var(--spacing-28);
+    padding-bottom: var(--spacing-24);
     background-color: var(--background-color-white);
     border-radius: var(--radius-large);
     border-top: 0;
@@ -98,7 +155,7 @@ const showAuctionsTab = computed(() => {
 .tabs-container {
     max-width: 1400px;
     width: 100%;
-    min-height: 80%;
+    min-height: 100%;
     width: 100%;
     display: flex;
     flex-direction: column;
@@ -139,5 +196,17 @@ const showAuctionsTab = computed(() => {
             border-bottom: 0;
         }
     }
+}
+
+.user-container {
+    margin-top: var(--spacing-24);
+
+    & .not-found-text {
+        @include font-text-large();
+    }
+}
+
+.success-updated-text {
+    margin-top: var(--spacing-24);
 }
 </style>

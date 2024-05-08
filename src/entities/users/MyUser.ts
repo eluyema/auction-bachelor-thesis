@@ -6,7 +6,7 @@ export const AccessLevel = {
 
 export type AccessLevelType = (typeof AccessLevel)[keyof typeof AccessLevel];
 
-export interface MyUser {
+export interface User {
     id: string;
     name: string;
     email: string;

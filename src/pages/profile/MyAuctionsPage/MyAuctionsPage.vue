@@ -84,6 +84,10 @@ const showAuctionsTab = computed(() => {
 
     flex: 1;
     height: 100%;
+    padding-top: var(--spacing-24);
+    padding-left: var(--spacing-28);
+    padding-right: var(--spacing-28);
+    padding-bottom: var(--spacing-24);
     clip-path: inset(0px -10px -10px -10px);
     background-color: var(--background-color-white);
     border-radius: var(--radius-large);
@@ -94,7 +98,7 @@ const showAuctionsTab = computed(() => {
 .tabs-container {
     max-width: 1400px;
     width: 100%;
-    min-height: 80%;
+    min-height: 100%;
     width: 100%;
     display: flex;
     flex-direction: column;

@@ -124,7 +124,7 @@ watch(
 .tabs-container {
     max-width: 1400px;
     width: 100%;
-    min-height: 80%;
+    min-height: 100%;
     width: 100%;
     display: flex;
     flex-direction: column;
