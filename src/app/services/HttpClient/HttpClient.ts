@@ -84,12 +84,10 @@ class HttpClient {
         }
     }
 
-    private async rawRequest<ResponseType>({
-        url,
-        method,
-        headers,
-        body,
-    }: Request): Promise<ResponseType> {
+    private async rawRequest<ResponseType>(
+        { url, method, headers, body }: Request,
+        params = { withoutPrefix: false },
+    ): Promise<ResponseType> {
         const accessToken = this.getAccessToken();
 
         const mergedConfig = {
@@ -104,7 +102,9 @@ class HttpClient {
         //@ts-ignore
         const isJsonContentType = mergedConfig.headers['content-type'] === 'application/json';
 
-        const response = await fetch(`${this.apiUrl}${this.prefix}${url}`, {
+        const prefix = params.withoutPrefix ? '' : this.prefix;
+
+        const response = await fetch(`${this.apiUrl}${prefix}${url}`, {
             ...mergedConfig,
             //@ts-ignore
             body: isJsonContentType ? JSON.stringify(body) : body,
@@ -141,13 +141,16 @@ class HttpClient {
             return;
         }
 
-        this.refreshAccessJob = this.rawRequest<void>({
-            url: '/auth/refresh',
-            method: 'POST',
-            body: {
-                refreshToken,
+        this.refreshAccessJob = this.rawRequest<void>(
+            {
+                url: '/auth/refresh',
+                method: 'POST',
+                body: {
+                    refreshToken,
+                },
             },
-        })
+            { withoutPrefix: true },
+        )
             .catch((err) => {
                 this.notifyUnauthorized();
 
