@@ -84,7 +84,7 @@ const submitUpdate = async () => {
     try {
         await formSchema.value.validate(formInput);
         errorText.value = '';
-        console.log(555, formInput);
+
         const updatedUser = {
             name: formInput.name,
             email: formInput.email,

@@ -13,7 +13,7 @@ export type AppConfig = {
 export const config: AppConfig = {
     prozzoroUrl: 'https://prozorro.gov.ua',
     rootAppId: '#app',
-    apiUrl: 'http://localhost:3000',
+    apiUrl: 'https://online-auction-backend.com.ua',
     theme: {
         breakpoints: {
             maxMobileWidth: 1024,

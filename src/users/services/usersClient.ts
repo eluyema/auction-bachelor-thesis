@@ -17,7 +17,6 @@ export class UsersClient extends HttpClient {
     }
 
     async updateUser(email: string, data: UpdateUserDto) {
-        console.log('fff', email, data);
         const user = await this.put<UpdateUserDto, UserResponseDto>('/email/' + email, data);
 
         return user;
