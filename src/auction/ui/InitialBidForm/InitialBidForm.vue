@@ -27,7 +27,6 @@
 </template>
 <script setup lang="ts">
 import { LoadingStatuses } from 'src/entities/application';
-import { AuctionFull } from 'src/entities/auction/auctionFull';
 import CustomButton from 'src/shared/ui/CustomButton/CustomButton.vue';
 import CustomInput from 'src/shared/ui/CustomInput/CustomInput.vue';
 import { useUsersSettingsStore } from 'src/users/store/usersSettingsStore';

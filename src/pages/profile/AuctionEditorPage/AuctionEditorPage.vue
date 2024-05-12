@@ -62,7 +62,7 @@ import { myAuctionsTab, selectAvailableTabs } from 'src/entities/profile/tabs';
 import CustomButton from 'src/shared/ui/CustomButton/CustomButton.vue';
 import TabsPageWrapper from 'src/shared/ui/TabsPageWrapper/TabsPageWrapper.vue';
 import { formatDateUA } from 'src/shared/utils/formatDate';
-import { computed, onMounted, ref, watch } from 'vue';
+import { computed, onMounted, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 
 const authStore = useAuthStore();

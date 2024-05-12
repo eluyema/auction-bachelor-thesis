@@ -81,7 +81,7 @@ import { AuctionType } from 'src/entities/auction';
 import { myAuctionsTab, selectAvailableTabs } from 'src/entities/profile/tabs';
 import CustomInput from 'src/shared/ui/CustomInput/CustomInput.vue';
 import TabsPageWrapper from 'src/shared/ui/TabsPageWrapper/TabsPageWrapper.vue';
-import { computed, onBeforeMount, onMounted, reactive, ref, watch } from 'vue';
+import { computed, onBeforeMount, reactive, ref, watch } from 'vue';
 import { date, number, object, string } from 'yup';
 import VueDatePicker from '@vuepic/vue-datepicker';
 import '@vuepic/vue-datepicker/dist/main.css';
