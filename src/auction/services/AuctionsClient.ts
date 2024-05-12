@@ -3,7 +3,7 @@ import { AuctionInfoDto } from './dto/auctionInfoDto';
 import { AuctionInfo } from 'src/entities/auction/auctionInfo';
 
 export class AuctionClient extends HttpClient {
-    async getMyAuctions() {
+    async getAllAuctions() {
         const rawAuctions = await this.get<AuctionInfoDto[]>('/');
 
         const auctions: AuctionInfo[] = rawAuctions.map((data) => ({ ...data }));

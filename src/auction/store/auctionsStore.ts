@@ -24,7 +24,7 @@ export const useAuctionsStore = defineStore('auction', () => {
             }
             state.auctionsStatus = LoadingStatuses.PENDING;
             state.auctions = [];
-            const auctions = await services.managerAuctionClient.getMyAuctions();
+            const auctions = await services.auctionClient.getAllAuctions();
             state.auctionsStatus = LoadingStatuses.FULFILLED;
             state.auctions = auctions;
         } catch (err) {
