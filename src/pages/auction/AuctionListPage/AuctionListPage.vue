@@ -1,11 +1,27 @@
 <template>
     <div class="container">
         <AppHeader />
-        <main>Auction List Page</main>
+        <main class="content">
+            <h1 class="auctions-list-title">Список аукціонів</h1>
+            <AuctionsList
+                class="auctions-list"
+                :auctions="autionsStore.state.auctions"
+                linkBase="/auctions/"
+            />
+        </main>
     </div>
 </template>
 <script setup lang="ts">
+import { useAuctionsStore } from 'src/auction/store/auctionsStore';
+import AuctionsList from 'src/auction/ui/AuctionsList/AuctionsList.vue';
 import AppHeader from 'src/shared/ui/AppHeader/AppHeader.vue';
+import { onMounted } from 'vue';
+
+const autionsStore = useAuctionsStore();
+
+onMounted(() => {
+    autionsStore.loadAuctions();
+});
 </script>
 
 <style lang="scss" scoped>
@@ -14,5 +30,22 @@ import AppHeader from 'src/shared/ui/AppHeader/AppHeader.vue';
 .container {
     background-color: var(--background-color-grey);
     flex: 1;
+}
+
+.auctions-list-title {
+    @include font-h1();
+}
+
+.auctions-list {
+    margin-top: var(--spacing-16);
+}
+
+.content {
+    margin-left: auto;
+    margin-right: auto;
+    width: 100%;
+    max-width: 1200px;
+    margin-top: var(--spacing-24);
+    padding: var(--spacing-16);
 }
 </style>
