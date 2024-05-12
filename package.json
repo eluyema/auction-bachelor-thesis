@@ -15,6 +15,7 @@
   },
   "dependencies": {
     "@storybook/addon-backgrounds": "^8.0.9",
+    "@vuepic/vue-datepicker": "^8.5.1",
     "pinia": "^2.1.7",
     "uuid": "^9.0.1",
     "vue": "^3.4.15",

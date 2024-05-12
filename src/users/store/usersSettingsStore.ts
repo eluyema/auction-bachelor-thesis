@@ -23,6 +23,14 @@ export const useUsersSettingsStore = defineStore('users', () => {
     });
     const services = inject<Services>('services');
 
+    const reloadState = () => {
+        state.user = null;
+        state.searchStatus = LoadingStatuses.IDLE;
+        state.updateStatus = LoadingStatuses.IDLE;
+        state.isNotFound = false;
+        state.lastSearchEmail = '';
+    };
+
     const findByEmail = async (data: { email: string }) => {
         try {
             if (!services) {
@@ -67,5 +75,5 @@ export const useUsersSettingsStore = defineStore('users', () => {
         }
     };
 
-    return { state, findByEmail, updateUser };
+    return { state, findByEmail, updateUser, reloadState };
 });

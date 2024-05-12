@@ -45,6 +45,13 @@ class HttpClient {
         });
     }
 
+    async delete<ResponseType = any>(url: string) {
+        return this.request<ResponseType>({
+            url,
+            method: 'DELETE',
+        });
+    }
+
     async post<
         PayloadType = any,
         ResponseType = any,

@@ -8,6 +8,8 @@ import MyInfoPage from 'src/pages/profile/MyInfoPage/MyInfoPage.vue';
 import UsersSettingsPage from 'src/pages/profile/UsersSettingsPage/UsersSettingsPage.vue';
 import { useAuthStore } from 'src/auth/store';
 import NotFound from 'src/pages/NotFound.vue';
+import AuctionEditorPage from 'src/pages/profile/AuctionEditorPage/AuctionEditorPage.vue';
+import CreateAuction from 'src/pages/profile/CreateAuction/CreateAuction.vue';
 
 const routes = [
     { path: '/', component: AuctionListPage },
@@ -16,6 +18,20 @@ const routes = [
     {
         path: '/profile/auctions',
         component: MyAuctionsPage,
+        meta: {
+            requiresAuth: true,
+        },
+    },
+    {
+        path: '/profile/auctions/create',
+        component: CreateAuction,
+        meta: {
+            requiresAuth: true,
+        },
+    },
+    {
+        path: '/profile/auctions/:auctionId',
+        component: AuctionEditorPage,
         meta: {
             requiresAuth: true,
         },
