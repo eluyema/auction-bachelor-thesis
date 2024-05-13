@@ -61,5 +61,5 @@ export const useAuctionsStore = defineStore('auction', () => {
         state.currentAuction.Rounds = rounds;
     };
 
-    return { state, loadAuctions, loadAuctionById, updateRounds };
+    return { state, updateRounds, loadAuctions, loadAuctionById };
 });
