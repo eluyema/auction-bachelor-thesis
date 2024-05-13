@@ -250,7 +250,7 @@ const sendBid = (fullPrice: number) => {
     const bid: AuctionBid = {
         id: getUuid(),
         auctionType: AuctionType.ESCO,
-        fullPrice: formatNumberToPrice(fullPrice),
+        fullPrice: fullPrice,
         years: +formInput.years,
         days: +formInput.days,
         percent: +formInput.percent,

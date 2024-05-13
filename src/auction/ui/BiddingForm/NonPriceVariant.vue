@@ -152,7 +152,7 @@ const sendBid = () => {
     const bid: AuctionBid = {
         id: getUuid(),
         auctionType: AuctionType.NON_PRICE_CRITERIA,
-        fullPrice: formatNumberToPrice(+formInput.fullPrice),
+        fullPrice: +formInput.fullPrice,
         coefficient: coefficient,
         enteredPrice: formatNumberToPrice(+formInput.enteredPrice),
         aborted: false,

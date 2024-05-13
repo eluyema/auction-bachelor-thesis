@@ -69,7 +69,6 @@ import BiddingForm from 'src/auction/ui/BiddingForm/BiddingForm.vue';
 import { config } from 'src/config';
 import { AuctionBid, AuctionType } from 'src/entities/auction';
 import { AuctionFull } from 'src/entities/auction/auctionFull';
-import { BidFull } from 'src/entities/bid/BidFull';
 import AppHeader from 'src/shared/ui/AppHeader/AppHeader.vue';
 import { ProgressBarProps } from 'src/shared/ui/ProgressBar/ProgressBar.vue';
 import { computed, onMounted, onUnmounted, ref } from 'vue';
