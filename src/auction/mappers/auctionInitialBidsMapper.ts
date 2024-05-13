@@ -1,4 +1,4 @@
-import { AuctionInitialBid, AuctionType } from 'src/entities/auction';
+import { AuctionInitialBid, AuctionType, Participation } from 'src/entities/auction';
 import { VerticalListItemProps } from 'src/shared/ui/VerticalList/VerticalListItem.vue';
 import { TableRowProps, TableColumnProps } from 'src/shared/ui/TableData/index';
 import { getUuid } from 'src/shared/utils/getUuid';
@@ -7,7 +7,10 @@ import { AuctionFull } from 'src/entities/auction/auctionFull';
 import { formatNumberToPrice } from 'src/shared/utils/formatNumberToPrice';
 
 class AuctionInitialBidsMapper {
-    static mapToInitialBids(auction: AuctionFull): AuctionInitialBid[] {
+    static mapToInitialBids(
+        auction: AuctionFull,
+        participation: Participation,
+    ): AuctionInitialBid[] {
         if (auction.Rounds.length === 0) {
             return [];
         }
@@ -19,7 +22,16 @@ class AuctionInitialBidsMapper {
 
         if (auction.auctionType === AuctionType.DEFAULT) {
             const bids: AuctionInitialBid[] = initRound.Bids.map((bid) => {
-                const name = bid.User ? bid.User.name : 'Учасник №' + (bid.sequenceNumber + 1);
+                let name = 'Учасник №' + (bid.sequenceNumber + 1);
+                if (
+                    participation.isParticipant &&
+                    participation.sequenceNumber !== null &&
+                    participation.sequenceNumber === bid.sequenceNumber
+                ) {
+                    name = 'Ви';
+                } else if (bid.User) {
+                    name = bid.User.name;
+                }
 
                 const preparedRound: AuctionInitialBid = {
                     id: bid.id,

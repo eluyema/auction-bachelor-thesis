@@ -3,6 +3,8 @@ import { AuctionInfoDto } from './dto/auctionInfoDto';
 import { AuctionInfo } from 'src/entities/auction/auctionInfo';
 import { AuctionFull } from 'src/entities/auction/auctionFull';
 import { AuctionFullDto } from './dto/auctionFullDto';
+import { MyParticipationDto } from './dto/myParticipationDto';
+import { MakeBidDto } from './dto/makeBidDto';
 
 export class AuctionClient extends HttpClient {
     async getAllAuctions() {
@@ -19,5 +21,23 @@ export class AuctionClient extends HttpClient {
         const auction: AuctionFull = { ...rawAuction };
 
         return auction;
+    }
+
+    async getMyParticipation(auctionId: string): Promise<{
+        isParticipant: boolean;
+        sequenceNumber: number | null;
+    }> {
+        const { isParticipant, sequenceNumber } = await this.get<MyParticipationDto>(
+            '/' + auctionId + '/participation',
+        );
+
+        return {
+            isParticipant,
+            sequenceNumber: Number.isInteger(sequenceNumber) ? (sequenceNumber as number) : null,
+        };
+    }
+
+    async makeBid(auctionId: string, total: number): Promise<void> {
+        await this.post<MakeBidDto>('/' + auctionId + '/bids', { total });
     }
 }

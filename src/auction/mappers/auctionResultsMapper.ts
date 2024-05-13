@@ -1,4 +1,4 @@
-import { AuctionResult } from 'src/entities/auction';
+import { AuctionResult, Participation } from 'src/entities/auction';
 import { VerticalListItemProps } from 'src/shared/ui/VerticalList/VerticalListItem.vue';
 import { TableRowProps, TableColumnProps } from 'src/shared/ui/TableData/index';
 import { getUuid } from 'src/shared/utils/getUuid';
@@ -11,8 +11,9 @@ class AuctionResultsMapper {
     static mapToAuctionResults(params: {
         round: RoundFull;
         auctionType: AuctionType;
+        participation: Participation;
     }): AuctionResult[] {
-        const { round, auctionType } = params;
+        const { round, auctionType, participation } = params;
 
         if (!round.Bids.length) {
             return [];
@@ -29,7 +30,16 @@ class AuctionResultsMapper {
         const minBid = filteredBids[0];
 
         return sortedBids.map((bid) => {
-            const name = bid.User ? bid.User.name : 'Учасник №' + (bid.sequenceNumber + 1);
+            let name = 'Учасник №' + (bid.sequenceNumber + 1);
+            if (
+                participation.isParticipant &&
+                participation.sequenceNumber !== null &&
+                participation.sequenceNumber === bid.sequenceNumber
+            ) {
+                name = 'Ви';
+            } else if (bid.User) {
+                name = bid.User.name;
+            }
 
             const auctionRoundBid: AuctionResult = {
                 id: bid.id,

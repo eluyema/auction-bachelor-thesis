@@ -1,6 +1,8 @@
 <template>
     <div class="container">
-        <AppHeader :showProgressBar="!!currentAuction" :progressBarProps="progressBarProps" />
+        <div class="auction-header">
+            <AppHeader :showProgressBar="!!currentAuction" :progressBarProps="progressBarProps" />
+        </div>
         <main class="content-wrapper">
             <div class="content">
                 <AuctionInfoBanner
@@ -33,8 +35,21 @@
                     v-if="!isNoParticipants && isRoundsEnded"
                     :list="auctionResultsList"
                 />
+                <div class="bidding-form-space" v-if="currentAuction && showBiddingForm"></div>
             </div>
         </main>
+        <BiddingForm
+            class="bidding-form-section"
+            @bidSent="onMakeBid"
+            v-if="currentAuction && showBiddingForm"
+            :auctionStartAt="currentAuction.auctionStartAt"
+            :roundStartAt="currentAuction.firstRoundStartAt"
+            :currentBid="null"
+            :yourTurnStartAt="yourTurnDates.startAt"
+            :yourTurnEndAt="yourTurnDates.endAt"
+            :auctionEndAt="roundsDateInterval.endAt.toJSON()"
+            :settings="{ auctionType: AuctionType.DEFAULT, fullPriceMin: 0 }"
+        />
     </div>
 </template>
 <script setup lang="ts">
@@ -50,8 +65,11 @@ import AuctionInitialBids from 'src/auction/ui/AuctionInitialBids/AuctionInitial
 import AuctionResults from 'src/auction/ui/AuctionResults/AuctionResults.vue';
 import AuctionRound, { AuctionRoundProps } from 'src/auction/ui/AuctionRound/AuctionRound.vue';
 import AuctionStartDateSection from 'src/auction/ui/AuctionStartDateSection/AuctionStartDateSection.vue';
+import BiddingForm from 'src/auction/ui/BiddingForm/BiddingForm.vue';
 import { config } from 'src/config';
+import { AuctionBid, AuctionType } from 'src/entities/auction';
 import { AuctionFull } from 'src/entities/auction/auctionFull';
+import { BidFull } from 'src/entities/bid/BidFull';
 import AppHeader from 'src/shared/ui/AppHeader/AppHeader.vue';
 import { ProgressBarProps } from 'src/shared/ui/ProgressBar/ProgressBar.vue';
 import { computed, onMounted, onUnmounted, ref } from 'vue';
@@ -63,6 +81,13 @@ const socketInstance = ref(new AuctionSocket(config.apiUrl));
 
 const currentTime = ref(new Date());
 const currentAuction = computed<AuctionFull | null>(() => auctionsStore.state.currentAuction);
+
+const showBiddingForm = computed(
+    () =>
+        currentAuction.value &&
+        auctionsStore.state.participation.isParticipant &&
+        currentTime.value < roundsDateInterval.value.endAt,
+);
 
 const getRoundProps = (
     roundNum: 1 | 2 | 3,
@@ -90,6 +115,7 @@ const getRoundProps = (
         round,
         currentDate,
         auctionType: auction.auctionType,
+        participation: auctionsStore.state.participation,
     });
 
     const disabledIcons =
@@ -152,6 +178,7 @@ const auctionResultsList = computed(() => {
     return AuctionResultsMapper.mapToAuctionResults({
         round: thirdRound,
         auctionType: currentAuction.value.auctionType,
+        participation: auctionsStore.state.participation,
     });
 });
 
@@ -165,7 +192,7 @@ const progressBarProps = computed<ProgressBarProps>(() => {
     if (isEmptyRounds && new Date(currentAuction.value.firstRoundStartAt) < currentTime.value) {
         return { message: 'Завершено', variant: 'success' };
     } else if (isEmptyRounds) {
-        return { message: 'Очікування2', variant: 'warning' };
+        return { message: 'Очікування', variant: 'warning' };
     }
 
     const rounds = currentAuction.value.Rounds;
@@ -277,7 +304,10 @@ const initialBids = computed(() => {
         return [];
     }
 
-    return AuctionInitialBidsMapper.mapToInitialBids(currentAuction.value);
+    return AuctionInitialBidsMapper.mapToInitialBids(
+        currentAuction.value,
+        auctionsStore.state.participation,
+    );
 });
 
 const isAuctionStarted = computed(() => {
@@ -298,11 +328,67 @@ const auctionId = computed(() => {
     return Array.isArray(auctionIdParam) ? auctionIdParam[0] : auctionIdParam;
 });
 
+const onMakeBid = (bid: AuctionBid) => {
+    if (!currentAuction.value) {
+        return;
+    }
+
+    auctionsStore.makeBid(currentAuction.value.id, Number(bid.fullPrice));
+};
+
+const yourTurnDates = computed(() => {
+    if (
+        !currentAuction.value ||
+        !auctionsStore.state.participation.isParticipant ||
+        auctionsStore.state.participation.sequenceNumber === null
+    ) {
+        return { startAt: new Date(0).toJSON(), endAt: new Date(0).toJSON() };
+    }
+
+    const yourSequenceNumber = auctionsStore.state.participation.sequenceNumber;
+
+    const currentRound = currentAuction.value.Rounds.find(
+        (round) =>
+            new Date(round.startAt) < currentTime.value &&
+            new Date(round.endAt) > currentTime.value,
+    );
+
+    const nextRounds = currentAuction.value.Rounds.filter(
+        (round) => new Date(round.startAt) > currentTime.value,
+    );
+
+    if (!currentRound) {
+        return { startAt: new Date(0).toJSON(), endAt: new Date(0).toJSON() };
+    }
+
+    const yourBid = currentRound.Bids.find((bid) => bid.sequenceNumber === yourSequenceNumber);
+
+    if (!yourBid) {
+        return { startAt: new Date(0).toJSON(), endAt: new Date(0).toJSON() };
+    }
+
+    if (new Date(yourBid.endAt) < currentTime.value && nextRounds.length) {
+        const nextRound = [...nextRounds].sort(
+            (a, b) => new Date(a.startAt).getTime() - new Date(b.startAt).getTime(),
+        )[0];
+        const yourBid = nextRound.Bids.find((bid) => bid.sequenceNumber === yourSequenceNumber);
+
+        if (!yourBid) {
+            return { startAt: new Date(0).toJSON(), endAt: new Date(0).toJSON() };
+        }
+
+        return { startAt: yourBid.startAt, endAt: yourBid.endAt };
+    }
+
+    return { startAt: yourBid.startAt, endAt: yourBid.endAt };
+});
+
 onMounted(() => {
     if (!auctionId.value) {
         return;
     }
 
+    auctionsStore.loadMyParticipation(auctionId.value);
     auctionsStore.loadAuctionById(auctionId.value);
     socketInstance.value.initConnect({ auctionId: auctionId.value });
     socketInstance.value.onRoundsUpdate(auctionsStore.updateRounds);
@@ -325,11 +411,12 @@ onMounted(() => {
     display: flex;
     flex-direction: column;
     flex: 1;
+    padding-top: var(--spacing-56);
 }
 
 .content-wrapper {
     width: 100%;
-    padding: var(--spacing-24) var(--spacing-40);
+    padding: var(--spacing-48) var(--spacing-40);
 }
 
 .content {
@@ -380,5 +467,23 @@ onMounted(() => {
 
 .round-block {
     flex: 1;
+}
+
+.auction-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+}
+
+.bidding-form-section {
+    position: fixed !important;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}
+
+.bidding-form-space {
+    height: 200px;
 }
 </style>

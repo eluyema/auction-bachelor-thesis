@@ -1,4 +1,9 @@
-import { AuctionRoundBid, AuctionRoundStatus, AuctionType } from 'src/entities/auction';
+import {
+    AuctionRoundBid,
+    AuctionRoundStatus,
+    AuctionType,
+    Participation,
+} from 'src/entities/auction';
 import { RoundFull } from 'src/entities/round/RoundFull';
 import { VerticalListItemProps } from 'src/shared/ui/VerticalList/VerticalListItem.vue';
 import { formatNumberToPrice } from 'src/shared/utils/formatNumberToPrice';
@@ -8,8 +13,9 @@ class AuctionRoundBidMapper {
         round: RoundFull;
         auctionType: AuctionType;
         currentDate: Date;
+        participation: Participation;
     }): AuctionRoundBid[] {
-        const { round, currentDate, auctionType } = params;
+        const { round, currentDate, auctionType, participation } = params;
 
         if (!round.Bids.length) {
             return [];
@@ -51,7 +57,16 @@ class AuctionRoundBidMapper {
                 status = AuctionRoundStatus.COMPLETED;
             }
 
-            const name = bid.User ? bid.User.name : 'Учасник №' + (bid.sequenceNumber + 1);
+            let name = 'Учасник №' + (bid.sequenceNumber + 1);
+            if (
+                participation.isParticipant &&
+                participation.sequenceNumber !== null &&
+                participation.sequenceNumber === bid.sequenceNumber
+            ) {
+                name = 'Ви';
+            } else if (bid.User) {
+                name = bid.User.name;
+            }
 
             const auctionRoundBid: AuctionRoundBid = {
                 id: bid.id,

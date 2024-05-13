@@ -83,13 +83,13 @@ const emit = defineEmits<{
     (event: 'bidAbort'): void;
 }>();
 
-const { endAt, fullPriceMin, currentBid } = defineProps<DefaultVariantProps>();
+const props = defineProps<DefaultVariantProps>();
 
-const showAbortButton = computed(() => !!currentBid && !currentBid.aborted);
+const showAbortButton = computed(() => !!props.currentBid && !props.currentBid.aborted);
 
-const formattedFullPriceMin = computed(() => formatNumberToPrice(fullPriceMin));
+const formattedFullPriceMin = computed(() => formatNumberToPrice(props.fullPriceMin));
 
-const diffInSeconds = computed(() => getSecondsBetweenDates(endAt, new Date()));
+const diffInSeconds = computed(() => getSecondsBetweenDates(props.endAt, new Date()));
 
 const isError = ref(false);
 
@@ -100,7 +100,7 @@ const onBidAbort = () => {
 const getFormSchema = () => {
     return object({
         fullPrice: number()
-            .min(fullPriceMin, `Full price must be at least ${fullPriceMin}`)
+            .min(props.fullPriceMin, `Full price must be at least ${props.fullPriceMin}`)
             .required('Full price is required'),
     });
 };
@@ -108,7 +108,7 @@ const getFormSchema = () => {
 const formSchema = ref(getFormSchema());
 
 watch(
-    () => fullPriceMin,
+    () => props.fullPriceMin,
     () => {
         formSchema.value = getFormSchema();
     },
@@ -122,7 +122,7 @@ const sendBid = () => {
     const bid: AuctionBid = {
         id: getUuid(),
         auctionType: AuctionType.DEFAULT,
-        fullPrice: formatNumberToPrice(+formInput.fullPrice),
+        fullPrice: +formInput.fullPrice,
         aborted: false,
     };
 

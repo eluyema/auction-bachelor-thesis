@@ -17,9 +17,9 @@ export type BiddingPreviewProps = {
     date: Date;
 };
 
-const { message, date } = defineProps<BiddingPreviewProps>();
+const props = defineProps<BiddingPreviewProps>();
 
-const diffInSeconds = computed(() => getSecondsBetweenDates(date, new Date()));
+const diffInSeconds = computed(() => getSecondsBetweenDates(props.date, new Date()));
 
 const show = ref(false);
 

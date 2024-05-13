@@ -4,3 +4,4 @@ export * from './auctionRound';
 export * from './auctionType';
 export * from './auctionBid';
 export * from './auctionBidSettings';
+export * from './participation';

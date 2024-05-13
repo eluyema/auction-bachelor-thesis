@@ -11,6 +11,12 @@ export type AuctionsStore = {
     auctionsStatus: LoadingStatuses;
     currentAuction: AuctionFull | null;
     currentAuctionStatus: LoadingStatuses;
+    participation: {
+        isParticipant: boolean;
+        sequenceNumber: number | null;
+    };
+    participationStatus: LoadingStatuses;
+    biddingStatus: LoadingStatuses;
 };
 
 export const useAuctionsStore = defineStore('auction', () => {
@@ -19,6 +25,12 @@ export const useAuctionsStore = defineStore('auction', () => {
         auctionsStatus: LoadingStatuses.IDLE,
         currentAuction: null,
         currentAuctionStatus: LoadingStatuses.IDLE,
+        participationStatus: LoadingStatuses.IDLE,
+        participation: {
+            isParticipant: false,
+            sequenceNumber: null,
+        },
+        biddingStatus: LoadingStatuses.IDLE,
     });
 
     const services = inject<Services>('services');
@@ -61,5 +73,37 @@ export const useAuctionsStore = defineStore('auction', () => {
         state.currentAuction.Rounds = rounds;
     };
 
-    return { state, updateRounds, loadAuctions, loadAuctionById };
+    const loadMyParticipation = async (auctionId: string) => {
+        try {
+            if (!services) {
+                return;
+            }
+            state.participationStatus = LoadingStatuses.PENDING;
+            state.currentAuction = null;
+            const { sequenceNumber, isParticipant } =
+                await services.auctionClient.getMyParticipation(auctionId);
+            state.participation = {
+                sequenceNumber,
+                isParticipant,
+            };
+            state.participationStatus = LoadingStatuses.FULFILLED;
+        } catch (err) {
+            state.participationStatus = LoadingStatuses.FAILED;
+        }
+    };
+
+    const makeBid = async (auctionId: string, total: number) => {
+        try {
+            if (!services) {
+                return;
+            }
+            state.biddingStatus = LoadingStatuses.PENDING;
+            await services.auctionClient.makeBid(auctionId, total);
+            state.biddingStatus = LoadingStatuses.FULFILLED;
+        } catch (err) {
+            state.biddingStatus = LoadingStatuses.FAILED;
+        }
+    };
+
+    return { state, updateRounds, loadAuctions, loadAuctionById, loadMyParticipation, makeBid };
 });
