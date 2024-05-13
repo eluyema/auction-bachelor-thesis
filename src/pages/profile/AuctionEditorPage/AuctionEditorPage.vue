@@ -57,7 +57,7 @@ import { useManagerAuctionStore } from 'src/auction/store/managerAuctionStore';
 import InitialBidForm from 'src/auction/ui/InitialBidForm/InitialBidForm.vue';
 import { useAuthStore } from 'src/auth/store';
 import { LoadingStatuses } from 'src/entities/application';
-import { Bid } from 'src/entities/bid/Bid';
+import { BidFull } from 'src/entities/bid/BidFull';
 import { myAuctionsTab, selectAvailableTabs } from 'src/entities/profile/tabs';
 import CustomButton from 'src/shared/ui/CustomButton/CustomButton.vue';
 import TabsPageWrapper from 'src/shared/ui/TabsPageWrapper/TabsPageWrapper.vue';
@@ -94,7 +94,7 @@ const initBids = computed(() => {
     if (!initialRound) {
         return [];
     }
-    console.log(initialRound.Bids);
+
     return initialRound.Bids;
 });
 
@@ -139,7 +139,7 @@ const onAddBid = async (params: { userId: string; total: number }) => {
     await auctionStore.loadAuctionById(auctionId);
 };
 
-const onRemoveInitBid = async (bid: Bid) => {
+const onRemoveInitBid = async (bid: BidFull) => {
     const userId = bid.User?.id;
 
     if (!userId) {
@@ -166,11 +166,11 @@ watch(
 
 onMounted(() => {
     const auctionId = route.params.auctionId;
-    console.log(auctionId);
+
     if (!auctionId) {
         return;
     }
-    console.log(auctionId);
+
     const id = Array.isArray(auctionId) ? auctionId[0] : auctionId;
 
     auctionStore.loadAuctionById(id);

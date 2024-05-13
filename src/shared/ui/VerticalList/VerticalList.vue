@@ -1,5 +1,5 @@
 <template>
-    <div class="container">
+    <div class="list-container">
         <h4 class="title" :class="{ disabled: disabledText }">{{ name }}</h4>
         <ul class="list">
             <VerticalListItem
@@ -45,10 +45,13 @@ const { name, disabledText, disabledIcons, list } = defineProps<VerticalListProp
     }
 }
 
-.container {
+.list-container {
+    @include shadow-light-blue-float();
+
     background: var(--background-color-white);
     padding-top: var(--spacing-16);
     padding-bottom: var(--spacing-16);
+    border-radius: (--radius-small);
 
     @include desktop() {
         padding-top: var(--spacing-24);

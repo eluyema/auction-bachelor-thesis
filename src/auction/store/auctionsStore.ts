@@ -3,16 +3,22 @@ import { Services } from 'src/bootstrapServices';
 import { LoadingStatuses } from 'src/entities/application';
 import { AuctionInfo } from 'src/entities/auction/auctionInfo';
 import { inject, reactive } from 'vue';
+import { AuctionFull } from 'src/entities/auction/auctionFull';
+import { RoundFull } from 'src/entities/round/RoundFull';
 
 export type AuctionsStore = {
     auctions: AuctionInfo[];
     auctionsStatus: LoadingStatuses;
+    currentAuction: AuctionFull | null;
+    currentAuctionStatus: LoadingStatuses;
 };
 
 export const useAuctionsStore = defineStore('auction', () => {
     const state = reactive<AuctionsStore>({
         auctions: [],
         auctionsStatus: LoadingStatuses.IDLE,
+        currentAuction: null,
+        currentAuctionStatus: LoadingStatuses.IDLE,
     });
 
     const services = inject<Services>('services');
@@ -32,5 +38,28 @@ export const useAuctionsStore = defineStore('auction', () => {
         }
     };
 
-    return { state, loadAuctions };
+    const loadAuctionById = async (auctionId: string) => {
+        try {
+            if (!services) {
+                return;
+            }
+            state.currentAuctionStatus = LoadingStatuses.PENDING;
+            state.currentAuction = null;
+            const auction = await services.auctionClient.getAuctionById(auctionId);
+            state.currentAuctionStatus = LoadingStatuses.FULFILLED;
+            state.currentAuction = auction;
+        } catch (err) {
+            state.currentAuctionStatus = LoadingStatuses.FAILED;
+        }
+    };
+
+    const updateRounds = (rounds: RoundFull[]) => {
+        if (!state.currentAuction) {
+            return;
+        }
+
+        state.currentAuction.Rounds = rounds;
+    };
+
+    return { state, loadAuctions, loadAuctionById, updateRounds };
 });

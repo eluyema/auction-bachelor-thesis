@@ -1,6 +1,6 @@
 import { Meta, StoryObj } from '@storybook/vue3';
-import AuctionRounds from './AuctionRounds.vue';
-import { AuctionType, AuctionRound, AuctionRoundStatus } from 'src/entities/auction';
+import AuctionRounds from './AuctionRound.vue';
+import { AuctionType, AuctionRoundBid, AuctionRoundStatus } from 'src/entities/auction';
 
 const meta: Meta<typeof AuctionRounds> = {
     title: 'Organisms/AuctionRounds',
@@ -29,7 +29,7 @@ export default meta;
 
 type Story = StoryObj<typeof meta>;
 
-const defaultListBeforeRoundBegins: AuctionRound[] = [
+const defaultListBeforeRoundBegins: AuctionRoundBid[] = [
     {
         id: '5',
         auctionType: AuctionType.DEFAULT,
@@ -46,7 +46,7 @@ const defaultListBeforeRoundBegins: AuctionRound[] = [
     },
 ];
 
-const defaultListRoundStarted: AuctionRound[] = [
+const defaultListRoundStarted: AuctionRoundBid[] = [
     {
         id: '5',
         status: AuctionRoundStatus.PENDING,
@@ -69,7 +69,7 @@ const defaultListRoundStarted: AuctionRound[] = [
     },
 ];
 
-const defaultList1Bids: AuctionRound[] = [
+const defaultList1Bids: AuctionRoundBid[] = [
     {
         id: '5',
         status: AuctionRoundStatus.ABOUT_TO_CLOSE,
@@ -92,7 +92,7 @@ const defaultList1Bids: AuctionRound[] = [
     },
 ];
 
-const defaultList2Bids: AuctionRound[] = [
+const defaultList2Bids: AuctionRoundBid[] = [
     {
         id: '5',
         status: AuctionRoundStatus.COMPLETED,
@@ -115,7 +115,7 @@ const defaultList2Bids: AuctionRound[] = [
     },
 ];
 
-const defaultListRoundEnds: AuctionRound[] = [
+const defaultListRoundEnds: AuctionRoundBid[] = [
     {
         id: '5',
         status: AuctionRoundStatus.COMPLETED,
@@ -138,7 +138,7 @@ const defaultListRoundEnds: AuctionRound[] = [
     },
 ];
 
-const defaultListAuctionEnds: AuctionRound[] = [
+const defaultListAuctionEnds: AuctionRoundBid[] = [
     {
         id: '5',
         status: AuctionRoundStatus.COMPLETED,
@@ -161,7 +161,7 @@ const defaultListAuctionEnds: AuctionRound[] = [
     },
 ];
 
-const defaultListLarge: AuctionRound[] = [
+const defaultListLarge: AuctionRoundBid[] = [
     {
         id: '1',
         status: AuctionRoundStatus.PENDING,
@@ -234,7 +234,7 @@ const defaultListLarge: AuctionRound[] = [
     },
 ];
 
-const nonPriceListBeforeRoundBegins: AuctionRound[] = [
+const nonPriceListBeforeRoundBegins: AuctionRoundBid[] = [
     {
         id: '5',
         auctionType: AuctionType.NON_PRICE_CRITERIA,
@@ -258,7 +258,7 @@ const nonPriceListBeforeRoundBegins: AuctionRound[] = [
     },
 ];
 
-const nonPriceListRoundStarted: AuctionRound[] = [
+const nonPriceListRoundStarted: AuctionRoundBid[] = [
     {
         id: '5',
         status: AuctionRoundStatus.PENDING,
@@ -297,7 +297,7 @@ const nonPriceListRoundStarted: AuctionRound[] = [
     },
 ];
 
-const nonPriceList1Bids: AuctionRound[] = [
+const nonPriceList1Bids: AuctionRoundBid[] = [
     {
         id: '5',
         status: AuctionRoundStatus.ACTIVE_BIDDING,
@@ -336,7 +336,7 @@ const nonPriceList1Bids: AuctionRound[] = [
     },
 ];
 
-const nonPriceList2Bids: AuctionRound[] = [
+const nonPriceList2Bids: AuctionRoundBid[] = [
     {
         id: '5',
         status: AuctionRoundStatus.ACTIVE_BIDDING,
@@ -375,7 +375,7 @@ const nonPriceList2Bids: AuctionRound[] = [
     },
 ];
 
-const nonPriceListRoundEnds: AuctionRound[] = [
+const nonPriceListRoundEnds: AuctionRoundBid[] = [
     {
         id: '5',
         status: AuctionRoundStatus.COMPLETED,
@@ -414,7 +414,7 @@ const nonPriceListRoundEnds: AuctionRound[] = [
     },
 ];
 
-const nonPriceListAuctionEnds: AuctionRound[] = [
+const nonPriceListAuctionEnds: AuctionRoundBid[] = [
     {
         id: '5',
         status: AuctionRoundStatus.COMPLETED,
@@ -453,7 +453,7 @@ const nonPriceListAuctionEnds: AuctionRound[] = [
     },
 ];
 
-const ESCOListBeforeRoundBegins: AuctionRound[] = [
+const ESCOListBeforeRoundBegins: AuctionRoundBid[] = [
     {
         id: '5',
         auctionType: AuctionType.ESCO,
@@ -470,7 +470,7 @@ const ESCOListBeforeRoundBegins: AuctionRound[] = [
     },
 ];
 
-const ESCOListRoundStarted: AuctionRound[] = [
+const ESCOListRoundStarted: AuctionRoundBid[] = [
     {
         id: '5',
         status: AuctionRoundStatus.PENDING,
@@ -493,7 +493,7 @@ const ESCOListRoundStarted: AuctionRound[] = [
     },
 ];
 
-const ESCOList1Bids: AuctionRound[] = [
+const ESCOList1Bids: AuctionRoundBid[] = [
     {
         id: '5',
         status: AuctionRoundStatus.ABOUT_TO_CLOSE,
@@ -516,7 +516,7 @@ const ESCOList1Bids: AuctionRound[] = [
     },
 ];
 
-const ESCOList2Bids: AuctionRound[] = [
+const ESCOList2Bids: AuctionRoundBid[] = [
     {
         id: '5',
         status: AuctionRoundStatus.COMPLETED,
@@ -539,7 +539,7 @@ const ESCOList2Bids: AuctionRound[] = [
     },
 ];
 
-const ESCOListRoundEnds: AuctionRound[] = [
+const ESCOListRoundEnds: AuctionRoundBid[] = [
     {
         id: '5',
         status: AuctionRoundStatus.COMPLETED,
@@ -562,7 +562,7 @@ const ESCOListRoundEnds: AuctionRound[] = [
     },
 ];
 
-const ESCOListAuctionEnds: AuctionRound[] = [
+const ESCOListAuctionEnds: AuctionRoundBid[] = [
     {
         id: '5',
         status: AuctionRoundStatus.COMPLETED,

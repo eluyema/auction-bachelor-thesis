@@ -1,6 +1,6 @@
 <template>
     <ul class="list">
-        <li class="item" v-for="auction of auctions" :key="auction.id">
+        <li class="item" v-for="auction of sortedAuctions" :key="auction.id">
             <div class="content-block">
                 <RouterLink class="link-name" :to="linkBase + auction.id">{{
                     auction.name
@@ -37,6 +37,7 @@
 import { AuctionInfo } from 'src/entities/auction/auctionInfo';
 import CustomIcon from 'src/shared/ui/CustomIcon/CustomIcon.vue';
 import { formatDateUA } from 'src/shared/utils/formatDate';
+import { computed } from 'vue';
 import { RouterLink } from 'vue-router';
 
 export type AuctionsListProps = {
@@ -44,7 +45,13 @@ export type AuctionsListProps = {
     linkBase: string;
 };
 
-defineProps<AuctionsListProps>();
+const props = defineProps<AuctionsListProps>();
+
+const sortedAuctions = computed(() =>
+    [...props.auctions].sort(
+        (a, b) => new Date(b.auctionStartAt).getTime() - new Date(a.auctionStartAt).getTime(),
+    ),
+);
 </script>
 <style scoped lang="scss">
 @import 'src/app/assets/styles/theme/index.scss';
@@ -63,10 +70,15 @@ defineProps<AuctionsListProps>();
     padding: var(--spacing-16) var(--spacing-24);
     width: 100%;
     display: flex;
+    flex-direction: column;
     background-color: var(--background-color-white);
 
     &:not(:first-child) {
         margin-top: var(--spacing-12);
+    }
+
+    @include desktop() {
+        flex-direction: row;
     }
 }
 
@@ -76,7 +88,12 @@ defineProps<AuctionsListProps>();
 
 .widgets-block {
     min-width: 220px;
-    margin-left: var(--spacing-32);
+    margin-top: var(--spacing-8);
+
+    @include desktop() {
+        margin-top: 0;
+        margin-left: var(--spacing-32);
+    }
 }
 
 .owner-block {

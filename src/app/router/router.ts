@@ -1,6 +1,6 @@
 import { createWebHistory, createRouter } from 'vue-router';
 
-import AuctionListPage from 'src/pages/auction/AuctionListPage/AuctionListPage.vue';
+import AuctionListPage from 'src/pages/auctions/AuctionListPage/AuctionListPage.vue';
 import LoginPage from 'src/pages/auth/LoginPage/LoginPage.vue';
 import RegistrationPage from 'src/pages/auth/RegistrationPage/RegistrationPage.vue';
 import MyAuctionsPage from 'src/pages/profile/MyAuctionsPage/MyAuctionsPage.vue';
@@ -10,9 +10,11 @@ import { useAuthStore } from 'src/auth/store';
 import NotFound from 'src/pages/NotFound.vue';
 import AuctionEditorPage from 'src/pages/profile/AuctionEditorPage/AuctionEditorPage.vue';
 import CreateAuction from 'src/pages/profile/CreateAuction/CreateAuction.vue';
+import AuctionPage from 'src/pages/auctions/AuctionPage/AuctionPage.vue';
 
 const routes = [
     { path: '/', component: AuctionListPage },
+    { path: '/auctions/:auctionId', component: AuctionPage },
     { path: '/login', component: LoginPage },
     { path: '/registration', component: RegistrationPage },
     {

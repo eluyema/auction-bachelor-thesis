@@ -35,9 +35,12 @@ const { rows, columns, name } = defineProps<TableDataProps>();
 @import 'src/app/assets/styles/theme/index.scss';
 
 .container {
+    @include shadow-light-blue-float();
+
     background: var(--background-color-white);
     padding-top: var(--spacing-16);
     padding-bottom: var(--spacing-16);
+    border-radius: (--radius-small);
 
     @include desktop() {
         padding: var(--spacing-24);

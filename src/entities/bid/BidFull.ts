@@ -1,6 +1,6 @@
 import { User } from '../users/MyUser';
 
-export interface Bid {
+export interface BidFull {
     id: string;
     roundId: string;
     sequenceNumber: number;

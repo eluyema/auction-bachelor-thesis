@@ -1,6 +1,6 @@
-import { Round } from '../round/round';
+import { RoundFull } from '../round/RoundFull';
 import { AuctionInfo } from './auctionInfo';
 
 export interface AuctionFull extends AuctionInfo {
-    Rounds: Round[];
+    Rounds: RoundFull[];
 }

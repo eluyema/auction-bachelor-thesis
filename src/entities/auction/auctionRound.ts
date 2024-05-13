@@ -7,7 +7,7 @@ export enum AuctionRoundStatus {
     COMPLETED = 'completed',
 }
 
-export type AuctionRound =
+export type AuctionRoundBid =
     | {
           id: string;
           auctionType: AuctionType;

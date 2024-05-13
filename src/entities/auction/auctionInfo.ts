@@ -1,8 +1,8 @@
-import { AccessLevelType } from '../users/MyUser';
+import { AuctionType } from './auctionType';
 
 export interface AuctionInfo {
     id: string;
-    auctionType: AccessLevelType;
+    auctionType: AuctionType;
     auctionStatus: 'waiting' | 'active' | 'finished';
     auctionOptions: null;
     name: string;

@@ -4,8 +4,45 @@ import { TableRowProps, TableColumnProps } from 'src/shared/ui/TableData/index';
 import { getUuid } from 'src/shared/utils/getUuid';
 import { AuctionType } from 'src/entities/auction';
 import { tableColumns } from './data';
+import { RoundFull } from 'src/entities/round/RoundFull';
+import { formatNumberToPrice } from 'src/shared/utils/formatNumberToPrice';
 
 class AuctionResultsMapper {
+    static mapToAuctionResults(params: {
+        round: RoundFull;
+        auctionType: AuctionType;
+    }): AuctionResult[] {
+        const { round, auctionType } = params;
+
+        if (!round.Bids.length) {
+            return [];
+        }
+
+        if (auctionType !== AuctionType.DEFAULT) {
+            return [];
+        }
+
+        const sortedBids = [...round.Bids].sort((a, b) => a.sequenceNumber - b.sequenceNumber);
+
+        const filteredBids = [...round.Bids].sort((a, b) => a.total - b.total);
+
+        const minBid = filteredBids[0];
+
+        return sortedBids.map((bid) => {
+            const name = bid.User ? bid.User.name : 'Учасник №' + (bid.sequenceNumber + 1);
+
+            const auctionRoundBid: AuctionResult = {
+                id: bid.id,
+                name,
+                auctionType: auctionType,
+                fullPrice: formatNumberToPrice(bid.total) + ' грн',
+                isWinner: bid.id === minBid.id,
+            };
+
+            return auctionRoundBid;
+        });
+    }
+
     static mapToVerticalListItems(results: AuctionResult[]): VerticalListItemProps[] {
         return results.map((result) => this.mapResultToVerticalListItem(result));
     }
@@ -83,6 +120,9 @@ class AuctionResultsMapper {
     }
 
     static mapToTableDataColumns(results: AuctionResult[]): TableColumnProps[] {
+        if (!results.length) {
+            return tableColumns[AuctionType.DEFAULT];
+        }
         const auctionType = results[0].auctionType;
 
         return tableColumns[auctionType];

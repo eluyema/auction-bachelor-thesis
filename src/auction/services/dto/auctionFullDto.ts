@@ -1,9 +1,9 @@
-import { Round } from 'src/entities/round/round';
-import { AccessLevelType } from 'src/entities/users/MyUser';
+import { AuctionType } from 'src/entities/auction';
+import { RoundFull } from 'src/entities/round/RoundFull';
 
 export interface AuctionFullDto {
     id: string;
-    auctionType: AccessLevelType;
+    auctionType: AuctionType;
     auctionStatus: 'waiting' | 'active' | 'finished';
     auctionOptions: null;
     name: string;
@@ -15,5 +15,5 @@ export interface AuctionFullDto {
     firstRoundStartAt: string;
     timeForRoundInSecs: number;
     authorId: string;
-    Rounds: Round[];
+    Rounds: RoundFull[];
 }

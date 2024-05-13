@@ -1,8 +1,8 @@
-import { AccessLevelType } from 'src/entities/users/MyUser';
+import { AuctionType } from 'src/entities/auction';
 
 export interface AuctionInfoDto {
     id: string;
-    auctionType: AccessLevelType;
+    auctionType: AuctionType;
     auctionStatus: 'waiting' | 'active' | 'finished';
     auctionOptions: null;
     name: string;

@@ -46,7 +46,7 @@ export type AppHeaderProps = {
 
 const authStore = useAuthStore();
 
-const { showProgressBar, progressBarProps } = withDefaults(defineProps<AppHeaderProps>(), {
+withDefaults(defineProps<AppHeaderProps>(), {
     showProgressBar: false,
     progressBarProps: () => ({ variant: 'primary' }),
 });

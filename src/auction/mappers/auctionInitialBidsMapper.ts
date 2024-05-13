@@ -3,8 +3,40 @@ import { VerticalListItemProps } from 'src/shared/ui/VerticalList/VerticalListIt
 import { TableRowProps, TableColumnProps } from 'src/shared/ui/TableData/index';
 import { getUuid } from 'src/shared/utils/getUuid';
 import { tableColumns } from './data';
+import { AuctionFull } from 'src/entities/auction/auctionFull';
+import { formatNumberToPrice } from 'src/shared/utils/formatNumberToPrice';
 
 class AuctionInitialBidsMapper {
+    static mapToInitialBids(auction: AuctionFull): AuctionInitialBid[] {
+        if (auction.Rounds.length === 0) {
+            return [];
+        }
+
+        const initRound = auction.Rounds.find((round) => round.sequenceNumber === 0);
+        if (!initRound) {
+            return [];
+        }
+
+        if (auction.auctionType === AuctionType.DEFAULT) {
+            const bids: AuctionInitialBid[] = initRound.Bids.map((bid) => {
+                const name = bid.User ? bid.User.name : 'Учасник №' + (bid.sequenceNumber + 1);
+
+                const preparedRound: AuctionInitialBid = {
+                    id: bid.id,
+                    auctionType: AuctionType.DEFAULT,
+                    name,
+                    isMin: bid.sequenceNumber === initRound.Bids.length - 1,
+                    isMax: bid.sequenceNumber !== initRound.Bids.length - 1,
+                    fullPrice: formatNumberToPrice(bid.total) + ' грн',
+                };
+
+                return preparedRound;
+            });
+            return bids;
+        }
+        return [];
+    }
+
     static mapToVerticalListItems(
         results: AuctionInitialBid[],
         options = { showLabelForMax: false },
@@ -100,6 +132,9 @@ class AuctionInitialBidsMapper {
     }
 
     static mapToTableDataColumns(results: AuctionInitialBid[]): TableColumnProps[] {
+        if (!results.length) {
+            return tableColumns[AuctionType.DEFAULT];
+        }
         const auctionType = results[0].auctionType;
 
         return tableColumns[auctionType];

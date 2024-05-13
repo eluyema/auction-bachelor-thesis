@@ -9,20 +9,24 @@
 </template>
 
 <script setup lang="ts">
-import { AuctionRoundsMapper as mapper } from 'src/auction/mappers';
-import { AuctionRound } from 'src/entities/auction';
+import { AuctionRoundBidMapper as mapper } from 'src/auction/mappers';
+import { AuctionRoundBid } from 'src/entities/auction';
 import VerticalList from 'src/shared/ui/VerticalList/VerticalList.vue';
+import { computed } from 'vue';
 
-export type AuctionResultsProps = {
-    list: AuctionRound[];
+export type AuctionRoundProps = {
+    list: AuctionRoundBid[];
     title: string;
     disabledText?: boolean;
     disabledIcons?: boolean;
     showMax?: boolean;
 };
 
-const { title, list, disabledText, disabledIcons, showMax } = defineProps<AuctionResultsProps>();
-const verticalListItems = mapper.mapToVerticalListItems(list, { showLabelForMax: !!showMax });
+const props = defineProps<AuctionRoundProps>();
+
+const verticalListItems = computed(() =>
+    mapper.mapToVerticalListItems(props.list, { showLabelForMax: !!props.showMax }),
+);
 </script>
 
 <style scoped lang="scss">
