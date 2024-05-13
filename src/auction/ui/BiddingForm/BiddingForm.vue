@@ -11,7 +11,6 @@
                 :message="previewMessage"
             />
             <template v-if="state.value == BiddingFormState.ACTIVE_BIDDING_TIME">
-                {{ yourTurnStartAt }} : {{ yourTurnEndAt }}
                 <DefaultVariant
                     v-if="settings.auctionType === AuctionType.DEFAULT"
                     :endAt="new Date(yourTurnEndAt)"

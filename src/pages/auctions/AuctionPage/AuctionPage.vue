@@ -183,7 +183,7 @@ const auctionResultsList = computed(() => {
 
 const progressBarProps = computed<ProgressBarProps>(() => {
     if (!currentAuction.value) {
-        return { message: 'Очікування1', variant: 'warning' };
+        return { message: 'Очікування', variant: 'warning' };
     }
 
     const isEmptyRounds = !currentAuction.value.Rounds.length;
@@ -201,7 +201,7 @@ const progressBarProps = computed<ProgressBarProps>(() => {
     const thirdRound = rounds.find((r) => r.sequenceNumber === 3);
 
     if (!firstRound || !secondRound || !thirdRound) {
-        return { message: 'Очікування3', variant: 'warning' };
+        return { message: 'Очікування', variant: 'warning' };
     }
 
     if (
@@ -238,7 +238,7 @@ const progressBarProps = computed<ProgressBarProps>(() => {
         return { message: 'Завершено', variant: 'success' };
     }
 
-    return { message: 'Очікування1', variant: 'warning' };
+    return { message: 'Очікування', variant: 'warning' };
 });
 
 const roundsDateInterval = computed(() => {
