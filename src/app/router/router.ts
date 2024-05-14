@@ -11,15 +11,25 @@ import NotFound from 'src/pages/NotFound.vue';
 import AuctionEditorPage from 'src/pages/profile/AuctionEditorPage/AuctionEditorPage.vue';
 import CreateAuction from 'src/pages/profile/CreateAuction/CreateAuction.vue';
 import AuctionPage from 'src/pages/auctions/AuctionPage/AuctionPage.vue';
+import UserAuctionsListPage from 'src/pages/auctions/UserAuctionsListPage/UserAuctionsListPage.vue';
+import MyParticipantAuctions from 'src/pages/profile/MyParticipantAuctionsPage/MyParticipantAuctionsPage.vue';
 
 const routes = [
     { path: '/', component: AuctionListPage },
     { path: '/auctions/:auctionId', component: AuctionPage },
+    { path: '/auctions/user/:userId', component: UserAuctionsListPage },
     { path: '/login', component: LoginPage },
     { path: '/registration', component: RegistrationPage },
     {
         path: '/profile/auctions',
         component: MyAuctionsPage,
+        meta: {
+            requiresAuth: true,
+        },
+    },
+    {
+        path: '/profile/participation-auctions',
+        component: MyParticipantAuctions,
         meta: {
             requiresAuth: true,
         },

@@ -17,6 +17,9 @@ export type AuctionsStore = {
     };
     participationStatus: LoadingStatuses;
     biddingStatus: LoadingStatuses;
+    userAuctions: AuctionInfo[];
+    userAuctionsStatus: LoadingStatuses;
+    userNameOfAuctions: string;
 };
 
 export const useAuctionsStore = defineStore('auction', () => {
@@ -30,6 +33,9 @@ export const useAuctionsStore = defineStore('auction', () => {
             isParticipant: false,
             sequenceNumber: null,
         },
+        userAuctions: [],
+        userAuctionsStatus: LoadingStatuses.IDLE,
+        userNameOfAuctions: '',
         biddingStatus: LoadingStatuses.IDLE,
     });
 
@@ -47,6 +53,22 @@ export const useAuctionsStore = defineStore('auction', () => {
             state.auctions = auctions;
         } catch (err) {
             state.auctionsStatus = LoadingStatuses.FAILED;
+        }
+    };
+
+    const loadUserAuctions = async (userId: string) => {
+        try {
+            if (!services) {
+                return;
+            }
+            state.userAuctionsStatus = LoadingStatuses.PENDING;
+            state.userAuctions = [];
+            const { userName, auctions } = await services.auctionClient.getUserAuctions(userId);
+            state.userAuctionsStatus = LoadingStatuses.FULFILLED;
+            state.userAuctions = auctions;
+            state.userNameOfAuctions = userName;
+        } catch (err) {
+            state.userAuctionsStatus = LoadingStatuses.FAILED;
         }
     };
 
@@ -105,5 +127,13 @@ export const useAuctionsStore = defineStore('auction', () => {
         }
     };
 
-    return { state, updateRounds, loadAuctions, loadAuctionById, loadMyParticipation, makeBid };
+    return {
+        state,
+        updateRounds,
+        loadAuctions,
+        loadUserAuctions,
+        loadAuctionById,
+        loadMyParticipation,
+        makeBid,
+    };
 });

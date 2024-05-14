@@ -31,6 +31,7 @@ class AuctionResultsMapper {
 
         return sortedBids.map((bid) => {
             let name = 'Учасник №' + (bid.sequenceNumber + 1);
+            let userAuctionsLink = null;
             if (
                 participation.isParticipant &&
                 participation.sequenceNumber !== null &&
@@ -38,6 +39,7 @@ class AuctionResultsMapper {
             ) {
                 name = 'Ви';
             } else if (bid.User) {
+                userAuctionsLink = '/auctions/user/' + bid.User.id;
                 name = bid.User.name;
             }
 
@@ -45,6 +47,7 @@ class AuctionResultsMapper {
                 id: bid.id,
                 name,
                 auctionType: auctionType,
+                userAuctionsLink,
                 fullPrice: formatNumberToPrice(bid.total) + ' грн',
                 isWinner: bid.id === minBid.id,
             };
@@ -90,21 +93,32 @@ class AuctionResultsMapper {
                         iconName: 'done',
                         colorVariant: 'success',
                     },
+                    link: null,
                 },
                 {
                     id: getUuid(),
                     value: result.name,
+                    link: result.userAuctionsLink || null,
                 },
                 {
                     id: getUuid(),
                     value: result.fullPrice,
+                    link: null,
                 },
             ];
 
             if (result.auctionType === AuctionType.NON_PRICE_CRITERIA) {
                 data.push(
-                    { id: getUuid(), value: result.coefficient },
-                    { id: getUuid(), value: result.enteredPrice },
+                    {
+                        id: getUuid(),
+                        value: result.coefficient,
+                        link: null,
+                    },
+                    {
+                        id: getUuid(),
+                        value: result.enteredPrice,
+                        link: null,
+                    },
                 );
             }
 
@@ -116,9 +130,10 @@ class AuctionResultsMapper {
                         textShape: 'text',
                         colorVariant: 'success',
                     },
+                    link: null,
                 });
             } else {
-                data.push({ id: getUuid(), value: '' });
+                data.push({ id: getUuid(), value: '', link: null });
             }
 
             return {

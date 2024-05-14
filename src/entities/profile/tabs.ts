@@ -10,6 +10,11 @@ export const myAuctionsTab = {
     link: '/profile/auctions',
 } as const;
 
+export const myParticipationAuctionsTab = {
+    name: 'Аукціни в яких брали участь',
+    link: '/profile/participation-auctions',
+};
+
 export const usersSettingsTab = {
     name: 'Пошук користувачів',
     link: '/profile/users',
@@ -17,12 +22,12 @@ export const usersSettingsTab = {
 
 export const selectAvailableTabs = (accessLevel: AccessLevelType) => {
     if (accessLevel === AccessLevel.REGULAR) {
-        return [myDataTab];
+        return [myDataTab, myParticipationAuctionsTab];
     }
 
     if (accessLevel === AccessLevel.MANAGER) {
-        return [myDataTab, myAuctionsTab];
+        return [myDataTab, myParticipationAuctionsTab, myAuctionsTab];
     }
 
-    return [myDataTab, myAuctionsTab, usersSettingsTab];
+    return [myDataTab, myParticipationAuctionsTab, myAuctionsTab, usersSettingsTab];
 };

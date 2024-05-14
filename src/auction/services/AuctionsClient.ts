@@ -15,6 +15,16 @@ export class AuctionClient extends HttpClient {
         return auctions;
     }
 
+    async getUserAuctions(userId: string) {
+        const rawData = await this.get<{ userName: string; auctions: AuctionInfoDto[] }>(
+            '/participants/' + userId,
+        );
+
+        const auctions: AuctionInfo[] = rawData.auctions.map((data) => ({ ...data }));
+
+        return { userName: rawData.userName, auctions };
+    }
+
     async getAuctionById(auctionId: string): Promise<AuctionFull> {
         const rawAuction = await this.get<AuctionFullDto>('/public/' + auctionId);
 

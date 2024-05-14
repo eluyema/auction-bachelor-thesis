@@ -110,21 +110,24 @@ class AuctionInitialBidsMapper {
                     iconProps: {
                         iconName: 'done',
                     },
+                    link: null,
                 },
                 {
                     id: getUuid(),
                     value: result.name,
+                    link: null,
                 },
                 {
                     id: getUuid(),
                     value: result.fullPrice,
+                    link: null,
                 },
             ];
 
             if (result.auctionType === AuctionType.NON_PRICE_CRITERIA) {
                 data.push(
-                    { id: getUuid(), value: result.coefficient },
-                    { id: getUuid(), value: result.enteredPrice },
+                    { id: getUuid(), value: result.coefficient, link: null },
+                    { id: getUuid(), value: result.enteredPrice, link: null },
                 );
             }
 
@@ -133,6 +136,7 @@ class AuctionInitialBidsMapper {
             data.push({
                 id: getUuid(),
                 value: labelValue || '',
+                link: null,
                 labelProps: { colorVariant: 'primary', textShape: 'contained' },
             });
 
