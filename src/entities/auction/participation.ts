@@ -1,4 +1,4 @@
 export interface Participation {
     isParticipant: boolean;
-    sequenceNumber: number | null;
+    pseudonym: string | null;
 }

@@ -150,15 +150,18 @@ const isNoParticipants = computed(() => {
     return false;
 });
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const firstRoundProps = computed<AuctionRoundProps>(() => {
     return getRoundProps(1, currentAuction.value, currentTime.value);
 });
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const secondRoundProps = computed<AuctionRoundProps>(() => {
     const propss = getRoundProps(2, currentAuction.value, currentTime.value);
     return propss;
 });
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const thirdRoundProps = computed<AuctionRoundProps>(() => {
     return getRoundProps(3, currentAuction.value, currentTime.value);
 });
@@ -339,12 +342,12 @@ const yourTurnDates = computed(() => {
     if (
         !currentAuction.value ||
         !auctionsStore.state.participation.isParticipant ||
-        auctionsStore.state.participation.sequenceNumber === null
+        auctionsStore.state.participation.pseudonym === null
     ) {
         return { startAt: new Date(0).toJSON(), endAt: new Date(0).toJSON() };
     }
 
-    const yourSequenceNumber = auctionsStore.state.participation.sequenceNumber;
+    const yourPseudonym = auctionsStore.state.participation.pseudonym;
 
     const currentRound = currentAuction.value.Rounds.find(
         (round) =>
@@ -360,7 +363,7 @@ const yourTurnDates = computed(() => {
         return { startAt: new Date(0).toJSON(), endAt: new Date(0).toJSON() };
     }
 
-    const yourBid = currentRound.Bids.find((bid) => bid.sequenceNumber === yourSequenceNumber);
+    const yourBid = currentRound.Bids.find((bid) => bid.pseudonym === yourPseudonym);
 
     if (!yourBid) {
         return { startAt: new Date(0).toJSON(), endAt: new Date(0).toJSON() };
@@ -370,7 +373,7 @@ const yourTurnDates = computed(() => {
         const nextRound = [...nextRounds].sort(
             (a, b) => new Date(a.startAt).getTime() - new Date(b.startAt).getTime(),
         )[0];
-        const yourBid = nextRound.Bids.find((bid) => bid.sequenceNumber === yourSequenceNumber);
+        const yourBid = nextRound.Bids.find((bid) => bid.pseudonym === yourPseudonym);
 
         if (!yourBid) {
             return { startAt: new Date(0).toJSON(), endAt: new Date(0).toJSON() };

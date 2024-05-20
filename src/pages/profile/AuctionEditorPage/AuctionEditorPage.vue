@@ -62,11 +62,13 @@ import { myAuctionsTab, selectAvailableTabs } from 'src/entities/profile/tabs';
 import CustomButton from 'src/shared/ui/CustomButton/CustomButton.vue';
 import TabsPageWrapper from 'src/shared/ui/TabsPageWrapper/TabsPageWrapper.vue';
 import { formatDateUA } from 'src/shared/utils/formatDate';
+import { useUsersSettingsStore } from 'src/users/store/usersSettingsStore';
 import { computed, onMounted, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 
 const authStore = useAuthStore();
 const auctionStore = useManagerAuctionStore();
+const usersSearchStore = useUsersSettingsStore();
 const route = useRoute();
 const router = useRouter();
 
@@ -137,6 +139,7 @@ const onAddBid = async (params: { userId: string; total: number }) => {
     const auctionId = Array.isArray(auctionIdParam) ? auctionIdParam[0] : auctionIdParam;
     await auctionStore.addInitialBidForUser({ userId, total, auctionId });
     await auctionStore.loadAuctionById(auctionId);
+    usersSearchStore.reloadState();
 };
 
 const onRemoveInitBid = async (bid: BidFull) => {

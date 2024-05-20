@@ -22,8 +22,7 @@
             class="clear-button"
             type="button"
             :iconName="showPasswordText ? 'visibility' : 'visibility_off'"
-            @mousedown="showPasswordText = true"
-            @mouseup="showPasswordText = false"
+            @click="showPasswordText = !showPasswordText"
         />
     </label>
 </template>

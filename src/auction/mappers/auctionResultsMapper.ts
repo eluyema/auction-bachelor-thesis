@@ -30,12 +30,12 @@ class AuctionResultsMapper {
         const minBid = filteredBids[0];
 
         return sortedBids.map((bid) => {
-            let name = 'Учасник №' + (bid.sequenceNumber + 1);
+            let name = bid.pseudonym;
             let userAuctionsLink = null;
             if (
                 participation.isParticipant &&
-                participation.sequenceNumber !== null &&
-                participation.sequenceNumber === bid.sequenceNumber
+                participation.pseudonym !== null &&
+                participation.pseudonym === bid.pseudonym
             ) {
                 name = 'Ви';
             } else if (bid.User) {

@@ -35,15 +35,15 @@ export class AuctionClient extends HttpClient {
 
     async getMyParticipation(auctionId: string): Promise<{
         isParticipant: boolean;
-        sequenceNumber: number | null;
+        pseudonym: string | null;
     }> {
-        const { isParticipant, sequenceNumber } = await this.get<MyParticipationDto>(
+        const { isParticipant, pseudonym } = await this.get<MyParticipationDto>(
             '/' + auctionId + '/participation',
         );
 
         return {
             isParticipant,
-            sequenceNumber: Number.isInteger(sequenceNumber) ? (sequenceNumber as number) : null,
+            pseudonym: pseudonym ?? null,
         };
     }
 

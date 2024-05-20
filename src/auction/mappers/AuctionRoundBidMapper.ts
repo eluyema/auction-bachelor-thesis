@@ -57,11 +57,11 @@ class AuctionRoundBidMapper {
                 status = AuctionRoundStatus.COMPLETED;
             }
 
-            let name = 'Учасник №' + (bid.sequenceNumber + 1);
+            let name = bid.pseudonym;
             if (
                 participation.isParticipant &&
-                participation.sequenceNumber !== null &&
-                participation.sequenceNumber === bid.sequenceNumber
+                participation.pseudonym !== null &&
+                participation.pseudonym === bid.pseudonym
             ) {
                 name = 'Ви';
             } else if (bid.User) {
