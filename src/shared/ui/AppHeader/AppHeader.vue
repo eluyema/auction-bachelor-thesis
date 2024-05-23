@@ -3,7 +3,7 @@
         <div class="header-body">
             <a class="header-logo" href="/" target="_self">
                 <!-- <img :src="prozorroLogo" class="header-logo-image" alt="Логотип Прозорро" /> -->
-                Аукціон
+                Онлайн Аукціон
             </a>
             <div class="header-content">
                 <!--TODO: add logic for localization here-->
