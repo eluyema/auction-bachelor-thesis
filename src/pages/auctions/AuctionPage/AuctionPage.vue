@@ -48,7 +48,7 @@
             :yourTurnStartAt="yourTurnDates.startAt"
             :yourTurnEndAt="yourTurnDates.endAt"
             :auctionEndAt="roundsDateInterval.endAt.toJSON()"
-            :settings="{ auctionType: AuctionType.DEFAULT, fullPriceMin: 0 }"
+            :settings="biddingFormSettings"
         />
     </div>
 </template>
@@ -67,7 +67,7 @@ import AuctionRound, { AuctionRoundProps } from 'src/auction/ui/AuctionRound/Auc
 import AuctionStartDateSection from 'src/auction/ui/AuctionStartDateSection/AuctionStartDateSection.vue';
 import BiddingForm from 'src/auction/ui/BiddingForm/BiddingForm.vue';
 import { config } from 'src/config';
-import { AuctionBid, AuctionType } from 'src/entities/auction';
+import { AuctionBid, AuctionBidSettings, AuctionType } from 'src/entities/auction';
 import { AuctionFull } from 'src/entities/auction/auctionFull';
 import AppHeader from 'src/shared/ui/AppHeader/AppHeader.vue';
 import { ProgressBarProps } from 'src/shared/ui/ProgressBar/ProgressBar.vue';
@@ -164,6 +164,48 @@ const secondRoundProps = computed<AuctionRoundProps>(() => {
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const thirdRoundProps = computed<AuctionRoundProps>(() => {
     return getRoundProps(3, currentAuction.value, currentTime.value);
+});
+
+const biddingFormSettings = computed((): AuctionBidSettings => {
+    if (!currentAuction.value) {
+        return { auctionType: AuctionType.DEFAULT, fullPriceMin: 0 };
+    }
+
+    if (!currentAuction.value.Rounds.length) {
+        return { auctionType: AuctionType.DEFAULT, fullPriceMin: 0 };
+    }
+
+    const currentTimeStr = currentTime.value.toISOString();
+
+    const currentRound = currentAuction.value.Rounds.find(
+        (round) => round.startAt < currentTimeStr && round.endAt > currentTimeStr,
+    );
+
+    if (!currentRound || currentRound.sequenceNumber === 0) {
+        return { auctionType: AuctionType.DEFAULT, fullPriceMin: 0 };
+    }
+
+    const roundBeforeCurrent = currentAuction.value.Rounds.find(
+        (round) => round.sequenceNumber === currentRound.sequenceNumber - 1,
+    );
+
+    if (!roundBeforeCurrent) {
+        return { auctionType: AuctionType.DEFAULT, fullPriceMin: 0 };
+    }
+
+    const myPseudonym = auctionsStore.state.participation.pseudonym;
+
+    const myLastBid = roundBeforeCurrent.Bids.find((bid) => bid.pseudonym === myPseudonym);
+
+    if (!myLastBid) {
+        return { auctionType: AuctionType.DEFAULT, fullPriceMin: 0 };
+    }
+
+    const step = currentAuction.value.decreaseStep;
+
+    const fullPriceMin = myLastBid.total - step;
+
+    return { auctionType: AuctionType.DEFAULT, fullPriceMin: fullPriceMin > 0 ? fullPriceMin : 0 };
 });
 
 const auctionResultsList = computed(() => {

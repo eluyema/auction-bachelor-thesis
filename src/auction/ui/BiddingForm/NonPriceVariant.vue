@@ -95,7 +95,7 @@ import MobileOnly from 'src/shared/ui/MobileOnly/MobileOnly.vue';
 import BiddingStatus from './components/BiddingStatus.vue';
 
 export type NonPriceVariantProps = {
-    endAt: Date;
+    endAtStr: string;
     fullPriceMin: number;
     coefficient: number;
     currentBid?: AuctionBid | null;
@@ -107,7 +107,7 @@ const emit = defineEmits<{
     (event: 'bidAbort'): void;
 }>();
 
-const { endAt, fullPriceMin, currentBid, coefficient } = defineProps<NonPriceVariantProps>();
+const { endAtStr, fullPriceMin, currentBid, coefficient } = defineProps<NonPriceVariantProps>();
 
 const showAbortButton = computed(() => !!currentBid && !currentBid.aborted);
 
@@ -115,7 +115,7 @@ const coefficientFormatted = computed(() => coefficient.toFixed(2));
 
 const formattedFullPriceMin = computed(() => formatNumberToPrice(fullPriceMin));
 
-const diffInSeconds = computed(() => getSecondsBetweenDates(endAt, new Date()));
+const diffInSeconds = computed(() => getSecondsBetweenDates(new Date(endAtStr), new Date()));
 
 const minEnteredPrice = computed(() => formatNumberToPrice(fullPriceMin / coefficient));
 

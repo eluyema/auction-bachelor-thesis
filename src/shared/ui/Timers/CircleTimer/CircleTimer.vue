@@ -44,6 +44,7 @@ const timePassed = ref(0);
 let timerInterval = ref<null | ReturnType<typeof setTimeout>>(null);
 
 const timeLeft = computed(() => {
+    console.log(props.time);
     return props.time - timePassed.value;
 });
 

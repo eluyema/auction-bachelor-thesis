@@ -2,7 +2,8 @@
     <header class="header">
         <div class="header-body">
             <a class="header-logo" href="/" target="_self">
-                <img :src="prozorroLogo" class="header-logo-image" alt="Логотип Прозорро" />
+                <!-- <img :src="prozorroLogo" class="header-logo-image" alt="Логотип Прозорро" /> -->
+                Аукціон
             </a>
             <div class="header-content">
                 <!--TODO: add logic for localization here-->
@@ -75,7 +76,10 @@ withDefaults(defineProps<AppHeaderProps>(), {
 }
 
 .header-logo {
-    padding-top: var(--spacing-10);
+    @include font-text-large();
+
+    text-decoration: none;
+    //padding-top: var(--spacing-10);
 }
 
 .header-logo-image {
@@ -115,7 +119,7 @@ withDefaults(defineProps<AppHeaderProps>(), {
 }
 
 .lang-block {
-    display: flex;
+    display: none;
     align-items: center;
     margin-right: var(--spacing-12);
 

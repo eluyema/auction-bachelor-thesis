@@ -13,7 +13,7 @@
             <template v-if="state.value == BiddingFormState.ACTIVE_BIDDING_TIME">
                 <DefaultVariant
                     v-if="settings.auctionType === AuctionType.DEFAULT"
-                    :endAt="new Date(yourTurnEndAt)"
+                    :endAtStr="yourTurnEndAt"
                     :fullPriceMin="settings.fullPriceMin"
                     :currentBid="currentBid"
                     :collapsedMobile="collapsedMobile"
@@ -22,7 +22,7 @@
                 />
                 <NonPriceVariant
                     v-else-if="settings.auctionType === AuctionType.NON_PRICE_CRITERIA"
-                    :endAt="new Date(yourTurnEndAt)"
+                    :endAtStr="yourTurnEndAt"
                     :fullPriceMin="settings.fullPriceMin"
                     :coefficient="settings.coefficient"
                     :currentBid="currentBid"
@@ -32,7 +32,7 @@
                 />
                 <ESCOVariant
                     v-else-if="settings.auctionType === AuctionType.ESCO"
-                    :endAt="new Date(yourTurnEndAt)"
+                    :endAtStr="yourTurnEndAt"
                     :basePrice="settings.basePrice"
                     :defaultYears="settings.defaultYears"
                     :defaultDays="settings.defaultDays"
