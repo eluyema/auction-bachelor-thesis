@@ -12,13 +12,13 @@
                     <div class="lang-divider" />
                     <a class="language-text" target="_self" href="/en">ENG</a>
                 </div>
-                <ul class="social-list">
+                <!-- <ul class="social-list">
                     <li class="social-item" v-for="item in socialItems" :key="item.src">
                         <a target="_blank" class="social-link" :href="item.src"
                             ><img class="social-image" :src="item.image" :alt="item.alt"
                         /></a>
                     </li>
-                </ul>
+                </ul> -->
                 <div class="auth" v-if="!authStore.isAuthorized">
                     <RouterLink to="/login">Вхід</RouterLink><span class="divider">|</span
                     ><RouterLink to="/registration">Реєстрація</RouterLink>
