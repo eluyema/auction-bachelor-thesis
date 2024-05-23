@@ -34,7 +34,7 @@
 
 <script setup lang="ts">
 import CustomIcon from 'src/shared/ui/CustomIcon/CustomIcon.vue';
-import prozorroLogo from 'src/app/assets/images/prozorro-logo.svg';
+//import prozorroLogo from 'src/app/assets/images/prozorro-logo.svg';
 import ProgressBar, { ProgressBarProps } from 'src/shared/ui/ProgressBar/ProgressBar.vue';
 import { useAuthStore } from 'src/auth/store';
 import { RouterLink } from 'vue-router';
