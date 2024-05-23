@@ -14,11 +14,11 @@ export const useMockAuthStore = defineStore('mockAuth', () => {
 
     const isAuthorized = computed(() => !!state.user);
 
-    const login = async (data: { email: string; password: string }) => {
+    const login = async (_data: { email: string; password: string }) => {
         await setupMyUser();
     };
 
-    const registration = async (data: { name: string; email: string; password: string }) => {};
+    const registration = async (_data: { name: string; email: string; password: string }) => {};
 
     const setupMyUser = async () => {
         const user = {
