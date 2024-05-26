@@ -2,15 +2,22 @@
     <div class="container">
         <AppHeader />
         <main>
-            <LoginForm class="form" @login="onLogin" />
+            <LoginForm
+                :errorText="authStore.state.loginErrorText"
+                :isLoading="authStore.state.loginStatus === LoadingStatuses.PENDING"
+                class="form"
+                @login="onLogin"
+            />
         </main>
     </div>
 </template>
 <script setup lang="ts">
 import { useAuthStore } from 'src/auth/store';
 import LoginForm from 'src/auth/ui/LoginForm/LoginForm.vue';
+import { LoadingStatuses } from 'src/entities/application';
 import { LoginData } from 'src/entities/auth/loginData';
 import AppHeader from 'src/shared/ui/AppHeader/AppHeader.vue';
+import { watch } from 'vue';
 import { useRouter } from 'vue-router';
 
 const router = useRouter();
@@ -19,8 +26,16 @@ const authStore = useAuthStore();
 
 const onLogin = async (data: LoginData) => {
     await authStore.login(data);
-    router.push('/');
 };
+
+watch(
+    () => authStore.state.loginStatus,
+    () => {
+        if (authStore.state.loginStatus === LoadingStatuses.FULFILLED) {
+            router.push('/');
+        }
+    },
+);
 </script>
 
 <style lang="scss" scoped>

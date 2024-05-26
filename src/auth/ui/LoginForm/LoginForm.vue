@@ -3,7 +3,7 @@
         <h2 class="title">Логін</h2>
         <div>
             <CustomInput
-                :error="!!errorText"
+                :error="!!validationErrorText"
                 label="Пошта"
                 class="input"
                 type="email"
@@ -13,7 +13,7 @@
         </div>
         <div>
             <CustomInput
-                :error="!!errorText"
+                :error="!!validationErrorText"
                 label="Пароль"
                 class="input"
                 type="password"
@@ -21,9 +21,9 @@
             />
         </div>
         <p class="error-text">
-            {{ errorText }}
+            {{ validationErrorText || errorText }}
         </p>
-        <CustomButton class="button" type="submit">Вхід</CustomButton>
+        <CustomButton :disabled="isLoading" class="button" type="submit">Вхід</CustomButton>
         <p class="another-form-description">
             Перейти до <RouterLink class="link" to="/registration">сторінки реєстрації</RouterLink>
         </p>
@@ -35,7 +35,14 @@ import CustomInput from 'src/shared/ui/CustomInput/CustomInput.vue';
 import { ref, reactive } from 'vue';
 import { ValidationError, object, string } from 'yup';
 
-const errorText = ref('');
+const validationErrorText = ref('');
+
+export type LoginFormProps = {
+    errorText: string;
+    isLoading: boolean;
+};
+
+defineProps<LoginFormProps>();
 
 const emit = defineEmits<{
     (event: 'login', data: { email: string; password: string }): void;
@@ -60,7 +67,7 @@ const formInput = reactive({
 const submitLogin = async () => {
     try {
         await formSchema.value.validate(formInput);
-        errorText.value = '';
+        validationErrorText.value = '';
 
         emit('login', formInput);
     } catch (error) {
@@ -68,7 +75,7 @@ const submitLogin = async () => {
             return;
         }
 
-        errorText.value = error.message;
+        validationErrorText.value = error.message;
     }
 };
 </script>

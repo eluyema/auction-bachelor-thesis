@@ -3,7 +3,7 @@
         <h2 class="title">Реєстрація</h2>
         <div>
             <CustomInput
-                :error="!!errorText"
+                :error="!!validationErrorText"
                 label="Ваше ім'я / Ім'я юридичної особи"
                 class="input"
                 type="text"
@@ -13,7 +13,7 @@
         </div>
         <div>
             <CustomInput
-                :error="!!errorText"
+                :error="!!validationErrorText"
                 label="Пошта"
                 class="input"
                 type="email"
@@ -23,7 +23,7 @@
         </div>
         <div>
             <CustomInput
-                :error="!!errorText"
+                :error="!!validationErrorText"
                 label="Пароль"
                 class="input"
                 type="password"
@@ -31,9 +31,11 @@
             />
         </div>
         <p class="error-text">
-            {{ errorText }}
+            {{ validationErrorText || errorText }}
         </p>
-        <CustomButton class="button" type="submit">Створити обліковий запис</CustomButton>
+        <CustomButton :disabled="isLoading" class="button" type="submit"
+            >Створити обліковий запис</CustomButton
+        >
         <p class="another-form-description">
             Перейти до <RouterLink class="link" to="/login">сторінки логіну</RouterLink>
         </p>
@@ -45,7 +47,14 @@ import CustomInput from 'src/shared/ui/CustomInput/CustomInput.vue';
 import { ref, reactive } from 'vue';
 import { ValidationError, object, string } from 'yup';
 
-const errorText = ref('');
+const validationErrorText = ref('');
+
+export type RegistrationFormProps = {
+    errorText: string;
+    isLoading: boolean;
+};
+
+defineProps<RegistrationFormProps>();
 
 const emit = defineEmits<{
     (event: 'registration', data: { name: string; email: string; password: string }): void;
@@ -76,7 +85,7 @@ const formInput = reactive({
 const submitLogin = async () => {
     try {
         await formSchema.value.validate(formInput);
-        errorText.value = '';
+        validationErrorText.value = '';
 
         emit('registration', formInput);
     } catch (error) {
@@ -84,7 +93,7 @@ const submitLogin = async () => {
             return;
         }
 
-        errorText.value = error.message;
+        validationErrorText.value = error.message;
     }
 };
 </script>

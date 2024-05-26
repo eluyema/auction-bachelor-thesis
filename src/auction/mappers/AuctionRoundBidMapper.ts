@@ -134,29 +134,11 @@ class AuctionRoundBidMapper {
         startAt: Date | null;
         endAt: Date | null;
     } {
-        let startAt: string | null = null;
-        let endAt: string | null = null;
+        const firstRound = rounds.find((round) => round.sequenceNumber === 1);
+        const thirdRound = rounds.find((round) => round.sequenceNumber === 3);
 
-        rounds.forEach((round) => {
-            if (!round.startAt || !round.endAt) {
-                return;
-            }
-            if (startAt === null && round.startAt) {
-                startAt = round.startAt;
-            }
-            if (endAt === null && round.endAt) {
-                endAt = round.endAt;
-            }
-            if (startAt && round.startAt < startAt) {
-                startAt = round.startAt;
-            }
-            if (endAt && round.endAt > endAt) {
-                endAt = round.endAt;
-            }
-        });
-
-        if (startAt && endAt) {
-            return { startAt: new Date(startAt), endAt: new Date(endAt) };
+        if (firstRound && thirdRound) {
+            return { startAt: new Date(firstRound.startAt), endAt: new Date(thirdRound.endAt) };
         }
 
         return { startAt: null, endAt: null };

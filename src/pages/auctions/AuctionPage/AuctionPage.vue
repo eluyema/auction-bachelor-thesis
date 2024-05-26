@@ -16,11 +16,11 @@
                     :auctionStartAt="new Date(currentAuction.auctionStartAt)"
                 />
                 <AuctionInitialBids
-                    v-if="!isNoParticipants && isAuctionStarted"
+                    v-if="!isNoOneParticipants && isAuctionStarted"
                     :list="initialBids"
                     :disabled="isRoundsTime"
                 />
-                <ul class="rounds-list" v-if="!isNoParticipants && isRoundsStarted">
+                <ul class="rounds-list" v-if="!isNoOneParticipants && isRoundsStarted">
                     <li class="round-item">
                         <AuctionRound class="round-block" v-bind:="firstRoundProps" />
                     </li>
@@ -32,7 +32,7 @@
                     </li>
                 </ul>
                 <AuctionResults
-                    v-if="!isNoParticipants && isRoundsEnded"
+                    v-if="!isNoOneParticipants && isRoundsEnded"
                     :list="auctionResultsList"
                 />
                 <div class="bidding-form-space" v-if="currentAuction && showBiddingForm"></div>
@@ -45,20 +45,16 @@
             :auctionStartAt="currentAuction.auctionStartAt"
             :roundStartAt="currentAuction.firstRoundStartAt"
             :currentBid="null"
-            :yourTurnStartAt="yourTurnDates.startAt"
-            :yourTurnEndAt="yourTurnDates.endAt"
+            :yourTurnStartAt="myNearestBidInterval.startAt"
+            :yourTurnEndAt="myNearestBidInterval.endAt"
             :auctionEndAt="roundsDateInterval.endAt.toJSON()"
             :settings="biddingFormSettings"
         />
     </div>
 </template>
 <script setup lang="ts">
-import {
-    AuctionInitialBidsMapper,
-    AuctionResultsMapper,
-    AuctionRoundBidMapper,
-} from 'src/auction/mappers';
 import { AuctionSocket } from 'src/auction/services/AuctionSocket';
+import { DefaultAuctionBidding } from 'src/auction/services/DefaultAuctionBidding';
 import { useAuctionsStore } from 'src/auction/store/auctionsStore';
 import AuctionInfoBanner from 'src/auction/ui/AuctionInfoBanner/AuctionInfoBanner.vue';
 import AuctionInitialBids from 'src/auction/ui/AuctionInitialBids/AuctionInitialBids.vue';
@@ -67,7 +63,7 @@ import AuctionRound, { AuctionRoundProps } from 'src/auction/ui/AuctionRound/Auc
 import AuctionStartDateSection from 'src/auction/ui/AuctionStartDateSection/AuctionStartDateSection.vue';
 import BiddingForm from 'src/auction/ui/BiddingForm/BiddingForm.vue';
 import { config } from 'src/config';
-import { AuctionBid, AuctionBidSettings, AuctionType } from 'src/entities/auction';
+import { AuctionBid } from 'src/entities/auction';
 import { AuctionFull } from 'src/entities/auction/auctionFull';
 import AppHeader from 'src/shared/ui/AppHeader/AppHeader.vue';
 import { ProgressBarProps } from 'src/shared/ui/ProgressBar/ProgressBar.vue';
@@ -88,224 +84,61 @@ const showBiddingForm = computed(
         currentTime.value < roundsDateInterval.value.endAt,
 );
 
-const getRoundProps = (
-    roundNum: 1 | 2 | 3,
-    auction: AuctionFull | null,
-    currentDate: Date,
-): AuctionRoundProps => {
-    const defaultProps = {
-        title: 'Раунд ' + roundNum,
-        list: [],
-        disabledText: true,
-        disabledIcons: true,
-    };
-
-    if (!auction || !auction.Rounds.length) {
-        return defaultProps;
-    }
-
-    const round = auction.Rounds.find((round) => round.sequenceNumber === roundNum);
-
-    if (!round || !round.Bids.length) {
-        return defaultProps;
-    }
-
-    const list = AuctionRoundBidMapper.mapToAuctionRoundBids({
-        round,
-        currentDate,
-        auctionType: auction.auctionType,
-        participation: auctionsStore.state.participation,
-    });
-
-    const disabledIcons =
-        new Date(round.endAt) < currentDate || new Date(round.startAt) > currentDate;
-
-    const disabledText =
-        new Date(round.endAt) < currentDate || new Date(round.startAt) > currentDate;
-
-    return { ...defaultProps, list, disabledIcons, disabledText };
-};
-
-const isNoParticipants = computed(() => {
-    if (!currentAuction.value) {
-        return true;
-    }
-
-    const rounds = currentAuction.value.Rounds;
-
-    if (rounds.length === 0) {
-        return true;
-    }
-
-    const initRound = rounds.find((round) => round.sequenceNumber === 0);
-
-    if (!initRound) {
-        return true;
-    }
-
-    if (initRound.Bids.length === 0) {
-        return true;
-    }
-
-    return false;
-});
+const isNoOneParticipants = computed(
+    () => !DefaultAuctionBidding.getIsParticipantsExists(currentAuction.value),
+);
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const firstRoundProps = computed<AuctionRoundProps>(() => {
-    return getRoundProps(1, currentAuction.value, currentTime.value);
+    return DefaultAuctionBidding.getRoundProps(
+        1,
+        currentAuction.value,
+        currentTime.value,
+        auctionsStore.state.participation,
+    );
 });
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const secondRoundProps = computed<AuctionRoundProps>(() => {
-    const propss = getRoundProps(2, currentAuction.value, currentTime.value);
-    return propss;
+    return DefaultAuctionBidding.getRoundProps(
+        2,
+        currentAuction.value,
+        currentTime.value,
+        auctionsStore.state.participation,
+    );
 });
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const thirdRoundProps = computed<AuctionRoundProps>(() => {
-    return getRoundProps(3, currentAuction.value, currentTime.value);
+    return DefaultAuctionBidding.getRoundProps(
+        3,
+        currentAuction.value,
+        currentTime.value,
+        auctionsStore.state.participation,
+    );
 });
 
-const biddingFormSettings = computed((): AuctionBidSettings => {
-    if (!currentAuction.value) {
-        return { auctionType: AuctionType.DEFAULT, fullPriceMin: 0 };
-    }
-
-    if (!currentAuction.value.Rounds.length) {
-        return { auctionType: AuctionType.DEFAULT, fullPriceMin: 0 };
-    }
-
-    const currentTimeStr = currentTime.value.toISOString();
-
-    const currentRound = currentAuction.value.Rounds.find(
-        (round) => round.startAt < currentTimeStr && round.endAt > currentTimeStr,
-    );
-
-    if (!currentRound || currentRound.sequenceNumber === 0) {
-        return { auctionType: AuctionType.DEFAULT, fullPriceMin: 0 };
-    }
-
-    const roundBeforeCurrent = currentAuction.value.Rounds.find(
-        (round) => round.sequenceNumber === currentRound.sequenceNumber - 1,
-    );
-
-    if (!roundBeforeCurrent) {
-        return { auctionType: AuctionType.DEFAULT, fullPriceMin: 0 };
-    }
-
-    const myPseudonym = auctionsStore.state.participation.pseudonym;
-
-    const myLastBid = roundBeforeCurrent.Bids.find((bid) => bid.pseudonym === myPseudonym);
-
-    if (!myLastBid) {
-        return { auctionType: AuctionType.DEFAULT, fullPriceMin: 0 };
-    }
-
-    const step = currentAuction.value.decreaseStep;
-
-    const fullPriceMin = myLastBid.total - step;
-
-    return { auctionType: AuctionType.DEFAULT, fullPriceMin: fullPriceMin > 0 ? fullPriceMin : 0 };
-});
+const biddingFormSettings = computed(() =>
+    DefaultAuctionBidding.getBiddingFormSettings(
+        currentAuction.value,
+        currentTime.value,
+        auctionsStore.state.participation,
+    ),
+);
 
 const auctionResultsList = computed(() => {
-    if (!currentAuction.value) {
-        return [];
-    }
-
-    const thirdRound = currentAuction.value.Rounds.find((round) => round.sequenceNumber === 3);
-
-    if (!thirdRound) {
-        return [];
-    }
-
-    return AuctionResultsMapper.mapToAuctionResults({
-        round: thirdRound,
-        auctionType: currentAuction.value.auctionType,
-        participation: auctionsStore.state.participation,
-    });
+    return DefaultAuctionBidding.getAuctionResultList(
+        currentAuction.value,
+        auctionsStore.state.participation,
+    );
 });
 
-const progressBarProps = computed<ProgressBarProps>(() => {
-    if (!currentAuction.value) {
-        return { message: 'Очікування', variant: 'warning' };
-    }
-
-    const isEmptyRounds = !currentAuction.value.Rounds.length;
-
-    if (isEmptyRounds && new Date(currentAuction.value.firstRoundStartAt) < currentTime.value) {
-        return { message: 'Завершено', variant: 'success' };
-    } else if (isEmptyRounds) {
-        return { message: 'Очікування', variant: 'warning' };
-    }
-
-    const rounds = currentAuction.value.Rounds;
-
-    const firstRound = rounds.find((r) => r.sequenceNumber === 1);
-    const secondRound = rounds.find((r) => r.sequenceNumber === 2);
-    const thirdRound = rounds.find((r) => r.sequenceNumber === 3);
-
-    if (!firstRound || !secondRound || !thirdRound) {
-        return { message: 'Очікування', variant: 'warning' };
-    }
-
-    if (
-        new Date(firstRound.startAt) < currentTime.value &&
-        new Date(firstRound.endAt) > currentTime.value
-    ) {
-        return {
-            message: 'Раунд 1',
-            variant: 'primary',
-        };
-    }
-
-    if (
-        new Date(secondRound.startAt) < currentTime.value &&
-        new Date(secondRound.endAt) > currentTime.value
-    ) {
-        return {
-            message: 'Раунд 2',
-            variant: 'primary',
-        };
-    }
-
-    if (
-        new Date(thirdRound.startAt) < currentTime.value &&
-        new Date(thirdRound.endAt) > currentTime.value
-    ) {
-        return {
-            message: 'Раунд 3',
-            variant: 'primary',
-        };
-    }
-
-    if (new Date(thirdRound.endAt) < currentTime.value) {
-        return { message: 'Завершено', variant: 'success' };
-    }
-
-    return { message: 'Очікування', variant: 'warning' };
-});
+const progressBarProps = computed<ProgressBarProps>(() =>
+    DefaultAuctionBidding.getProgressBarProps(currentAuction.value, currentTime.value),
+);
 
 const roundsDateInterval = computed(() => {
-    if (!currentAuction.value) {
-        return { startAt: new Date(0), endAt: new Date(0) };
-    }
-
-    if (!currentAuction.value.Rounds.length) {
-        return {
-            startAt: new Date(currentAuction.value.auctionStartAt),
-            endAt: new Date(currentAuction.value.auctionStartAt),
-        };
-    }
-
-    const { startAt, endAt } = AuctionRoundBidMapper.getRoundsDateInterval(
-        currentAuction.value.Rounds.filter((round) => round.sequenceNumber !== 0),
-    );
-
-    return {
-        startAt: startAt || new Date(currentAuction.value.auctionStartAt),
-        endAt: endAt || new Date(currentAuction.value.auctionStartAt),
-    };
+    return DefaultAuctionBidding.getRoundsDateInterval(currentAuction.value);
 });
 
 const isRoundsStarted = computed(() => {
@@ -339,28 +172,13 @@ const isRoundsTime = computed(() => {
     );
 });
 
-const initialBids = computed(() => {
-    if (!currentAuction.value) {
-        return [];
-    }
+const initialBids = computed(() =>
+    DefaultAuctionBidding.getInitialBids(currentAuction.value, auctionsStore.state.participation),
+);
 
-    if (!currentAuction.value.Rounds.length) {
-        return [];
-    }
-
-    return AuctionInitialBidsMapper.mapToInitialBids(
-        currentAuction.value,
-        auctionsStore.state.participation,
-    );
-});
-
-const isAuctionStarted = computed(() => {
-    if (!currentAuction.value) {
-        return false;
-    }
-
-    return new Date(currentAuction.value.auctionStartAt) < currentTime.value;
-});
+const isAuctionStarted = computed(() =>
+    DefaultAuctionBidding.getIsAuctionStarted(currentAuction.value, currentTime.value),
+);
 
 const auctionId = computed(() => {
     const auctionIdParam = route.params.auctionId;
@@ -380,52 +198,13 @@ const onMakeBid = (bid: AuctionBid) => {
     auctionsStore.makeBid(currentAuction.value.id, Number(bid.fullPrice));
 };
 
-const yourTurnDates = computed(() => {
-    if (
-        !currentAuction.value ||
-        !auctionsStore.state.participation.isParticipant ||
-        auctionsStore.state.participation.pseudonym === null
-    ) {
-        return { startAt: new Date(0).toJSON(), endAt: new Date(0).toJSON() };
-    }
-
-    const yourPseudonym = auctionsStore.state.participation.pseudonym;
-
-    const currentRound = currentAuction.value.Rounds.find(
-        (round) =>
-            new Date(round.startAt) < currentTime.value &&
-            new Date(round.endAt) > currentTime.value,
-    );
-
-    const nextRounds = currentAuction.value.Rounds.filter(
-        (round) => new Date(round.startAt) > currentTime.value,
-    );
-
-    if (!currentRound) {
-        return { startAt: new Date(0).toJSON(), endAt: new Date(0).toJSON() };
-    }
-
-    const yourBid = currentRound.Bids.find((bid) => bid.pseudonym === yourPseudonym);
-
-    if (!yourBid) {
-        return { startAt: new Date(0).toJSON(), endAt: new Date(0).toJSON() };
-    }
-
-    if (new Date(yourBid.endAt) < currentTime.value && nextRounds.length) {
-        const nextRound = [...nextRounds].sort(
-            (a, b) => new Date(a.startAt).getTime() - new Date(b.startAt).getTime(),
-        )[0];
-        const yourBid = nextRound.Bids.find((bid) => bid.pseudonym === yourPseudonym);
-
-        if (!yourBid) {
-            return { startAt: new Date(0).toJSON(), endAt: new Date(0).toJSON() };
-        }
-
-        return { startAt: yourBid.startAt, endAt: yourBid.endAt };
-    }
-
-    return { startAt: yourBid.startAt, endAt: yourBid.endAt };
-});
+const myNearestBidInterval = computed(() =>
+    DefaultAuctionBidding.getMyNearestBidInterval(
+        currentAuction.value,
+        currentTime.value,
+        auctionsStore.state.participation,
+    ),
+);
 
 onMounted(() => {
     if (!auctionId.value) {
