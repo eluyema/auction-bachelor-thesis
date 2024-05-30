@@ -1,3 +1,6 @@
 export interface MakeBidDto {
-    total: number;
+    total?: number;
+    years?: number;
+    days?: number;
+    percent?: number;
 }

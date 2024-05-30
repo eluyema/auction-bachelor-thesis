@@ -23,9 +23,23 @@ export class ManagerAuctionClient extends HttpClient {
         return auctionFull;
     }
 
-    async addInitialBidForUser(data: { auctionId: string; userId: string; total: number }) {
-        const { auctionId, userId, total } = data;
-        await this.post<AddInitialBidForUserDto>(`/${auctionId}/${userId}/initial-bid`, { total });
+    async addInitialBidForUser(data: {
+        auctionId: string;
+        userId: string;
+        total?: number;
+        coefficient?: number;
+        years?: number;
+        days?: number;
+        percent?: number;
+    }) {
+        const { auctionId, userId, total, coefficient, years, days, percent } = data;
+        await this.post<AddInitialBidForUserDto>(`/${auctionId}/${userId}/initial-bid`, {
+            total,
+            coefficient,
+            years,
+            days,
+            percent,
+        });
     }
 
     async removeInitialBidForUser(data: { auctionId: string; userId: string }) {

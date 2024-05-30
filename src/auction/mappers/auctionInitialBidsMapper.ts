@@ -39,7 +39,43 @@ class AuctionInitialBidsMapper {
                     name,
                     isMin: bid.sequenceNumber === initRound.Bids.length - 1,
                     isMax: bid.sequenceNumber !== initRound.Bids.length - 1,
-                    fullPrice: formatNumberToPrice(bid.total) + ' грн',
+                    fullPrice: bid.total ? formatNumberToPrice(bid.total) + ' грн' : '...',
+                };
+
+                return preparedRound;
+            });
+            return bids;
+        } else if (auction.auctionType === AuctionType.NON_PRICE_CRITERIA) {
+            const bids: AuctionInitialBid[] = initRound.Bids.map((bid) => {
+                let name = bid.pseudonym;
+                let fullPrice = bid.total ? formatNumberToPrice(bid.total) + ' грн' : '...';
+                let coefficient = bid.coefficient ? `${bid.coefficient}` : '...';
+                if (
+                    participation.isParticipant &&
+                    participation.pseudonym !== null &&
+                    participation.pseudonym === bid.pseudonym
+                ) {
+                    name = 'Ви';
+                    if (bid.adjustedPrice && participation.coefficient) {
+                        fullPrice =
+                            formatNumberToPrice(
+                                Math.floor(bid.adjustedPrice * participation.coefficient),
+                            ) + ' грн';
+                        coefficient = `${participation.coefficient}`;
+                    }
+                } else if (bid.User) {
+                    name = bid.User.name;
+                }
+
+                const preparedRound: AuctionInitialBid = {
+                    id: bid.id,
+                    auctionType: AuctionType.NON_PRICE_CRITERIA,
+                    name,
+                    isMin: bid.sequenceNumber === initRound.Bids.length - 1,
+                    isMax: bid.sequenceNumber !== initRound.Bids.length - 1,
+                    coefficient: coefficient,
+                    fullPrice,
+                    adjustedPrice: formatNumberToPrice(bid.adjustedPrice || 0) + ' грн',
                 };
 
                 return preparedRound;
@@ -67,7 +103,7 @@ class AuctionInitialBidsMapper {
         if (result.auctionType === AuctionType.NON_PRICE_CRITERIA) {
             tableData.push(
                 { key: 'Коефіцієнт: ', value: result.coefficient },
-                { key: 'Приведена ціна, грн:', value: result.enteredPrice },
+                { key: 'Приведена ціна, грн:', value: result.adjustedPrice },
             );
         }
 
@@ -127,7 +163,7 @@ class AuctionInitialBidsMapper {
             if (result.auctionType === AuctionType.NON_PRICE_CRITERIA) {
                 data.push(
                     { id: getUuid(), value: result.coefficient, link: null },
-                    { id: getUuid(), value: result.enteredPrice, link: null },
+                    { id: getUuid(), value: result.adjustedPrice, link: null },
                 );
             }
 

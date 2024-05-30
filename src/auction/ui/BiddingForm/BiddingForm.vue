@@ -14,7 +14,7 @@
                 <DefaultVariant
                     v-if="settings.auctionType === AuctionType.DEFAULT"
                     :endAtStr="yourTurnEndAt"
-                    :fullPriceMin="settings.fullPriceMin"
+                    :fullPriceMin="settings.fullPriceMax"
                     :currentBid="currentBid"
                     :collapsedMobile="collapsedMobile"
                     @bidSent="handleBidSent"
@@ -23,7 +23,7 @@
                 <NonPriceVariant
                     v-else-if="settings.auctionType === AuctionType.NON_PRICE_CRITERIA"
                     :endAtStr="yourTurnEndAt"
-                    :fullPriceMin="settings.fullPriceMin"
+                    :fullPriceMax="settings.fullPriceMax"
                     :coefficient="settings.coefficient"
                     :currentBid="currentBid"
                     :collapsedMobile="collapsedMobile"

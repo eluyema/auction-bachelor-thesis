@@ -5,6 +5,7 @@ import { AuctionInfo } from 'src/entities/auction/auctionInfo';
 import { inject, reactive } from 'vue';
 import { AuctionFull } from 'src/entities/auction/auctionFull';
 import { RoundFull } from 'src/entities/round/RoundFull';
+import { AuctionBid } from 'src/entities/auction';
 
 export type AuctionsStore = {
     auctions: AuctionInfo[];
@@ -14,6 +15,7 @@ export type AuctionsStore = {
     participation: {
         isParticipant: boolean;
         pseudonym: string | null;
+        coefficient: number | null;
     };
     participationStatus: LoadingStatuses;
     biddingStatus: LoadingStatuses;
@@ -32,6 +34,7 @@ export const useAuctionsStore = defineStore('auction', () => {
         participation: {
             isParticipant: false,
             pseudonym: null,
+            coefficient: null,
         },
         userAuctions: [],
         userAuctionsStatus: LoadingStatuses.IDLE,
@@ -102,11 +105,12 @@ export const useAuctionsStore = defineStore('auction', () => {
             }
             state.participationStatus = LoadingStatuses.PENDING;
             state.currentAuction = null;
-            const { pseudonym, isParticipant } =
+            const { pseudonym, isParticipant, coefficient } =
                 await services.auctionClient.getMyParticipation(auctionId);
             state.participation = {
                 pseudonym,
                 isParticipant,
+                coefficient,
             };
             state.participationStatus = LoadingStatuses.FULFILLED;
         } catch (err) {
@@ -114,13 +118,13 @@ export const useAuctionsStore = defineStore('auction', () => {
         }
     };
 
-    const makeBid = async (auctionId: string, total: number) => {
+    const makeBid = async (auctionId: string, bid: AuctionBid) => {
         try {
             if (!services) {
                 return;
             }
             state.biddingStatus = LoadingStatuses.PENDING;
-            await services.auctionClient.makeBid(auctionId, total);
+            await services.auctionClient.makeBid(auctionId, bid);
             state.biddingStatus = LoadingStatuses.FULFILLED;
         } catch (err) {
             state.biddingStatus = LoadingStatuses.FAILED;

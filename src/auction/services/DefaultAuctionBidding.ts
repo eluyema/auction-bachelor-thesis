@@ -3,11 +3,12 @@ import { AuctionRoundProps } from '../ui/AuctionRound/AuctionRound.vue';
 import { AuctionInitialBidsMapper, AuctionResultsMapper, AuctionRoundBidMapper } from '../mappers';
 import { AuctionBidSettings, AuctionType, Participation } from 'src/entities/auction';
 import { ProgressBarProps } from 'src/shared/ui/ProgressBar/ProgressBar.vue';
+import { IAuctionBidding } from './IAuctionBidding';
 
-export class DefaultAuctionBidding {
+export class DefaultAuctionBidding implements IAuctionBidding {
     constructor() {}
 
-    static getRoundProps(
+    getRoundProps(
         roundNum: 1 | 2 | 3,
         auction: AuctionFull | null,
         currentDate: Date,
@@ -46,17 +47,22 @@ export class DefaultAuctionBidding {
         return { ...defaultProps, list, disabledIcons, disabledText };
     }
 
-    static getBiddingFormSettings(
+    getBiddingFormSettings(
         auction: AuctionFull | null,
         currentDate: Date,
         participation: Participation,
     ): AuctionBidSettings {
+        const defaultBadSettings: AuctionBidSettings = {
+            auctionType: AuctionType.DEFAULT,
+            fullPriceMax: 0,
+        };
+
         if (!auction) {
-            return { auctionType: AuctionType.DEFAULT, fullPriceMin: 0 };
+            return defaultBadSettings;
         }
 
         if (!auction.Rounds.length) {
-            return { auctionType: AuctionType.DEFAULT, fullPriceMin: 0 };
+            return defaultBadSettings;
         }
 
         const currentTimeStr = currentDate.toISOString();
@@ -66,7 +72,7 @@ export class DefaultAuctionBidding {
         );
 
         if (!currentRound || currentRound.sequenceNumber === 0) {
-            return { auctionType: AuctionType.DEFAULT, fullPriceMin: 0 };
+            return defaultBadSettings;
         }
 
         const roundBeforeCurrent = auction.Rounds.find(
@@ -74,7 +80,7 @@ export class DefaultAuctionBidding {
         );
 
         if (!roundBeforeCurrent) {
-            return { auctionType: AuctionType.DEFAULT, fullPriceMin: 0 };
+            return defaultBadSettings;
         }
 
         const myPseudonym = participation.pseudonym;
@@ -82,20 +88,24 @@ export class DefaultAuctionBidding {
         const myLastBid = roundBeforeCurrent.Bids.find((bid) => bid.pseudonym === myPseudonym);
 
         if (!myLastBid) {
-            return { auctionType: AuctionType.DEFAULT, fullPriceMin: 0 };
+            return defaultBadSettings;
         }
 
         const step = auction.decreaseStep;
 
-        const fullPriceMin = myLastBid.total - step;
+        if (!myLastBid.total) {
+            throw new Error('Total is missed in last bid');
+        }
+
+        const fullPriceMax = myLastBid.total - step;
 
         return {
             auctionType: AuctionType.DEFAULT,
-            fullPriceMin: fullPriceMin > 0 ? fullPriceMin : 0,
+            fullPriceMax: fullPriceMax > 0 ? fullPriceMax : 0,
         };
     }
 
-    static getAuctionResultList(auction: AuctionFull | null, participation: Participation) {
+    getAuctionResultList(auction: AuctionFull | null, participation: Participation) {
         if (!auction) {
             return [];
         }
@@ -113,7 +123,7 @@ export class DefaultAuctionBidding {
         });
     }
 
-    static getProgressBarProps(auction: AuctionFull | null, currentDate: Date): ProgressBarProps {
+    getProgressBarProps(auction: AuctionFull | null, currentDate: Date): ProgressBarProps {
         if (!auction) {
             return { message: 'Очікування', variant: 'warning' };
         }
@@ -173,7 +183,7 @@ export class DefaultAuctionBidding {
         return { message: 'Очікування', variant: 'warning' };
     }
 
-    static getRoundsDateInterval(auction: AuctionFull | null) {
+    getRoundsDateInterval(auction: AuctionFull | null) {
         if (!auction) {
             return { startAt: new Date(0), endAt: new Date(0) };
         }
@@ -195,7 +205,7 @@ export class DefaultAuctionBidding {
         };
     }
 
-    static getInitialBids(auction: AuctionFull | null, participation: Participation) {
+    getInitialBids(auction: AuctionFull | null, participation: Participation) {
         if (!auction) {
             return [];
         }
@@ -207,7 +217,7 @@ export class DefaultAuctionBidding {
         return AuctionInitialBidsMapper.mapToInitialBids(auction, participation);
     }
 
-    static getIsAuctionStarted(auction: AuctionFull | null, currentDate: Date) {
+    getIsAuctionStarted(auction: AuctionFull | null, currentDate: Date) {
         if (!auction) {
             return false;
         }
@@ -215,7 +225,7 @@ export class DefaultAuctionBidding {
         return new Date(auction.auctionStartAt) < currentDate;
     }
 
-    static getMyNearestBidInterval(
+    getMyNearestBidInterval(
         auction: AuctionFull | null,
         currentDate: Date,
         participation: Participation,
@@ -258,7 +268,7 @@ export class DefaultAuctionBidding {
         return { startAt: yourBid.startAt, endAt: yourBid.endAt };
     }
 
-    static getIsParticipantsExists(auction: AuctionFull | null) {
+    getIsParticipantsExists(auction: AuctionFull | null) {
         if (!auction) {
             return false;
         }

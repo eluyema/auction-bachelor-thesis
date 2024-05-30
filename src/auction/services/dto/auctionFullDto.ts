@@ -8,6 +8,7 @@ export interface AuctionFullDto {
     auctionOptions: null;
     name: string;
     purchaseCode: string;
+    cashFlow: number | null;
     customerName: string;
     expectedCost: number;
     decreaseStep: number;

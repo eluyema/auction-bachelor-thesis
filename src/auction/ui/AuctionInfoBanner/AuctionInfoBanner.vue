@@ -17,6 +17,7 @@
     </section>
 </template>
 <script setup lang="ts">
+import { AuctionType } from 'src/entities/auction';
 import { AuctionFull } from 'src/entities/auction/auctionFull';
 import CustomAccordion from 'src/shared/ui/CustomAccordion/CustomAccordion.vue';
 import { formatNumberToPrice } from 'src/shared/utils/formatNumberToPrice';
@@ -31,6 +32,16 @@ const props = defineProps<AuctionInfoBanner>();
 const auctionData = computed(() => {
     if (!props.auction) {
         return {};
+    }
+
+    if (props.auction.auctionType === AuctionType.ESCO) {
+        return {
+            'Номер закупівлі': props.auction.purchaseCode,
+            Замовник: props.auction.customerName,
+            'Грошовий потік за рік': formatNumberToPrice(props.auction.cashFlow || 0) + ' грн',
+            'Очікувана вартість': formatNumberToPrice(props.auction.expectedCost) + ' грн',
+            'Крок зменшення': formatNumberToPrice(props.auction.decreaseStep) + ' грн',
+        };
     }
 
     return {

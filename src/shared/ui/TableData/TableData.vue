@@ -28,7 +28,7 @@ export type TableDataProps = {
     rows: TableRowProps[];
 };
 
-const { rows, columns, name } = defineProps<TableDataProps>();
+defineProps<TableDataProps>();
 </script>
 
 <style scoped lang="scss">

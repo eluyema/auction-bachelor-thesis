@@ -22,7 +22,7 @@ export type VerticalListProps = {
     list: VerticalListItemProps[];
 };
 
-const { name, disabledText, disabledIcons, list } = defineProps<VerticalListProps>();
+defineProps<VerticalListProps>();
 </script>
 
 <style scoped lang="scss">

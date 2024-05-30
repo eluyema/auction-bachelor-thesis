@@ -7,11 +7,7 @@
     <p v-if="usersSearchStore.state.searchStatus === LoadingStatuses.FAILED" class="not-found-user">
         Юзера з поштою {{ usersSearchStore.state.lastSearchEmail }} не знайдено
     </p>
-    <form
-        class="form-initial-bid"
-        v-if="usersSearchStore.state.user"
-        @submit.prevent="validateAndSendInitialBid"
-    >
+    <div class="initial-bid-block" v-if="usersSearchStore.state.user">
         <h6 class="title">Знайдений юзер</h6>
         <div class="row">
             <p class="data-name">Ім'я</p>
@@ -21,63 +17,71 @@
             <p class="data-name">Пошта</p>
             <p class="data-value">{{ usersSearchStore.state.user.email }}</p>
         </div>
-        <CustomInput :error="error" v-model="formInput.total" label="Ставка" />
-        <CustomButton class="submit-button" type="submit">Додатки початкову заявку</CustomButton>
-    </form>
+        <DefaultVariant
+            v-if="auctionType === AuctionType.DEFAULT"
+            :user="usersSearchStore.state.user"
+            @addDefaultBid="sendDefaultBid"
+        />
+        <ESCOVariant
+            v-if="cashFlow && auctionType === AuctionType.ESCO"
+            :user="usersSearchStore.state.user"
+            :cashFlow="cashFlow"
+            @addESCOBid="sendESCOBid"
+        />
+        <NonPriceCriteriaVariant
+            v-if="auctionType === AuctionType.NON_PRICE_CRITERIA"
+            :user="usersSearchStore.state.user"
+            @addNonPriceCriteriaBid="sendNonPriceCriteriaBid"
+        />
+    </div>
 </template>
 <script setup lang="ts">
 import { LoadingStatuses } from 'src/entities/application';
-import CustomButton from 'src/shared/ui/CustomButton/CustomButton.vue';
-import CustomInput from 'src/shared/ui/CustomInput/CustomInput.vue';
 import { useUsersSettingsStore } from 'src/users/store/usersSettingsStore';
 import UserSearchForm from 'src/users/ui/UserSearchForm/UserSearchForm.vue';
-import { onMounted, reactive, ref } from 'vue';
-import { number, object } from 'yup';
+import { onMounted } from 'vue';
+import DefaultVariant from './DefaultVariant.vue';
+import ESCOVariant from './ESCOVariant.vue';
+import NonPriceCriteriaVariant from './NonPriceCriteriaVariant.vue';
+import { AuctionType } from 'src/entities/auction';
 
-// export type InitialBidForm = {};
+export type InitialBidForm = {
+    auctionType: AuctionType;
+    cashFlow: number | null;
+};
 
-// const props = defineProps<InitialBidForm>();
+defineProps<InitialBidForm>();
 
 const emit = defineEmits<{
-    (event: 'addBid', data: { userId: string; total: number }): void;
+    (
+        event: 'addBid',
+        data: {
+            userId: string;
+            total?: number;
+            coefficient?: number;
+            years?: number;
+            days?: number;
+            percent?: number;
+        },
+    ): void;
 }>();
 
 const usersSearchStore = useUsersSettingsStore();
-
-const getFormSchema = () => {
-    return object({
-        total: number().min(0, `Має бути більше 0`).required('Введіть ставку'),
-    });
-};
-
-const formSchema = ref(getFormSchema());
-
-const error = ref(false);
-
-const formInput = reactive({
-    total: '',
-});
 
 const onSearchUser = (data: { email: string }) => {
     usersSearchStore.findByEmail(data);
 };
 
-const validateAndSendInitialBid = async () => {
-    try {
-        await formSchema.value.validate(formInput);
-        error.value = false;
-        if (!usersSearchStore.state.user) {
-            return;
-        }
+const sendDefaultBid = (data: { userId: string; total: number }) => {
+    emit('addBid', data);
+};
 
-        emit('addBid', {
-            userId: usersSearchStore.state.user.id,
-            total: Number(formInput.total),
-        });
-    } catch (err) {
-        error.value = true;
-        console.error('Validation error:', err);
-    }
+const sendESCOBid = (data: { userId: string; years: number; days: number; percent: number }) => {
+    emit('addBid', data);
+};
+
+const sendNonPriceCriteriaBid = (data: { userId: string; total: number; coefficient: number }) => {
+    emit('addBid', data);
 };
 
 onMounted(() => {
@@ -98,13 +102,6 @@ onMounted(() => {
     margin-bottom: var(--spacing-12);
 }
 
-.form-initial-bid {
-    margin-top: var(--spacing-16);
-    display: flex;
-    flex-direction: column;
-    align-items: start;
-}
-
 .row {
     display: flex;
     margin-top: var(--spacing-12);
@@ -118,10 +115,6 @@ onMounted(() => {
 
 .data-value {
     @include font-text-medium();
-}
-
-.submit-button {
-    margin-top: var(--spacing-12);
 }
 
 .not-found-user {

@@ -5,6 +5,7 @@ export interface AuctionInfo {
     auctionType: AuctionType;
     auctionStatus: 'waiting' | 'active' | 'finished';
     auctionOptions: null;
+    cashFlow: number | null;
     name: string;
     purchaseCode: string;
     customerName: string;

@@ -77,15 +77,27 @@ export const useManagerAuctionStore = defineStore('managerAuction', () => {
     const addInitialBidForUser = async (data: {
         userId: string;
         auctionId: string;
-        total: number;
+        total?: number;
+        coefficient?: number;
+        years?: number;
+        days?: number;
+        percent?: number;
     }) => {
         try {
             if (!services) {
                 return;
             }
-            const { userId, auctionId, total } = data;
+            const { userId, auctionId, total, coefficient, years, days, percent } = data;
             state.addBidStatus = LoadingStatuses.PENDING;
-            await services.managerAuctionClient.addInitialBidForUser({ userId, auctionId, total });
+            await services.managerAuctionClient.addInitialBidForUser({
+                userId,
+                auctionId,
+                total,
+                coefficient,
+                years,
+                days,
+                percent,
+            });
             state.addBidStatus = LoadingStatuses.FULFILLED;
         } catch (err) {
             state.addBidStatus = LoadingStatuses.FAILED;

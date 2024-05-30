@@ -5,6 +5,7 @@ import { AuctionFull } from 'src/entities/auction/auctionFull';
 import { AuctionFullDto } from './dto/auctionFullDto';
 import { MyParticipationDto } from './dto/myParticipationDto';
 import { MakeBidDto } from './dto/makeBidDto';
+import { AuctionBid, AuctionType } from 'src/entities/auction';
 
 export class AuctionClient extends HttpClient {
     async getAllAuctions() {
@@ -36,18 +37,30 @@ export class AuctionClient extends HttpClient {
     async getMyParticipation(auctionId: string): Promise<{
         isParticipant: boolean;
         pseudonym: string | null;
+        coefficient: number | null;
     }> {
-        const { isParticipant, pseudonym } = await this.get<MyParticipationDto>(
+        const { isParticipant, pseudonym, coefficient } = await this.get<MyParticipationDto>(
             '/' + auctionId + '/participation',
         );
 
         return {
             isParticipant,
             pseudonym: pseudonym ?? null,
+            coefficient: coefficient ?? null,
         };
     }
 
-    async makeBid(auctionId: string, total: number): Promise<void> {
-        await this.post<MakeBidDto>('/' + auctionId + '/bids', { total });
+    async makeBid(auctionId: string, bid: AuctionBid): Promise<void> {
+        if (bid.auctionType === AuctionType.DEFAULT) {
+            await this.post<MakeBidDto>('/' + auctionId + '/bids', { total: bid.fullPrice });
+        } else if (bid.auctionType === AuctionType.NON_PRICE_CRITERIA) {
+            await this.post<MakeBidDto>('/' + auctionId + '/bids', { total: bid.fullPrice });
+        } else if (bid.auctionType === AuctionType.ESCO) {
+            await this.post<MakeBidDto>('/' + auctionId + '/bids', {
+                years: bid.years,
+                days: bid.days,
+                percent: bid.percent,
+            });
+        }
     }
 }

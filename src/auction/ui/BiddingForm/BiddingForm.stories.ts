@@ -46,7 +46,7 @@ type Story = StoryObj<typeof meta>;
 
 export const AuctionNotStarted: Story = {
     args: {
-        settings: { auctionType: AuctionType.DEFAULT, fullPriceMin: 49999998 },
+        settings: { auctionType: AuctionType.DEFAULT, fullPriceMax: 49999998 },
         auctionStartAt: getAdjustDate({ days: 2, hours: 21, seconds: 4 }),
         roundStartAt: getAdjustDate({ days: 3, hours: 21, seconds: 10 }),
         yourTurnStartAt: getAdjustDate({ days: 4, hours: 21, minutes: 20, seconds: 10 }),
@@ -56,7 +56,7 @@ export const AuctionNotStarted: Story = {
 
 export const RoundNotStarted: Story = {
     args: {
-        settings: { auctionType: AuctionType.DEFAULT, fullPriceMin: 49999998 },
+        settings: { auctionType: AuctionType.DEFAULT, fullPriceMax: 49999998 },
         auctionStartAt: getAdjustDate({ days: -2, hours: 21, seconds: 10 }),
         roundStartAt: getAdjustDate({ hours: 2 }),
         yourTurnStartAt: getAdjustDate({ days: 4, hours: 21, seconds: 10 }),
@@ -66,7 +66,7 @@ export const RoundNotStarted: Story = {
 
 export const YourTurnNotStarted: Story = {
     args: {
-        settings: { auctionType: AuctionType.DEFAULT, fullPriceMin: 49999998 },
+        settings: { auctionType: AuctionType.DEFAULT, fullPriceMax: 49999998 },
         auctionStartAt: getAdjustDate({ days: -2, hours: 21, seconds: 10 }),
         roundStartAt: getAdjustDate({ days: -3, hours: 21, seconds: 10 }),
         yourTurnStartAt: getAdjustDate({ seconds: 100 }),
@@ -76,7 +76,7 @@ export const YourTurnNotStarted: Story = {
 
 export const DefaultYourTurnStarted: Story = {
     args: {
-        settings: { auctionType: AuctionType.DEFAULT, fullPriceMin: 49999998 },
+        settings: { auctionType: AuctionType.DEFAULT, fullPriceMax: 49999998 },
         auctionStartAt: getAdjustDate({ days: -2, hours: 21, seconds: 10 }),
         roundStartAt: getAdjustDate({ days: -3, hours: 21, seconds: 10 }),
         yourTurnStartAt: getAdjustDate({ seconds: -1 }),
@@ -86,7 +86,7 @@ export const DefaultYourTurnStarted: Story = {
 
 export const DefaultYourTurnStartedBiddingReady: Story = {
     args: {
-        settings: { auctionType: AuctionType.DEFAULT, fullPriceMin: 49999998 },
+        settings: { auctionType: AuctionType.DEFAULT, fullPriceMax: 49999998 },
         auctionStartAt: getAdjustDate({ days: -2, hours: 21, seconds: 10 }),
         roundStartAt: getAdjustDate({ days: -3, hours: 21, seconds: 10 }),
         yourTurnStartAt: getAdjustDate({ seconds: -1 }),
@@ -102,7 +102,7 @@ export const DefaultYourTurnStartedBiddingReady: Story = {
 
 export const DefaultYourTurnStartedBiddingAborted: Story = {
     args: {
-        settings: { auctionType: AuctionType.DEFAULT, fullPriceMin: 49999998 },
+        settings: { auctionType: AuctionType.DEFAULT, fullPriceMax: 49999998 },
         auctionStartAt: getAdjustDate({ days: -2, hours: 21, seconds: 10 }),
         roundStartAt: getAdjustDate({ days: -3, hours: 21, seconds: 10 }),
         yourTurnStartAt: getAdjustDate({ seconds: -1 }),
@@ -120,7 +120,7 @@ export const NonPriceYourTurnStarted: Story = {
     args: {
         settings: {
             auctionType: AuctionType.NON_PRICE_CRITERIA,
-            fullPriceMin: 49999998,
+            fullPriceMax: 49999998,
             coefficient: 1.25,
         },
         auctionStartAt: getAdjustDate({ days: -2, hours: 21, seconds: 10 }),
@@ -134,7 +134,7 @@ export const NonPriceYourTurnStartedBiddingReady: Story = {
     args: {
         settings: {
             auctionType: AuctionType.NON_PRICE_CRITERIA,
-            fullPriceMin: 49999998,
+            fullPriceMax: 49999998,
             coefficient: 1.5,
         },
         auctionStartAt: getAdjustDate({ days: -2, hours: 21, seconds: 10 }),
@@ -154,7 +154,7 @@ export const NonPriceYourTurnStartedBiddingAborted: Story = {
     args: {
         settings: {
             auctionType: AuctionType.NON_PRICE_CRITERIA,
-            fullPriceMin: 49999998,
+            fullPriceMax: 49999998,
             coefficient: 1.75,
         },
         auctionStartAt: getAdjustDate({ days: -2, hours: 21, seconds: 10 }),

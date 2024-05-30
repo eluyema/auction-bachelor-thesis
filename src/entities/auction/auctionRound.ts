@@ -33,7 +33,7 @@ export type AuctionRoundBid =
           status: AuctionRoundStatus;
           fullPrice: string;
           coefficient: string;
-          enteredPrice: string;
+          adjustedPrice: string;
           isMax: boolean;
           isMin: boolean;
       };

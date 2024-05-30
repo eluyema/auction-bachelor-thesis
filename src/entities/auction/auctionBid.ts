@@ -11,7 +11,7 @@ export type NonPriceCriteria = {
     id: string;
     auctionType: AuctionType.NON_PRICE_CRITERIA;
     coefficient: number;
-    enteredPrice: string;
+    adjustedPrice: string;
     fullPrice: number;
     aborted: boolean;
 };

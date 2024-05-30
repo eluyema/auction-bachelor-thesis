@@ -4,7 +4,7 @@ export interface BidFull {
     id: string;
     roundId: string;
     sequenceNumber: number;
-    total: number;
+    total: number | null;
     userId: string | null;
     totalUpdatedAt: string;
     startAt: string;

@@ -1,3 +1,7 @@
 export interface AddInitialBidForUserDto {
-    total: number;
+    total?: number;
+    coefficient?: number;
+    years?: number;
+    days?: number;
+    percent?: number;
 }

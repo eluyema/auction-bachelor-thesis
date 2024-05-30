@@ -5,6 +5,7 @@ export interface CreateAuctionDto {
     auctionType: AuctionType;
     purchaseCode: string;
     customerName: string;
+    cashFlow?: number;
     expectedCost: number;
     decreaseStep: number;
     timeForRoundInSecs: number;

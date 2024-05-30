@@ -7,7 +7,7 @@
 <script setup lang="ts">
 export type TableColumnProps = { id: string; name: string; width?: 'min' | 'default' | 'max' };
 
-const { name, width } = defineProps<TableColumnProps>();
+defineProps<TableColumnProps>();
 </script>
 
 <style scoped lang="scss">

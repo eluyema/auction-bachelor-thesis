@@ -18,5 +18,5 @@ export type AuctionResult =
           userAuctionsLink: string | null;
           winnerLink?: string;
           coefficient: string;
-          enteredPrice: string;
+          adjustedPrice: string;
       };

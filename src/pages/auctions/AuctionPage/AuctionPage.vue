@@ -54,7 +54,8 @@
 </template>
 <script setup lang="ts">
 import { AuctionSocket } from 'src/auction/services/AuctionSocket';
-import { DefaultAuctionBidding } from 'src/auction/services/DefaultAuctionBidding';
+import { BiddingFabric } from 'src/auction/services/BiddingFabric';
+import { IAuctionBidding } from 'src/auction/services/IAuctionBidding';
 import { useAuctionsStore } from 'src/auction/store/auctionsStore';
 import AuctionInfoBanner from 'src/auction/ui/AuctionInfoBanner/AuctionInfoBanner.vue';
 import AuctionInitialBids from 'src/auction/ui/AuctionInitialBids/AuctionInitialBids.vue';
@@ -84,13 +85,17 @@ const showBiddingForm = computed(
         currentTime.value < roundsDateInterval.value.endAt,
 );
 
+const biddingService = computed<IAuctionBidding>(() =>
+    BiddingFabric.getInstance(currentAuction.value),
+);
+
 const isNoOneParticipants = computed(
-    () => !DefaultAuctionBidding.getIsParticipantsExists(currentAuction.value),
+    () => !biddingService.value.getIsParticipantsExists(currentAuction.value),
 );
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const firstRoundProps = computed<AuctionRoundProps>(() => {
-    return DefaultAuctionBidding.getRoundProps(
+    return biddingService.value.getRoundProps(
         1,
         currentAuction.value,
         currentTime.value,
@@ -100,7 +105,7 @@ const firstRoundProps = computed<AuctionRoundProps>(() => {
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const secondRoundProps = computed<AuctionRoundProps>(() => {
-    return DefaultAuctionBidding.getRoundProps(
+    return biddingService.value.getRoundProps(
         2,
         currentAuction.value,
         currentTime.value,
@@ -110,7 +115,7 @@ const secondRoundProps = computed<AuctionRoundProps>(() => {
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const thirdRoundProps = computed<AuctionRoundProps>(() => {
-    return DefaultAuctionBidding.getRoundProps(
+    return biddingService.value.getRoundProps(
         3,
         currentAuction.value,
         currentTime.value,
@@ -119,7 +124,7 @@ const thirdRoundProps = computed<AuctionRoundProps>(() => {
 });
 
 const biddingFormSettings = computed(() =>
-    DefaultAuctionBidding.getBiddingFormSettings(
+    biddingService.value.getBiddingFormSettings(
         currentAuction.value,
         currentTime.value,
         auctionsStore.state.participation,
@@ -127,18 +132,18 @@ const biddingFormSettings = computed(() =>
 );
 
 const auctionResultsList = computed(() => {
-    return DefaultAuctionBidding.getAuctionResultList(
+    return biddingService.value.getAuctionResultList(
         currentAuction.value,
         auctionsStore.state.participation,
     );
 });
 
 const progressBarProps = computed<ProgressBarProps>(() =>
-    DefaultAuctionBidding.getProgressBarProps(currentAuction.value, currentTime.value),
+    biddingService.value.getProgressBarProps(currentAuction.value, currentTime.value),
 );
 
 const roundsDateInterval = computed(() => {
-    return DefaultAuctionBidding.getRoundsDateInterval(currentAuction.value);
+    return biddingService.value.getRoundsDateInterval(currentAuction.value);
 });
 
 const isRoundsStarted = computed(() => {
@@ -173,11 +178,11 @@ const isRoundsTime = computed(() => {
 });
 
 const initialBids = computed(() =>
-    DefaultAuctionBidding.getInitialBids(currentAuction.value, auctionsStore.state.participation),
+    biddingService.value.getInitialBids(currentAuction.value, auctionsStore.state.participation),
 );
 
 const isAuctionStarted = computed(() =>
-    DefaultAuctionBidding.getIsAuctionStarted(currentAuction.value, currentTime.value),
+    biddingService.value.getIsAuctionStarted(currentAuction.value, currentTime.value),
 );
 
 const auctionId = computed(() => {
@@ -194,12 +199,12 @@ const onMakeBid = (bid: AuctionBid) => {
     if (!currentAuction.value) {
         return;
     }
-
-    auctionsStore.makeBid(currentAuction.value.id, Number(bid.fullPrice));
+    console.log(bid);
+    auctionsStore.makeBid(currentAuction.value.id, bid);
 };
 
 const myNearestBidInterval = computed(() =>
-    DefaultAuctionBidding.getMyNearestBidInterval(
+    biddingService.value.getMyNearestBidInterval(
         currentAuction.value,
         currentTime.value,
         auctionsStore.state.participation,

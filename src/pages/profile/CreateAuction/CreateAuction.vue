@@ -35,6 +35,13 @@
                     </option>
                 </select>
             </div>
+            <div class="field" v-if="formInput.auctionType === AuctionType.ESCO">
+                <CustomInput
+                    class="field-input"
+                    v-model="formInput.cashFlow"
+                    label="Грошовий потік за рік"
+                />
+            </div>
             <div class="field">
                 <CustomInput
                     class="field-input"
@@ -107,7 +114,24 @@ const tabs = computed(() => {
 
 const activeTabName = myAuctionsTab.name;
 
-const getFormSchema = () => {
+const getFormSchema = (auctionType: AuctionType) => {
+    if (auctionType === AuctionType.ESCO) {
+        return object({
+            name: string().required(),
+            auctionType: string()
+                .oneOf([AuctionType.DEFAULT, AuctionType.ESCO, AuctionType.NON_PRICE_CRITERIA])
+                .required(),
+            purchaseCode: string().required(),
+            customerName: string().required(),
+            cashFlow: number().required(),
+            expectedCost: number().integer().required(),
+            decreaseStep: number().integer().required(),
+            auctionStartAt: date().required(),
+            firstRoundStartAt: date().required(),
+            timeForRoundInSecs: number().min(0).integer().required(),
+        });
+    }
+
     return object({
         name: string().required(),
         auctionType: string()
@@ -123,18 +147,21 @@ const getFormSchema = () => {
     });
 };
 
-const formSchema = ref(getFormSchema());
-
 const formInput = reactive({
     name: '',
     auctionType: AuctionType.DEFAULT,
     purchaseCode: '',
     customerName: '',
+    cashFlow: '',
     expectedCost: '',
     decreaseStep: '',
     auctionStartAt: '',
     firstRoundStartAt: '',
     timeForRoundInSecs: '40',
+});
+
+const formSchema = computed(() => {
+    return getFormSchema(formInput.auctionType);
 });
 
 const isError = ref(false);
@@ -144,20 +171,36 @@ const validateAndCreateAuction = async () => {
         await formSchema.value.validate(formInput);
 
         isError.value = false;
+        if (formInput.auctionType === AuctionType.ESCO) {
+            const dto: CreateAuctionDto = {
+                name: formInput.name,
+                auctionType: formInput.auctionType,
+                purchaseCode: formInput.purchaseCode,
+                customerName: formInput.customerName,
+                cashFlow: Number(formInput.cashFlow),
+                expectedCost: Number(formInput.expectedCost),
+                decreaseStep: Number(formInput.decreaseStep),
+                auctionStartAt: new Date(formInput.auctionStartAt).toJSON(),
+                firstRoundStartAt: new Date(formInput.firstRoundStartAt).toJSON(),
+                timeForRoundInSecs: Number(formInput.timeForRoundInSecs),
+            };
 
-        const dto: CreateAuctionDto = {
-            name: formInput.name,
-            auctionType: formInput.auctionType,
-            purchaseCode: formInput.purchaseCode,
-            customerName: formInput.customerName,
-            expectedCost: Number(formInput.expectedCost),
-            decreaseStep: Number(formInput.decreaseStep),
-            auctionStartAt: new Date(formInput.auctionStartAt).toJSON(),
-            firstRoundStartAt: new Date(formInput.firstRoundStartAt).toJSON(),
-            timeForRoundInSecs: Number(formInput.timeForRoundInSecs),
-        };
+            managerAuctionStore.createAuction(dto);
+        } else {
+            const dto: CreateAuctionDto = {
+                name: formInput.name,
+                auctionType: formInput.auctionType,
+                purchaseCode: formInput.purchaseCode,
+                customerName: formInput.customerName,
+                expectedCost: Number(formInput.expectedCost),
+                decreaseStep: Number(formInput.decreaseStep),
+                auctionStartAt: new Date(formInput.auctionStartAt).toJSON(),
+                firstRoundStartAt: new Date(formInput.firstRoundStartAt).toJSON(),
+                timeForRoundInSecs: Number(formInput.timeForRoundInSecs),
+            };
 
-        managerAuctionStore.createAuction(dto);
+            managerAuctionStore.createAuction(dto);
+        }
     } catch (error) {
         isError.value = true;
         console.error('Validation error:', error);

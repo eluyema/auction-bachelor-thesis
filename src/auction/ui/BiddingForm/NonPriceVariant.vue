@@ -20,7 +20,7 @@
                                 <RestrictionText
                                     title="Повна ціна має бути:"
                                     :isError="isError"
-                                    :minValue="formattedFullPriceMin"
+                                    :minValue="formattedFullPriceMax"
                                 />
                                 <CustomInput
                                     :error="isError"
@@ -46,12 +46,13 @@
                                 <RestrictionText
                                     title="Приведена ціна має бути:"
                                     :isError="isError"
-                                    :minValue="minEnteredPrice"
+                                    :minValue="minadjustedPrice"
                                 />
                                 <CustomInput
                                     :error="isError"
                                     class="input"
-                                    v-model="formInput.enteredPrice"
+                                    disabled
+                                    v-model="formInput.adjustedPrice"
                                 />
                             </div>
                         </div>
@@ -96,7 +97,7 @@ import BiddingStatus from './components/BiddingStatus.vue';
 
 export type NonPriceVariantProps = {
     endAtStr: string;
-    fullPriceMin: number;
+    fullPriceMax: number;
     coefficient: number;
     currentBid?: AuctionBid | null;
     collapsedMobile: boolean;
@@ -107,17 +108,19 @@ const emit = defineEmits<{
     (event: 'bidAbort'): void;
 }>();
 
-const { endAtStr, fullPriceMin, currentBid, coefficient } = defineProps<NonPriceVariantProps>();
+const props = defineProps<NonPriceVariantProps>();
 
-const showAbortButton = computed(() => !!currentBid && !currentBid.aborted);
+const showAbortButton = computed(() => !!props.currentBid && !props.currentBid.aborted);
 
-const coefficientFormatted = computed(() => coefficient.toFixed(2));
+const coefficientFormatted = computed(() => props.coefficient.toFixed(0));
 
-const formattedFullPriceMin = computed(() => formatNumberToPrice(fullPriceMin));
+const formattedFullPriceMax = computed(() => formatNumberToPrice(props.fullPriceMax));
 
-const diffInSeconds = computed(() => getSecondsBetweenDates(new Date(endAtStr), new Date()));
+const diffInSeconds = computed(() => getSecondsBetweenDates(new Date(props.endAtStr), new Date()));
 
-const minEnteredPrice = computed(() => formatNumberToPrice(fullPriceMin / coefficient));
+const minadjustedPrice = computed(() =>
+    formatNumberToPrice(props.fullPriceMax / props.coefficient),
+);
 
 const isError = ref(false);
 
@@ -126,16 +129,16 @@ const onBidAbort = () => {
 };
 
 const getFormSchema = () => {
-    const calculatedMinEnteredPrice = fullPriceMin / coefficient;
+    const calculatedMinadjustedPrice = props.fullPriceMax / props.coefficient;
 
     return object({
         fullPrice: number()
-            .min(fullPriceMin, `Full price must be at least ${fullPriceMin}`)
+            .max(props.fullPriceMax, `Full price must be max ${props.fullPriceMax}`)
             .required('Full price is required'),
-        enteredPrice: number()
-            .min(
-                calculatedMinEnteredPrice,
-                `Entered price must be at least ${calculatedMinEnteredPrice}`,
+        adjustedPrice: number()
+            .max(
+                calculatedMinadjustedPrice,
+                `Entered price must be max ${calculatedMinadjustedPrice}`,
             )
             .required('Entered price is required'),
     });
@@ -145,7 +148,7 @@ const formSchema = ref(getFormSchema());
 
 const formInput = reactive({
     fullPrice: '',
-    enteredPrice: '',
+    adjustedPrice: '',
 });
 
 const sendBid = () => {
@@ -153,8 +156,8 @@ const sendBid = () => {
         id: getUuid(),
         auctionType: AuctionType.NON_PRICE_CRITERIA,
         fullPrice: +formInput.fullPrice,
-        coefficient: coefficient,
-        enteredPrice: formatNumberToPrice(+formInput.enteredPrice),
+        coefficient: props.coefficient,
+        adjustedPrice: formatNumberToPrice(+formInput.adjustedPrice),
         aborted: false,
     };
 
@@ -174,52 +177,29 @@ const validateAndSendBid = async () => {
 };
 
 watch(
-    () => formInput.enteredPrice,
-    () => {
-        const enteredPriceNum = +formInput.enteredPrice;
-
-        if (isNaN(enteredPriceNum)) {
-            return;
-        }
-
-        const updatedValue = (enteredPriceNum * coefficient).toFixed(2);
-
-        if (updatedValue === (+formInput.fullPrice).toFixed(2)) {
-            return;
-        }
-
-        formInput.fullPrice = updatedValue;
-    },
-);
-
-watch(
     () => formInput.fullPrice,
     () => {
         const fullPriceNum = +formInput.fullPrice;
 
-        if (isNaN(fullPriceMin)) {
+        if (isNaN(props.fullPriceMax)) {
             return;
         }
 
-        const updatedValue = (fullPriceNum / coefficient).toFixed(2);
+        const updatedValue = (fullPriceNum / props.coefficient).toFixed(0);
 
-        if (updatedValue === (+formInput.enteredPrice).toFixed(2)) {
-            return;
-        }
-
-        formInput.enteredPrice = updatedValue;
+        formInput.adjustedPrice = updatedValue;
     },
 );
 
 watch(
-    () => fullPriceMin,
+    () => props.fullPriceMax,
     () => {
         formSchema.value = getFormSchema();
     },
 );
 
 watch(
-    () => coefficient,
+    () => props.coefficient,
     () => {
         formSchema.value = getFormSchema();
     },

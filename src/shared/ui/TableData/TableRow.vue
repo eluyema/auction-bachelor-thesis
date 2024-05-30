@@ -45,7 +45,7 @@ export type TableRowProps = {
     activeBackground?: boolean;
 };
 
-const { data, bordered, activeBackground, disabled } = defineProps<TableRowProps>();
+defineProps<TableRowProps>();
 </script>
 
 <style scoped lang="scss">

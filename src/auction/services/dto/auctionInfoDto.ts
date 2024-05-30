@@ -6,6 +6,7 @@ export interface AuctionInfoDto {
     auctionStatus: 'waiting' | 'active' | 'finished';
     auctionOptions: null;
     name: string;
+    cashFlow: number | null;
     purchaseCode: string;
     customerName: string;
     expectedCost: number;

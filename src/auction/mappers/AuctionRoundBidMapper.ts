@@ -21,18 +21,9 @@ class AuctionRoundBidMapper {
             return [];
         }
 
-        if (auctionType !== AuctionType.DEFAULT) {
-            return [];
-        }
-
         const announced = new Date(round.startAt) < currentDate;
 
         const sortedBids = [...round.Bids].sort((a, b) => a.sequenceNumber - b.sequenceNumber);
-
-        const filteredBids = [...round.Bids].sort((a, b) => a.total - b.total);
-
-        const maxBid = filteredBids[filteredBids.length - 1];
-        const minBid = filteredBids[0];
 
         if (!announced) {
             return sortedBids.map((bid) => {
@@ -57,29 +48,123 @@ class AuctionRoundBidMapper {
                 status = AuctionRoundStatus.COMPLETED;
             }
 
-            let name = bid.pseudonym;
-            if (
-                participation.isParticipant &&
-                participation.pseudonym !== null &&
-                participation.pseudonym === bid.pseudonym
-            ) {
-                name = 'Ви';
-            } else if (bid.User) {
-                name = bid.User.name;
+            if (auctionType === AuctionType.DEFAULT) {
+                let name = bid.pseudonym;
+                if (
+                    participation.isParticipant &&
+                    participation.pseudonym !== null &&
+                    participation.pseudonym === bid.pseudonym
+                ) {
+                    name = 'Ви';
+                } else if (bid.User) {
+                    name = bid.User.name;
+                }
+
+                const filteredBids = [...round.Bids].sort((a, b) => {
+                    if (!a.total || !b.total) {
+                        throw new Error('total is missed in bids');
+                    }
+                    return a.total - b.total;
+                });
+
+                const maxBid = filteredBids[filteredBids.length - 1];
+                const minBid = filteredBids[0];
+
+                const auctionRoundBid: AuctionRoundBid = {
+                    id: bid.id,
+                    announced,
+                    name,
+                    auctionType: auctionType,
+                    status,
+                    fullPrice: formatNumberToPrice(bid.total || 0) + ' грн',
+                    isMin: bid.id === minBid.id,
+                    isMax: bid.id === maxBid.id,
+                };
+
+                return auctionRoundBid;
+            } else if (auctionType === AuctionType.NON_PRICE_CRITERIA) {
+                let name = bid.pseudonym;
+                let fullPrice = bid.total ? formatNumberToPrice(bid.total) + ' грн' : '...';
+                let coefficient = bid.coefficient ? `${bid.coefficient}` : '...';
+                if (
+                    participation.isParticipant &&
+                    participation.pseudonym !== null &&
+                    participation.pseudonym === bid.pseudonym
+                ) {
+                    name = 'Ви';
+                    if (bid.adjustedPrice && participation.coefficient) {
+                        fullPrice =
+                            formatNumberToPrice(
+                                Math.floor(bid.adjustedPrice * participation.coefficient),
+                            ) + ' грн';
+                        coefficient = `${participation.coefficient}`;
+                    }
+                } else if (bid.User) {
+                    name = bid.User.name;
+                }
+
+                const filteredBids = [...round.Bids].sort((a, b) => {
+                    if (!a.adjustedPrice || !b.adjustedPrice) {
+                        console.log(a, b);
+                        throw new Error('adjustedPrice is missed in bids');
+                    }
+                    return a.adjustedPrice - b.adjustedPrice;
+                });
+
+                const maxBid = filteredBids[filteredBids.length - 1];
+                const minBid = filteredBids[0];
+
+                const auctionRoundBid: AuctionRoundBid = {
+                    id: bid.id,
+                    announced,
+                    name,
+                    auctionType: auctionType,
+                    status,
+                    fullPrice,
+                    adjustedPrice: bid.adjustedPrice
+                        ? formatNumberToPrice(bid.adjustedPrice)
+                        : '...',
+                    coefficient,
+                    isMin: bid.id === minBid.id,
+                    isMax: bid.id === maxBid.id,
+                };
+
+                return auctionRoundBid;
+            } else {
+                let name = bid.pseudonym;
+                if (
+                    participation.isParticipant &&
+                    participation.pseudonym !== null &&
+                    participation.pseudonym === bid.pseudonym
+                ) {
+                    name = 'Ви';
+                } else if (bid.User) {
+                    name = bid.User.name;
+                }
+
+                const filteredBids = [...round.Bids].sort((a, b) => {
+                    if (!a.total || !b.total) {
+                        throw new Error('total is missed in bids');
+                    }
+                    return a.total - b.total;
+                });
+
+                const maxBid = filteredBids[filteredBids.length - 1];
+                const minBid = filteredBids[0];
+
+                const auctionRoundBid: AuctionRoundBid = {
+                    id: bid.id,
+                    announced,
+                    name,
+                    auctionType: auctionType,
+                    status,
+                    fullPrice: bid.total ? formatNumberToPrice(bid.total) + ' грн' : '...',
+                    isMin: bid.id === minBid.id,
+                    isMax: bid.id === maxBid.id,
+                };
+
+                return auctionRoundBid;
             }
-
-            const auctionRoundBid: AuctionRoundBid = {
-                id: bid.id,
-                announced,
-                name,
-                auctionType: auctionType,
-                status,
-                fullPrice: formatNumberToPrice(bid.total) + ' грн',
-                isMin: bid.id === minBid.id,
-                isMax: bid.id === maxBid.id,
-            };
-
-            return auctionRoundBid;
         });
     }
 
@@ -111,7 +196,7 @@ class AuctionRoundBidMapper {
         if (result.auctionType === AuctionType.NON_PRICE_CRITERIA) {
             tableData.push(
                 { key: 'Коефіцієнт: ', value: result.coefficient },
-                { key: 'Приведена ціна, грн:', value: result.enteredPrice },
+                { key: 'Приведена ціна, грн:', value: result.adjustedPrice },
             );
         }
 
