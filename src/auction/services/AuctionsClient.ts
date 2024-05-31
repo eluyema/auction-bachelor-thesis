@@ -38,15 +38,20 @@ export class AuctionClient extends HttpClient {
         isParticipant: boolean;
         pseudonym: string | null;
         coefficient: number | null;
+        lastYears: number | null;
+        lastDays: number | null;
+        lastPercent: number | null;
     }> {
-        const { isParticipant, pseudonym, coefficient } = await this.get<MyParticipationDto>(
-            '/' + auctionId + '/participation',
-        );
+        const { isParticipant, pseudonym, coefficient, lastYears, lastDays, lastPercent } =
+            await this.get<MyParticipationDto>('/' + auctionId + '/participation');
 
         return {
             isParticipant,
             pseudonym: pseudonym ?? null,
             coefficient: coefficient ?? null,
+            lastYears: lastYears ?? null,
+            lastDays: lastDays ?? null,
+            lastPercent: lastPercent ?? null,
         };
     }
 

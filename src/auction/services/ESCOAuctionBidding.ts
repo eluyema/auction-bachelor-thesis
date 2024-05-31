@@ -13,21 +13,39 @@ export class ESCOAuctionBidding implements IAuctionBidding {
         extraDays: number,
         cashFlow: number,
         discountRate: number,
-    ) {
-        const totalYears = contractYears + extraDays / 365;
-
-        let npv = 0;
-
-        for (let year = 1; year <= Math.floor(totalYears); year++) {
-            npv += cashFlow / Math.pow(1 + discountRate, year);
+    ): number {
+        if (
+            contractYears < 0 ||
+            extraDays < 0 ||
+            discountRate < 0 ||
+            discountRate > 100 ||
+            cashFlow < 0
+        ) {
+            throw new Error('Invalid input parameters.');
         }
 
-        if (extraDays > 0) {
-            const fractionalYearCashFlow = (extraDays / 365) * cashFlow;
-            npv += fractionalYearCashFlow / Math.pow(1 + discountRate, totalYears);
+        const rate = discountRate / 100;
+
+        const totalTimeInYears = contractYears + extraDays / 365;
+        const fullYears = Math.floor(totalTimeInYears);
+        const fractionalYear = totalTimeInYears - fullYears;
+
+        const cashFlows = Array(fullYears).fill(cashFlow);
+        if (fractionalYear > 0) {
+            cashFlows.push(cashFlow * (extraDays / 365));
         }
 
-        return npv;
+        function calculateNPV(rate: number, cashFlows: number[]): number {
+            let npv = 0;
+            for (let i = 0; i < cashFlows.length; i++) {
+                npv += cashFlows[i] / Math.pow(1 + rate, i + 1);
+            }
+            return npv;
+        }
+
+        const npv = calculateNPV(rate, cashFlows);
+
+        return Math.ceil(npv);
     }
 
     getRoundProps(
@@ -102,23 +120,36 @@ export class ESCOAuctionBidding implements IAuctionBidding {
 
         const myPseudonym = participation.pseudonym;
 
-        const myLastBid = roundBeforeCurrent.Bids.find((bid) => bid.pseudonym === myPseudonym);
-
-        if (!myLastBid) {
-            return { auctionType: AuctionType.DEFAULT, fullPriceMax: 0 };
-        }
-
         const step = auction.decreaseStep;
 
-        if (!myLastBid.total) {
+        const currentBidsWithoutMyBid = currentRound.Bids.filter(
+            (bid) => bid.pseudonym !== myPseudonym,
+        );
+        const allBidsToCompare = [...currentBidsWithoutMyBid, ...roundBeforeCurrent.Bids];
+
+        const sortedBids = [...allBidsToCompare].sort((a, b) => {
+            if (!a.total || !b.total) {
+                throw new Error('total is missed in bids');
+            }
+            return a.total - b.total;
+        });
+
+        const maxBid = sortedBids[sortedBids.length - 1];
+
+        if (!maxBid.total) {
             throw new Error('Total is missed in last bid');
         }
 
-        const fullPriceMin = myLastBid.total - step;
+        if (!auction.cashFlow) {
+            throw new Error('cashFlow is missed in auction');
+        }
+
+        const fullPriceMin = maxBid.total + step;
 
         return {
-            auctionType: AuctionType.DEFAULT,
-            fullPriceMax: fullPriceMin > 0 ? fullPriceMin : 0,
+            auctionType: AuctionType.ESCO,
+            fullPriceMin: fullPriceMin > 0 ? fullPriceMin : 0,
+            cashFlow: auction.cashFlow || 0,
         };
     }
 

@@ -84,20 +84,31 @@ export class DefaultAuctionBidding implements IAuctionBidding {
         }
 
         const myPseudonym = participation.pseudonym;
+        const currentBidsWithoutMyBid = currentRound.Bids.filter(
+            (bid) => bid.pseudonym !== myPseudonym,
+        );
+        const allBidsToCompare = [...currentBidsWithoutMyBid, ...roundBeforeCurrent.Bids];
 
-        const myLastBid = roundBeforeCurrent.Bids.find((bid) => bid.pseudonym === myPseudonym);
+        const sortedBids = [...allBidsToCompare].sort((a, b) => {
+            if (!a.total || !b.total) {
+                throw new Error('total is missed in bids');
+            }
+            return a.total - b.total;
+        });
 
-        if (!myLastBid) {
+        const minBid = sortedBids[0];
+
+        if (!minBid) {
             return defaultBadSettings;
         }
 
         const step = auction.decreaseStep;
 
-        if (!myLastBid.total) {
+        if (!minBid.total) {
             throw new Error('Total is missed in last bid');
         }
 
-        const fullPriceMax = myLastBid.total - step;
+        const fullPriceMax = minBid.total - step;
 
         return {
             auctionType: AuctionType.DEFAULT,

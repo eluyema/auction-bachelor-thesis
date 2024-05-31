@@ -46,7 +46,7 @@
                                 <RestrictionText
                                     title="Приведена ціна має бути:"
                                     :isError="isError"
-                                    :minValue="minadjustedPrice"
+                                    :minValue="maxAdjustedPriceText"
                                 />
                                 <CustomInput
                                     :error="isError"
@@ -118,9 +118,9 @@ const formattedFullPriceMax = computed(() => formatNumberToPrice(props.fullPrice
 
 const diffInSeconds = computed(() => getSecondsBetweenDates(new Date(props.endAtStr), new Date()));
 
-const minadjustedPrice = computed(() =>
-    formatNumberToPrice(props.fullPriceMax / props.coefficient),
-);
+const maxAdjustedPrice = computed(() => Math.floor(props.fullPriceMax / props.coefficient));
+
+const maxAdjustedPriceText = computed(() => formatNumberToPrice(maxAdjustedPrice.value));
 
 const isError = ref(false);
 
@@ -129,17 +129,12 @@ const onBidAbort = () => {
 };
 
 const getFormSchema = () => {
-    const calculatedMinadjustedPrice = props.fullPriceMax / props.coefficient;
-
     return object({
         fullPrice: number()
             .max(props.fullPriceMax, `Full price must be max ${props.fullPriceMax}`)
             .required('Full price is required'),
         adjustedPrice: number()
-            .max(
-                calculatedMinadjustedPrice,
-                `Entered price must be max ${calculatedMinadjustedPrice}`,
-            )
+            .max(maxAdjustedPrice.value, `Entered price must be max ${maxAdjustedPrice.value}`)
             .required('Entered price is required'),
     });
 };
@@ -185,7 +180,7 @@ watch(
             return;
         }
 
-        const updatedValue = (fullPriceNum / props.coefficient).toFixed(0);
+        const updatedValue = Math.floor(fullPriceNum / props.coefficient).toFixed(0);
 
         formInput.adjustedPrice = updatedValue;
     },

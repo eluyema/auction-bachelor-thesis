@@ -100,7 +100,46 @@ class AuctionResultsMapper {
                 return auctionRoundBid;
             });
         } else {
-            return [];
+            const sortedBids = [...round.Bids].sort((a, b) => a.sequenceNumber - b.sequenceNumber);
+
+            const filteredBids = [...round.Bids].sort((a, b) => {
+                if (!a.total || !b.total) {
+                    throw new Error('Total is missed in bids');
+                }
+
+                return a.total - b.total;
+            });
+
+            const maxBid = filteredBids[filteredBids.length - 1];
+
+            return sortedBids.map((bid) => {
+                let name = bid.pseudonym;
+                let userAuctionsLink = null;
+                if (
+                    participation.isParticipant &&
+                    participation.pseudonym !== null &&
+                    participation.pseudonym === bid.pseudonym
+                ) {
+                    name = 'Ви';
+                } else if (bid.User) {
+                    userAuctionsLink = '/auctions/user/' + bid.User.id;
+                    name = bid.User.name;
+                }
+
+                const auctionRoundBid: AuctionResult = {
+                    id: bid.id,
+                    name,
+                    auctionType: AuctionType.ESCO,
+                    userAuctionsLink,
+                    fullPrice: formatNumberToPrice(bid.total || 0) + ' грн',
+                    years: `${bid.years || '...'}`,
+                    days: `${bid.days || '...'}`,
+                    percent: `${bid.percent || '...'}`,
+                    isWinner: bid.id === maxBid.id,
+                };
+
+                return auctionRoundBid;
+            });
         }
     }
 
@@ -110,6 +149,15 @@ class AuctionResultsMapper {
 
     private static mapResultToVerticalListItem(result: AuctionResult): VerticalListItemProps {
         const tableData = [{ key: 'Повна ціна, грн:', value: result.fullPrice }];
+
+        if (result.auctionType === AuctionType.ESCO) {
+            // can be refactored
+            tableData.push(
+                { key: 'Тривалість контракту, років ', value: result.years || '...' },
+                { key: 'Тривалість контракту, днів:', value: result.days || '...' },
+                { key: 'Річні платежі, % економії:', value: result.percent || '...' },
+            );
+        }
 
         if (result.auctionType === AuctionType.NON_PRICE_CRITERIA) {
             tableData.push(
@@ -154,6 +202,26 @@ class AuctionResultsMapper {
                     link: null,
                 },
             ];
+
+            if (result.auctionType === AuctionType.ESCO) {
+                data.push(
+                    {
+                        id: getUuid(),
+                        value: result.years,
+                        link: null,
+                    },
+                    {
+                        id: getUuid(),
+                        value: result.days,
+                        link: null,
+                    },
+                    {
+                        id: getUuid(),
+                        value: result.percent,
+                        link: null,
+                    },
+                );
+            }
 
             if (result.auctionType === AuctionType.NON_PRICE_CRITERIA) {
                 data.push(

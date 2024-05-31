@@ -1,6 +1,6 @@
 import { AuctionType } from 'src/entities/auction';
 import { TableColumnProps } from 'src/shared/ui/TableData';
-
+// ORDER IMPORTANT!
 export const tableColumns: Record<AuctionType, TableColumnProps[]> = {
     [AuctionType.DEFAULT]: [
         { id: 'icon', name: '', width: 'min' },
@@ -20,6 +20,9 @@ export const tableColumns: Record<AuctionType, TableColumnProps[]> = {
         { id: 'icon', name: '', width: 'min' },
         { id: 'name', name: '', width: 'max' },
         { id: 'fullPrice', name: 'Повна ціна, грн' },
+        { id: 'years', name: 'Тривалість контракту, років' },
+        { id: 'days', name: 'Тривалість контракту, днів' },
+        { id: 'percent', name: 'Річні платежі, % економії' },
         { id: 'isWinner', name: '', width: 'min' },
     ],
 };

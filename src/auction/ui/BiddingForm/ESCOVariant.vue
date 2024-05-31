@@ -8,6 +8,7 @@
                     title="Заявка має бути:"
                     :class="{ 'hide-mobile': !!collapsedMobile }"
                     :minValue="formattedFullPriceMin"
+                    isMax
                     mobileInline
                 />
                 <span
@@ -56,7 +57,7 @@
                                         v-model="formInput.years"
                                     />
                                     <span class="default-text"
-                                        >Поточне значення: {{ defaultYears }}</span
+                                        >Поточне значення: {{ currentYears }}</span
                                     >
                                 </div>
                                 <div class="form-field-block">
@@ -71,7 +72,7 @@
                                         v-model="formInput.days"
                                     />
                                     <span class="default-text"
-                                        >Поточне значення: {{ defaultDays }}</span
+                                        >Поточне значення: {{ currentDays }}</span
                                     >
                                 </div>
                                 <div class="form-field-block">
@@ -86,7 +87,7 @@
                                         v-model="formInput.percent"
                                     />
                                     <span class="default-text"
-                                        >Поточне значення: {{ defaultPercent }}</span
+                                        >Поточне значення: {{ currentPercent }}</span
                                     >
                                 </div>
                             </div>
@@ -152,16 +153,15 @@ import { number, object } from 'yup';
 import RestrictionText from './components/RestrictionText.vue';
 import MobileOnly from 'src/shared/ui/MobileOnly/MobileOnly.vue';
 import BiddingStatus from './components/BiddingStatus.vue';
+import { ESCOAuctionBidding } from 'src/auction/services/ESCOAuctionBidding';
 
 export type ESCOVariantProps = {
     endAtStr: string;
-    basePrice: number;
+    cashFlow: number;
     fullPriceMin: number;
     collapsedMobile: boolean;
-    defaultYears: number;
-    defaultDays: number;
-    defaultPercent: number;
     currentBid?: AuctionBid | null;
+    lastBid?: AuctionBid | null;
 };
 
 const emit = defineEmits<{
@@ -171,6 +171,27 @@ const emit = defineEmits<{
 
 const props = defineProps<ESCOVariantProps>();
 
+const currentYears = computed(() => {
+    if (!props.lastBid || props.lastBid.auctionType !== AuctionType.ESCO) {
+        return 0;
+    }
+    return props.lastBid.years;
+});
+
+const currentDays = computed(() => {
+    if (!props.lastBid || props.lastBid.auctionType !== AuctionType.ESCO) {
+        return 0;
+    }
+    return props.lastBid.days;
+});
+
+const currentPercent = computed(() => {
+    if (!props.lastBid || props.lastBid.auctionType !== AuctionType.ESCO) {
+        return 0;
+    }
+    return props.lastBid.percent;
+});
+
 const showAbortButton = computed(() => !!props.currentBid && !props.currentBid.aborted);
 
 const formattedFullPriceMin = computed(() => formatNumberToPrice(props.fullPriceMin));
@@ -178,7 +199,7 @@ const formattedFullPriceMin = computed(() => formatNumberToPrice(props.fullPrice
 const formattedCalculatedFullPrice = computed(() => {
     const { years, days, percent } = getValuesOrDefault();
 
-    const value = calculateFullPrice(props.basePrice, years, days, percent);
+    const value = calculateFullPrice(years, days, props.cashFlow, percent);
 
     return formatNumberToPrice(value);
 });
@@ -186,9 +207,9 @@ const formattedCalculatedFullPrice = computed(() => {
 const diffInSeconds = computed(() => getSecondsBetweenDates(new Date(props.endAtStr), new Date()));
 
 const getValuesOrDefault = () => {
-    const currentYears = isNaN(+formInput.years) ? props.defaultYears : +formInput.years;
-    const currentDays = isNaN(+formInput.days) ? props.defaultDays : +formInput.days;
-    const currentPercent = isNaN(+formInput.percent) ? props.defaultPercent : +formInput.percent;
+    const currentYears = isNaN(+formInput.years) ? 0 : +formInput.years;
+    const currentDays = isNaN(+formInput.days) ? 0 : +formInput.days;
+    const currentPercent = isNaN(+formInput.percent) ? 1 : +formInput.percent;
 
     return {
         years: currentYears,
@@ -206,18 +227,18 @@ const onBidAbort = () => {
 const getFormSchema = () => {
     return object({
         years: number()
-            .min(0, `Years must be at least ${props.fullPriceMin}`)
-            .max(100, `Years must be at least ${props.fullPriceMin}`)
+            .min(0, `Years must be at least 0`)
+            .max(15, `Years must be at least 15`)
             .integer()
             .required('Years is required'),
         days: number()
-            .min(0, `Days must be at least ${props.fullPriceMin}`)
-            .max(100, `Days must be at least ${props.fullPriceMin}`)
+            .min(0, `Days must be at least 0`)
+            .max(364, `Days must be at least 364`)
             .integer()
             .required('Days is required'),
         percent: number()
-            .min(0, `Percent must be at least ${props.fullPriceMin}`)
-            .max(100, `Percent must be at least ${props.fullPriceMin}`)
+            .min(1, `Percent must be at least 1`)
+            .max(100, `Percent must be at least 100`)
             .integer()
             .required('Percent is required'),
     });
@@ -231,18 +252,12 @@ const formInput = reactive({
     percent: '',
 });
 
-function calculateFullPrice(
-    contractYears: number,
-    contractDays: number,
-    annualSavingsPercentage: number,
-    basePrice: number,
-) {
-    // TODO: add real logic here
-    return (
-        basePrice +
-        (contractYears * 1000 + contractDays * 100) *
-            (1 + 100 / (annualSavingsPercentage + 0.000001))
-    );
+function calculateFullPrice(years: number, days: number, cashFlow: number, percent: number) {
+    try {
+        return ESCOAuctionBidding.getNPV(years, days, cashFlow, percent);
+    } catch (_err) {
+        return 0;
+    }
 }
 
 const sendBid = (fullPrice: number) => {
@@ -264,14 +279,15 @@ const validateAndSendBid = async () => {
         await formSchema.value.validate(formInput);
 
         const fullPrice = calculateFullPrice(
-            props.basePrice,
+            props.cashFlow,
             +formInput.years,
             +formInput.days,
             +formInput.percent,
         );
-
-        if (fullPrice < props.fullPriceMin) {
+        console.log(props.fullPriceMin);
+        if (fullPrice > props.fullPriceMin) {
             isError.value = true;
+            console.log();
             return;
         }
 

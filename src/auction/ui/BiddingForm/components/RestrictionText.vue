@@ -2,7 +2,8 @@
     <span class="restriction-text" :class="{ error: !!isError, 'mobile-inline': !!mobileInline }"
         >{{ title }}
         <span class="price-text" v-if="!!minValue">
-            <span class="price-value">{{ minValue }}</span> або менше</span
+            <span class="price-value">{{ minValue }}</span> або
+            {{ isMax ? 'більше' : 'менше' }}</span
         >
     </span>
 </template>
@@ -12,6 +13,7 @@ export type InputNameProps = {
     title: string;
     minValue?: string;
     mobileInline?: boolean;
+    isMax?: boolean;
     isError?: boolean;
 };
 

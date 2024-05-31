@@ -1,0 +1,5 @@
+export enum AuctionPersistenceKeys {
+    LAST_YEARS = 'AUCTION_BID_LAST_YEARS',
+    LAST_DAYS = 'AUCTION_BID_LAST_DAYS',
+    LAST_PERCENT = 'AUCTION_BID_LAST_PERCENT',
+}

@@ -85,23 +85,32 @@ export class NonPriceCriteriaAuctionBidding implements IAuctionBidding {
 
         const myPseudonym = participation.pseudonym;
 
-        const myLastBid = roundBeforeCurrent.Bids.find((bid) => bid.pseudonym === myPseudonym);
-
-        if (!myLastBid) {
-            return defaultBadSettings;
-        }
-
         const step = auction.decreaseStep;
-
-        if (!myLastBid.adjustedPrice) {
-            throw new Error('adjustedPrice is missed in bid');
-        }
 
         if (!participation.coefficient) {
             return defaultBadSettings;
         }
 
-        const fullPriceMax = myLastBid.adjustedPrice * participation.coefficient - step;
+        const currentBidsWithoutMyBid = currentRound.Bids.filter(
+            (bid) => bid.pseudonym !== myPseudonym,
+        );
+        const allBidsToCompare = [...currentBidsWithoutMyBid, ...roundBeforeCurrent.Bids];
+
+        const filteredBids = [...allBidsToCompare].sort((a, b) => {
+            if (!a.adjustedPrice || !b.adjustedPrice) {
+                console.log(a, b);
+                throw new Error('adjustedPrice is missed in bids');
+            }
+            return a.adjustedPrice - b.adjustedPrice;
+        });
+
+        const minBid = filteredBids[0];
+
+        if (!minBid || !minBid.adjustedPrice) {
+            return defaultBadSettings;
+        }
+
+        const fullPriceMax = Math.floor(minBid.adjustedPrice * participation.coefficient - step);
 
         return {
             auctionType: AuctionType.NON_PRICE_CRITERIA,

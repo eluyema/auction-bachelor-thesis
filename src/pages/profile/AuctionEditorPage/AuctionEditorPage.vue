@@ -17,9 +17,12 @@
             <tr>
                 <th class="data-vertical-name">Ім'я</th>
                 <th class="data-vertical-name">Пошта</th>
-                <th class="data-vertical-name" v-if="auctionType !== AuctionType.ESCO">
-                    Початкова ставка
+                <th class="data-vertical-name" v-if="auctionType === AuctionType.ESCO">Років</th>
+                <th class="data-vertical-name" v-if="auctionType === AuctionType.ESCO">Днів</th>
+                <th class="data-vertical-name" v-if="auctionType === AuctionType.ESCO">
+                    % економії
                 </th>
+                <th class="data-vertical-name">Початкова ставка</th>
                 <th
                     class="data-vertical-name"
                     v-if="auctionType === AuctionType.NON_PRICE_CRITERIA"
@@ -32,11 +35,6 @@
                 >
                     Приведена ставка
                 </th>
-                <th class="data-vertical-name" v-if="auctionType === AuctionType.ESCO">Років</th>
-                <th class="data-vertical-name" v-if="auctionType === AuctionType.ESCO">Днів</th>
-                <th class="data-vertical-name" v-if="auctionType === AuctionType.ESCO">
-                    % економії
-                </th>
                 <th></th>
             </tr>
             <tr class="user-bid" v-for="bid of initBids" :key="String(bid.userId)">
@@ -46,7 +44,16 @@
                 <td class="data-vertical-value">
                     {{ bid.User?.email }}
                 </td>
-                <td class="data-vertical-value" v-if="auctionType !== AuctionType.ESCO">
+                <td class="data-vertical-value" v-if="auctionType === AuctionType.ESCO">
+                    {{ bid.years }}
+                </td>
+                <td class="data-vertical-value" v-if="auctionType === AuctionType.ESCO">
+                    {{ bid.days }}
+                </td>
+                <td class="data-vertical-value" v-if="auctionType === AuctionType.ESCO">
+                    {{ bid.percent }}
+                </td>
+                <td class="data-vertical-value">
                     {{ formatNumberToPrice(bid.total || 0) + ' грн' }}
                 </td>
                 <td
@@ -60,15 +67,6 @@
                     v-if="auctionType === AuctionType.NON_PRICE_CRITERIA"
                 >
                     {{ formatNumberToPrice(bid.adjustedPrice || 0) + ' грн' }}
-                </td>
-                <td class="data-vertical-value" v-if="auctionType === AuctionType.ESCO">
-                    {{ bid.years }}
-                </td>
-                <td class="data-vertical-value" v-if="auctionType === AuctionType.ESCO">
-                    {{ bid.days }}
-                </td>
-                <td class="data-vertical-value" v-if="auctionType === AuctionType.ESCO">
-                    {{ bid.percent }}
                 </td>
                 <td>
                     <CustomButton colorVariant="error" @click="onRemoveInitBid(bid)"

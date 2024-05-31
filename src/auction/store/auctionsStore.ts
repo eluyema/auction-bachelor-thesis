@@ -16,6 +16,9 @@ export type AuctionsStore = {
         isParticipant: boolean;
         pseudonym: string | null;
         coefficient: number | null;
+        lastYears: number | null;
+        lastDays: number | null;
+        lastPercent: number | null;
     };
     participationStatus: LoadingStatuses;
     biddingStatus: LoadingStatuses;
@@ -35,6 +38,9 @@ export const useAuctionsStore = defineStore('auction', () => {
             isParticipant: false,
             pseudonym: null,
             coefficient: null,
+            lastYears: null,
+            lastDays: null,
+            lastPercent: null,
         },
         userAuctions: [],
         userAuctionsStatus: LoadingStatuses.IDLE,
@@ -105,12 +111,15 @@ export const useAuctionsStore = defineStore('auction', () => {
             }
             state.participationStatus = LoadingStatuses.PENDING;
             state.currentAuction = null;
-            const { pseudonym, isParticipant, coefficient } =
+            const { pseudonym, isParticipant, coefficient, lastYears, lastDays, lastPercent } =
                 await services.auctionClient.getMyParticipation(auctionId);
             state.participation = {
                 pseudonym,
                 isParticipant,
                 coefficient,
+                lastYears,
+                lastDays,
+                lastPercent,
             };
             state.participationStatus = LoadingStatuses.FULFILLED;
         } catch (err) {

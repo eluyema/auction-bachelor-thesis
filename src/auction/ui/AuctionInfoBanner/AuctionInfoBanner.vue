@@ -34,10 +34,18 @@ const auctionData = computed(() => {
         return {};
     }
 
+    let auctionTypeText = 'Звичайний редукціон';
+
+    if (props.auction.auctionType === AuctionType.ESCO) {
+        auctionTypeText = 'ЕСКО аукціон';
+    } else if (props.auction.auctionType === AuctionType.NON_PRICE_CRITERIA) {
+        auctionTypeText = 'Редукціон з неціновими критеріями оцінки';
+    }
     if (props.auction.auctionType === AuctionType.ESCO) {
         return {
             'Номер закупівлі': props.auction.purchaseCode,
             Замовник: props.auction.customerName,
+            'Тип аукуціону': auctionTypeText,
             'Грошовий потік за рік': formatNumberToPrice(props.auction.cashFlow || 0) + ' грн',
             'Очікувана вартість': formatNumberToPrice(props.auction.expectedCost) + ' грн',
             'Крок зменшення': formatNumberToPrice(props.auction.decreaseStep) + ' грн',
@@ -47,6 +55,7 @@ const auctionData = computed(() => {
     return {
         'Номер закупівлі': props.auction.purchaseCode,
         Замовник: props.auction.customerName,
+        'Тип аукуціону': auctionTypeText,
         'Очікувана вартість': formatNumberToPrice(props.auction.expectedCost) + ' грн',
         'Крок зменшення': formatNumberToPrice(props.auction.decreaseStep) + ' грн',
     };

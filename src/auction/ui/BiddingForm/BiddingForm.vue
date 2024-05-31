@@ -33,12 +33,10 @@
                 <ESCOVariant
                     v-else-if="settings.auctionType === AuctionType.ESCO"
                     :endAtStr="yourTurnEndAt"
-                    :basePrice="settings.basePrice"
-                    :defaultYears="settings.defaultYears"
-                    :defaultDays="settings.defaultDays"
-                    :defaultPercent="settings.defaultPercent"
+                    :cashFlow="settings.cashFlow"
                     :fullPriceMin="settings.fullPriceMin"
                     :currentBid="currentBid"
+                    :lastBid="lastBid"
                     :collapsedMobile="collapsedMobile"
                     @bidSent="handleBidSent"
                     @bidAbort="handleBidAbort"
@@ -66,6 +64,7 @@ export interface BiddingFormProps {
     auctionEndAt: string;
     settings: AuctionBidSettings;
     currentBid?: AuctionBid | null;
+    lastBid?: AuctionBid | null;
 }
 
 const emit = defineEmits<{

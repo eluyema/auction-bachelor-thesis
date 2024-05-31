@@ -12,9 +12,6 @@ export type AuctionBidSettings =
       }
     | {
           auctionType: AuctionType.ESCO;
-          basePrice: number;
+          cashFlow: number;
           fullPriceMin: number;
-          defaultYears: number;
-          defaultDays: number;
-          defaultPercent: number;
       };
