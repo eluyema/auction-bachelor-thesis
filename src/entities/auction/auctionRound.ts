@@ -7,7 +7,7 @@ export enum AuctionRoundStatus {
     COMPLETED = 'completed',
 }
 
-export type AuctionRound =
+export type AuctionRoundBid =
     | {
           id: string;
           auctionType: AuctionType;
@@ -33,7 +33,7 @@ export type AuctionRound =
           status: AuctionRoundStatus;
           fullPrice: string;
           coefficient: string;
-          enteredPrice: string;
+          adjustedPrice: string;
           isMax: boolean;
           isMin: boolean;
       };

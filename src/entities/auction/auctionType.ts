@@ -1,5 +1,5 @@
 export enum AuctionType {
-    DEFAULT = 'default',
-    NON_PRICE_CRITERIA = 'non_price_criteria',
-    ESCO = 'esco',
+    DEFAULT = 'DEFAULT',
+    NON_PRICE_CRITERIA = 'NON_PRICE_CRITERIA',
+    ESCO = 'ESCO',
 }

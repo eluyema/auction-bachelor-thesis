@@ -7,14 +7,14 @@
             <BiddingPreview
                 v-if="showPreview"
                 class="hide-mobile"
-                :date="nearestDate"
+                :date="new Date(nearestDate)"
                 :message="previewMessage"
             />
-            <template v-if="state == BiddingFormState.ACTIVE_BIDDING_TIME">
+            <template v-if="state.value == BiddingFormState.ACTIVE_BIDDING_TIME">
                 <DefaultVariant
                     v-if="settings.auctionType === AuctionType.DEFAULT"
-                    :endAt="yourTurnEndAt"
-                    :fullPriceMin="settings.fullPriceMin"
+                    :endAtStr="yourTurnEndAt"
+                    :fullPriceMin="settings.fullPriceMax"
                     :currentBid="currentBid"
                     :collapsedMobile="collapsedMobile"
                     @bidSent="handleBidSent"
@@ -22,8 +22,8 @@
                 />
                 <NonPriceVariant
                     v-else-if="settings.auctionType === AuctionType.NON_PRICE_CRITERIA"
-                    :endAt="yourTurnEndAt"
-                    :fullPriceMin="settings.fullPriceMin"
+                    :endAtStr="yourTurnEndAt"
+                    :fullPriceMax="settings.fullPriceMax"
                     :coefficient="settings.coefficient"
                     :currentBid="currentBid"
                     :collapsedMobile="collapsedMobile"
@@ -32,7 +32,7 @@
                 />
                 <ESCOVariant
                     v-else-if="settings.auctionType === AuctionType.ESCO"
-                    :endAt="yourTurnEndAt"
+                    :endAtStr="yourTurnEndAt"
                     :basePrice="settings.basePrice"
                     :defaultYears="settings.defaultYears"
                     :defaultDays="settings.defaultDays"
@@ -48,7 +48,7 @@
     </div>
 </template>
 <script setup lang="ts">
-import { computed, onMounted, onUnmounted, ref, watch } from 'vue';
+import { computed, onMounted, onUnmounted, reactive, ref, watch } from 'vue';
 import BiddingPreview from './BiddingPreview.vue';
 import dragHandleIcon from 'src/app/assets/images/drag-handle-icon.svg';
 import DefaultVariant from './DefaultVariant.vue';
@@ -59,10 +59,11 @@ import { BiddingFormState } from 'src/entities/auction/biddingFormState';
 import { previewMessageMap } from './data';
 
 export interface BiddingFormProps {
-    auctionStartAt: Date;
-    roundStartAt: Date;
-    yourTurnStartAt: Date;
-    yourTurnEndAt: Date;
+    auctionStartAt: string;
+    roundStartAt: string;
+    yourTurnStartAt: string;
+    yourTurnEndAt: string;
+    auctionEndAt: string;
     settings: AuctionBidSettings;
     currentBid?: AuctionBid | null;
 }
@@ -72,22 +73,21 @@ const emit = defineEmits<{
     (event: 'bidAbort'): void;
 }>();
 
-const { auctionStartAt, roundStartAt, yourTurnStartAt, yourTurnEndAt, currentBid } =
-    defineProps<BiddingFormProps>();
+const props = defineProps<BiddingFormProps>();
 
 const calculateCurrentState = () => {
     const currentDate = new Date();
 
-    if (currentDate < auctionStartAt) {
+    if (currentDate < new Date(props.auctionStartAt)) {
         return BiddingFormState.BEFORE_AUCTION_START;
     }
-    if (currentDate < roundStartAt) {
+    if (currentDate < new Date(props.roundStartAt)) {
         return BiddingFormState.BEFORE_ROUND_START;
     }
-    if (currentDate < yourTurnStartAt) {
+    if (currentDate < new Date(props.yourTurnStartAt)) {
         return BiddingFormState.BEFORE_YOUR_TURN_START;
     }
-    if (currentDate < yourTurnEndAt) {
+    if (currentDate < new Date(props.yourTurnEndAt)) {
         return BiddingFormState.ACTIVE_BIDDING_TIME;
     }
 
@@ -97,38 +97,44 @@ const calculateCurrentState = () => {
 const getNearestDate = () => {
     const currentDate = new Date();
 
-    if (currentDate < auctionStartAt) {
-        return auctionStartAt;
+    if (currentDate < new Date(props.auctionStartAt)) {
+        return props.auctionStartAt;
     }
-    if (currentDate < roundStartAt) {
-        return roundStartAt;
+    if (currentDate < new Date(props.roundStartAt)) {
+        return props.roundStartAt;
     }
-    if (currentDate < yourTurnStartAt) {
-        return yourTurnStartAt;
+    if (currentDate < new Date(props.yourTurnStartAt)) {
+        return props.yourTurnStartAt;
     }
-    if (currentDate < yourTurnEndAt) {
-        return yourTurnEndAt;
+    if (currentDate < new Date(props.yourTurnEndAt)) {
+        return props.yourTurnEndAt;
+    }
+    if (currentDate < new Date(props.auctionEndAt)) {
+        return props.auctionEndAt;
     }
 
-    return yourTurnEndAt;
+    return props.yourTurnEndAt;
 };
 
-const state = ref(calculateCurrentState());
+const state = reactive({ value: calculateCurrentState() });
 const nearestDate = ref(getNearestDate());
 
-const showPreview = computed(() =>
-    [
+const showPreview = computed(() => {
+    return [
         BiddingFormState.BEFORE_AUCTION_START,
         BiddingFormState.BEFORE_ROUND_START,
         BiddingFormState.BEFORE_YOUR_TURN_START,
-    ].includes(state.value),
-);
+        BiddingFormState.BIDDING_TIME_END,
+    ].includes(state.value);
+});
 
-const showSuccessBidding = computed(() => (currentBid ? !currentBid.aborted : false));
+const showSuccessBidding = computed(() => (props.currentBid ? !props.currentBid.aborted : false));
 
-const previewMessage = computed(
-    () => previewMessageMap[state.value as keyof typeof previewMessageMap] || '',
-);
+const previewMessage = computed(() => {
+    const message = previewMessageMap[state.value as keyof typeof previewMessageMap] || '';
+
+    return message;
+});
 
 let timerInterval = ref<null | ReturnType<typeof setTimeout>>(null);
 
@@ -156,10 +162,10 @@ const restartTimer = () => {
     startTimer();
 };
 
-watch(() => auctionStartAt, restartTimer);
-watch(() => roundStartAt, restartTimer);
-watch(() => yourTurnStartAt, restartTimer);
-watch(() => yourTurnEndAt, restartTimer);
+watch(() => props.auctionStartAt, restartTimer);
+watch(() => props.roundStartAt, restartTimer);
+watch(() => props.yourTurnStartAt, restartTimer);
+watch(() => props.yourTurnEndAt, restartTimer);
 
 onMounted(() => {
     startTimer();

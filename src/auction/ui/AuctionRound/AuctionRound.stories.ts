@@ -1,6 +1,6 @@
 import { Meta, StoryObj } from '@storybook/vue3';
-import AuctionRounds from './AuctionRounds.vue';
-import { AuctionType, AuctionRound, AuctionRoundStatus } from 'src/entities/auction';
+import AuctionRounds from './AuctionRound.vue';
+import { AuctionType, AuctionRoundBid, AuctionRoundStatus } from 'src/entities/auction';
 
 const meta: Meta<typeof AuctionRounds> = {
     title: 'Organisms/AuctionRounds',
@@ -29,7 +29,7 @@ export default meta;
 
 type Story = StoryObj<typeof meta>;
 
-const defaultListBeforeRoundBegins: AuctionRound[] = [
+const defaultListBeforeRoundBegins: AuctionRoundBid[] = [
     {
         id: '5',
         auctionType: AuctionType.DEFAULT,
@@ -46,7 +46,7 @@ const defaultListBeforeRoundBegins: AuctionRound[] = [
     },
 ];
 
-const defaultListRoundStarted: AuctionRound[] = [
+const defaultListRoundStarted: AuctionRoundBid[] = [
     {
         id: '5',
         status: AuctionRoundStatus.PENDING,
@@ -69,7 +69,7 @@ const defaultListRoundStarted: AuctionRound[] = [
     },
 ];
 
-const defaultList1Bids: AuctionRound[] = [
+const defaultList1Bids: AuctionRoundBid[] = [
     {
         id: '5',
         status: AuctionRoundStatus.ABOUT_TO_CLOSE,
@@ -92,7 +92,7 @@ const defaultList1Bids: AuctionRound[] = [
     },
 ];
 
-const defaultList2Bids: AuctionRound[] = [
+const defaultList2Bids: AuctionRoundBid[] = [
     {
         id: '5',
         status: AuctionRoundStatus.COMPLETED,
@@ -115,7 +115,7 @@ const defaultList2Bids: AuctionRound[] = [
     },
 ];
 
-const defaultListRoundEnds: AuctionRound[] = [
+const defaultListRoundEnds: AuctionRoundBid[] = [
     {
         id: '5',
         status: AuctionRoundStatus.COMPLETED,
@@ -138,7 +138,7 @@ const defaultListRoundEnds: AuctionRound[] = [
     },
 ];
 
-const defaultListAuctionEnds: AuctionRound[] = [
+const defaultListAuctionEnds: AuctionRoundBid[] = [
     {
         id: '5',
         status: AuctionRoundStatus.COMPLETED,
@@ -161,7 +161,7 @@ const defaultListAuctionEnds: AuctionRound[] = [
     },
 ];
 
-const defaultListLarge: AuctionRound[] = [
+const defaultListLarge: AuctionRoundBid[] = [
     {
         id: '1',
         status: AuctionRoundStatus.PENDING,
@@ -234,7 +234,7 @@ const defaultListLarge: AuctionRound[] = [
     },
 ];
 
-const nonPriceListBeforeRoundBegins: AuctionRound[] = [
+const nonPriceListBeforeRoundBegins: AuctionRoundBid[] = [
     {
         id: '5',
         auctionType: AuctionType.NON_PRICE_CRITERIA,
@@ -258,14 +258,14 @@ const nonPriceListBeforeRoundBegins: AuctionRound[] = [
     },
 ];
 
-const nonPriceListRoundStarted: AuctionRound[] = [
+const nonPriceListRoundStarted: AuctionRoundBid[] = [
     {
         id: '5',
         status: AuctionRoundStatus.PENDING,
         announced: true,
         auctionType: AuctionType.NON_PRICE_CRITERIA,
         name: `Учасник №2`,
-        enteredPrice: '26 000 000,00',
+        adjustedPrice: '26 000 000,00',
         fullPrice: '...',
         coefficient: '...',
         isMin: false,
@@ -277,7 +277,7 @@ const nonPriceListRoundStarted: AuctionRound[] = [
         announced: true,
         auctionType: AuctionType.NON_PRICE_CRITERIA,
         name: `Учасник №1`,
-        enteredPrice: '20 000 000,00',
+        adjustedPrice: '20 000 000,00',
         fullPrice: '...',
         coefficient: '...',
         isMin: false,
@@ -289,7 +289,7 @@ const nonPriceListRoundStarted: AuctionRound[] = [
         announced: true,
         auctionType: AuctionType.NON_PRICE_CRITERIA,
         name: `Учасник №3`,
-        enteredPrice: '16 448 000,00',
+        adjustedPrice: '16 448 000,00',
         fullPrice: '...',
         coefficient: '...',
         isMin: true,
@@ -297,14 +297,14 @@ const nonPriceListRoundStarted: AuctionRound[] = [
     },
 ];
 
-const nonPriceList1Bids: AuctionRound[] = [
+const nonPriceList1Bids: AuctionRoundBid[] = [
     {
         id: '5',
         status: AuctionRoundStatus.ACTIVE_BIDDING,
         announced: true,
         auctionType: AuctionType.NON_PRICE_CRITERIA,
         name: `Учасник №2`,
-        enteredPrice: '26 000 000,00',
+        adjustedPrice: '26 000 000,00',
         fullPrice: '...',
         coefficient: '...',
         isMin: false,
@@ -316,7 +316,7 @@ const nonPriceList1Bids: AuctionRound[] = [
         announced: true,
         auctionType: AuctionType.NON_PRICE_CRITERIA,
         name: `Учасник №1`,
-        enteredPrice: '20 000 000,00',
+        adjustedPrice: '20 000 000,00',
         fullPrice: '...',
         coefficient: '...',
         isMin: false,
@@ -328,7 +328,7 @@ const nonPriceList1Bids: AuctionRound[] = [
         announced: true,
         auctionType: AuctionType.NON_PRICE_CRITERIA,
         name: `Учасник №3`,
-        enteredPrice: '16 448 000,00',
+        adjustedPrice: '16 448 000,00',
         fullPrice: '...',
         coefficient: '...',
         isMin: true,
@@ -336,14 +336,14 @@ const nonPriceList1Bids: AuctionRound[] = [
     },
 ];
 
-const nonPriceList2Bids: AuctionRound[] = [
+const nonPriceList2Bids: AuctionRoundBid[] = [
     {
         id: '5',
         status: AuctionRoundStatus.ACTIVE_BIDDING,
         announced: true,
         auctionType: AuctionType.NON_PRICE_CRITERIA,
         name: `Учасник №2`,
-        enteredPrice: '26 000 000,00',
+        adjustedPrice: '26 000 000,00',
         fullPrice: '...',
         coefficient: '...',
         isMin: false,
@@ -355,7 +355,7 @@ const nonPriceList2Bids: AuctionRound[] = [
         announced: true,
         auctionType: AuctionType.NON_PRICE_CRITERIA,
         name: `Учасник №1`,
-        enteredPrice: '20 000 000,00',
+        adjustedPrice: '20 000 000,00',
         fullPrice: '...',
         coefficient: '...',
         isMin: false,
@@ -367,7 +367,7 @@ const nonPriceList2Bids: AuctionRound[] = [
         announced: true,
         auctionType: AuctionType.NON_PRICE_CRITERIA,
         name: `Учасник №3`,
-        enteredPrice: '16 448 000,00',
+        adjustedPrice: '16 448 000,00',
         fullPrice: '...',
         coefficient: '...',
         isMin: true,
@@ -375,14 +375,14 @@ const nonPriceList2Bids: AuctionRound[] = [
     },
 ];
 
-const nonPriceListRoundEnds: AuctionRound[] = [
+const nonPriceListRoundEnds: AuctionRoundBid[] = [
     {
         id: '5',
         status: AuctionRoundStatus.COMPLETED,
         announced: true,
         auctionType: AuctionType.NON_PRICE_CRITERIA,
         name: `Учасник №2`,
-        enteredPrice: '26 000 000,00',
+        adjustedPrice: '26 000 000,00',
         fullPrice: '...',
         coefficient: '...',
         isMin: false,
@@ -394,7 +394,7 @@ const nonPriceListRoundEnds: AuctionRound[] = [
         announced: true,
         auctionType: AuctionType.NON_PRICE_CRITERIA,
         name: `Учасник №1`,
-        enteredPrice: '20 000 000,00',
+        adjustedPrice: '20 000 000,00',
         fullPrice: '...',
         coefficient: '...',
         isMin: false,
@@ -406,7 +406,7 @@ const nonPriceListRoundEnds: AuctionRound[] = [
         announced: true,
         auctionType: AuctionType.NON_PRICE_CRITERIA,
         name: `Учасник №3`,
-        enteredPrice: '16 448 000,00',
+        adjustedPrice: '16 448 000,00',
         fullPrice: '...',
         coefficient: '...',
         isMin: true,
@@ -414,14 +414,14 @@ const nonPriceListRoundEnds: AuctionRound[] = [
     },
 ];
 
-const nonPriceListAuctionEnds: AuctionRound[] = [
+const nonPriceListAuctionEnds: AuctionRoundBid[] = [
     {
         id: '5',
         status: AuctionRoundStatus.COMPLETED,
         announced: true,
         auctionType: AuctionType.NON_PRICE_CRITERIA,
         name: `ТОВ ДУВК`,
-        enteredPrice: '26 000 000,00',
+        adjustedPrice: '26 000 000,00',
         fullPrice: '26 000 000,00',
         coefficient: '1,00',
         isMin: false,
@@ -433,7 +433,7 @@ const nonPriceListAuctionEnds: AuctionRound[] = [
         announced: true,
         auctionType: AuctionType.NON_PRICE_CRITERIA,
         name: `ТОВ "БК"Ізобуд"`,
-        enteredPrice: '20 000 000,00',
+        adjustedPrice: '20 000 000,00',
         fullPrice: '25 712 078,84',
         coefficient: '1,25',
         isMin: false,
@@ -445,7 +445,7 @@ const nonPriceListAuctionEnds: AuctionRound[] = [
         announced: true,
         auctionType: AuctionType.NON_PRICE_CRITERIA,
         name: `ТОВ "БУДРЕМСЕРВІС"`,
-        enteredPrice: '16 448 000,00',
+        adjustedPrice: '16 448 000,00',
         fullPrice: '26 030 880,29',
         coefficient: '1,25',
         isMin: true,
@@ -453,7 +453,7 @@ const nonPriceListAuctionEnds: AuctionRound[] = [
     },
 ];
 
-const ESCOListBeforeRoundBegins: AuctionRound[] = [
+const ESCOListBeforeRoundBegins: AuctionRoundBid[] = [
     {
         id: '5',
         auctionType: AuctionType.ESCO,
@@ -470,7 +470,7 @@ const ESCOListBeforeRoundBegins: AuctionRound[] = [
     },
 ];
 
-const ESCOListRoundStarted: AuctionRound[] = [
+const ESCOListRoundStarted: AuctionRoundBid[] = [
     {
         id: '5',
         status: AuctionRoundStatus.PENDING,
@@ -493,7 +493,7 @@ const ESCOListRoundStarted: AuctionRound[] = [
     },
 ];
 
-const ESCOList1Bids: AuctionRound[] = [
+const ESCOList1Bids: AuctionRoundBid[] = [
     {
         id: '5',
         status: AuctionRoundStatus.ABOUT_TO_CLOSE,
@@ -516,7 +516,7 @@ const ESCOList1Bids: AuctionRound[] = [
     },
 ];
 
-const ESCOList2Bids: AuctionRound[] = [
+const ESCOList2Bids: AuctionRoundBid[] = [
     {
         id: '5',
         status: AuctionRoundStatus.COMPLETED,
@@ -539,7 +539,7 @@ const ESCOList2Bids: AuctionRound[] = [
     },
 ];
 
-const ESCOListRoundEnds: AuctionRound[] = [
+const ESCOListRoundEnds: AuctionRoundBid[] = [
     {
         id: '5',
         status: AuctionRoundStatus.COMPLETED,
@@ -562,7 +562,7 @@ const ESCOListRoundEnds: AuctionRound[] = [
     },
 ];
 
-const ESCOListAuctionEnds: AuctionRound[] = [
+const ESCOListAuctionEnds: AuctionRoundBid[] = [
     {
         id: '5',
         status: AuctionRoundStatus.COMPLETED,

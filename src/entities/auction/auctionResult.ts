@@ -6,6 +6,7 @@ export type AuctionResult =
           auctionType: AuctionType.DEFAULT | AuctionType.ESCO;
           name: string;
           isWinner: boolean;
+          userAuctionsLink: string | null;
           fullPrice: string;
       }
     | {
@@ -14,6 +15,8 @@ export type AuctionResult =
           name: string;
           isWinner: boolean;
           fullPrice: string;
+          userAuctionsLink: string | null;
+          winnerLink?: string;
           coefficient: string;
-          enteredPrice: string;
+          adjustedPrice: string;
       };

@@ -3,11 +3,11 @@ import { AuctionType } from './auctionType';
 export type AuctionBidSettings =
     | {
           auctionType: AuctionType.DEFAULT;
-          fullPriceMin: number;
+          fullPriceMax: number;
       }
     | {
           auctionType: AuctionType.NON_PRICE_CRITERIA;
-          fullPriceMin: number;
+          fullPriceMax: number;
           coefficient: number;
       }
     | {

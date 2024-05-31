@@ -17,6 +17,9 @@
                 </CustomLabel>
                 <span v-if="!item.labelProps && item.value" class="data-cell-text">
                     {{ item.value }}
+                    <RouterLink v-if="item.link !== null" :to="item.link">
+                        <CustomIcon colorVariant="primary" iconName="link" />
+                    </RouterLink>
                 </span>
             </div>
         </td>
@@ -26,6 +29,7 @@
 <script setup lang="ts">
 import CustomLabel, { CustomLabelProps } from '../CustomLabel/CustomLabel.vue';
 import CustomIcon, { CustomIconProps } from '../CustomIcon/CustomIcon.vue';
+import { RouterLink } from 'vue-router';
 
 export type TableRowProps = {
     id: string;
@@ -35,12 +39,13 @@ export type TableRowProps = {
         value?: string;
         iconProps?: CustomIconProps;
         labelProps?: CustomLabelProps | null;
+        link: string | null; // TODO: REMOVE IF IT DOESN'T NEED
     }[];
     bordered?: boolean;
     activeBackground?: boolean;
 };
 
-const { data, bordered, activeBackground, disabled } = defineProps<TableRowProps>();
+defineProps<TableRowProps>();
 </script>
 
 <style scoped lang="scss">

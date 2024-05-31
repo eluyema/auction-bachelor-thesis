@@ -70,17 +70,7 @@ export type VerticalListItemProps = {
     bordered?: boolean;
 };
 
-const {
-    iconProps,
-    name,
-    tableData,
-    labelProps,
-    labelValue,
-    disabledIcons,
-    disabledText,
-    activeBackground,
-    bordered,
-} = defineProps<VerticalListItemProps>();
+defineProps<VerticalListItemProps>();
 </script>
 
 <style scoped lang="scss">

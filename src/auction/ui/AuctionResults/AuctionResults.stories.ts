@@ -23,6 +23,7 @@ const defaultList: AuctionResult[] = [
         auctionType: AuctionType.DEFAULT,
         name: `ТОВ "БУДРЕМСЕРВІС"`,
         fullPrice: '46 005 000,00',
+        userAuctionsLink: null,
         isWinner: false,
     },
     {
@@ -30,6 +31,7 @@ const defaultList: AuctionResult[] = [
         auctionType: AuctionType.DEFAULT,
         name: `ТОВ ДУВК`,
         fullPrice: '45 005 000,00',
+        userAuctionsLink: null,
         isWinner: true,
     },
 ];
@@ -40,8 +42,9 @@ const NonPriceList: AuctionResult[] = [
         auctionType: AuctionType.NON_PRICE_CRITERIA,
         name: `ТОВ "БК"Ізобуд"`,
         fullPrice: '23 030 880,29',
-        enteredPrice: '20 000 000,00',
+        adjustedPrice: '20 000 000,00',
         coefficient: '1,25',
+        userAuctionsLink: null,
         isWinner: false,
     },
     {
@@ -49,8 +52,9 @@ const NonPriceList: AuctionResult[] = [
         auctionType: AuctionType.NON_PRICE_CRITERIA,
         name: `ТОВ "БУДРЕМСЕРВІС"`,
         fullPrice: '20 000 000,00',
-        enteredPrice: '16 448 000,00',
+        adjustedPrice: '16 448 000,00',
         coefficient: '1,25',
+        userAuctionsLink: null,
         isWinner: false,
     },
     {
@@ -58,8 +62,9 @@ const NonPriceList: AuctionResult[] = [
         auctionType: AuctionType.NON_PRICE_CRITERIA,
         name: `ТОВ ДУВК`,
         fullPrice: '15 000 000,00',
-        enteredPrice: '15 000 000,00',
+        adjustedPrice: '15 000 000,00',
         coefficient: '1,00',
+        userAuctionsLink: null,
         isWinner: true,
     },
 ];
@@ -70,6 +75,7 @@ const ESCOList: AuctionResult[] = [
         auctionType: AuctionType.ESCO,
         name: `ТОВ "БУДРЕМСЕРВІС"`,
         fullPrice: '46 005 000,00',
+        userAuctionsLink: null,
         isWinner: false,
     },
     {
@@ -77,6 +83,7 @@ const ESCOList: AuctionResult[] = [
         auctionType: AuctionType.ESCO,
         name: `ТОВ ДУВК`,
         fullPrice: '45 005 000,00',
+        userAuctionsLink: null,
         isWinner: true,
     },
 ];

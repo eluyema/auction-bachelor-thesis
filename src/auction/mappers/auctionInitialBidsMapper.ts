@@ -1,10 +1,90 @@
-import { AuctionInitialBid, AuctionType } from 'src/entities/auction';
+import { AuctionInitialBid, AuctionType, Participation } from 'src/entities/auction';
 import { VerticalListItemProps } from 'src/shared/ui/VerticalList/VerticalListItem.vue';
 import { TableRowProps, TableColumnProps } from 'src/shared/ui/TableData/index';
 import { getUuid } from 'src/shared/utils/getUuid';
 import { tableColumns } from './data';
+import { AuctionFull } from 'src/entities/auction/auctionFull';
+import { formatNumberToPrice } from 'src/shared/utils/formatNumberToPrice';
 
 class AuctionInitialBidsMapper {
+    static mapToInitialBids(
+        auction: AuctionFull,
+        participation: Participation,
+    ): AuctionInitialBid[] {
+        if (auction.Rounds.length === 0) {
+            return [];
+        }
+
+        const initRound = auction.Rounds.find((round) => round.sequenceNumber === 0);
+        if (!initRound) {
+            return [];
+        }
+
+        if (auction.auctionType === AuctionType.DEFAULT) {
+            const bids: AuctionInitialBid[] = initRound.Bids.map((bid) => {
+                let name = bid.pseudonym;
+                if (
+                    participation.isParticipant &&
+                    participation.pseudonym !== null &&
+                    participation.pseudonym === bid.pseudonym
+                ) {
+                    name = 'Ви';
+                } else if (bid.User) {
+                    name = bid.User.name;
+                }
+
+                const preparedRound: AuctionInitialBid = {
+                    id: bid.id,
+                    auctionType: AuctionType.DEFAULT,
+                    name,
+                    isMin: bid.sequenceNumber === initRound.Bids.length - 1,
+                    isMax: bid.sequenceNumber !== initRound.Bids.length - 1,
+                    fullPrice: bid.total ? formatNumberToPrice(bid.total) + ' грн' : '...',
+                };
+
+                return preparedRound;
+            });
+            return bids;
+        } else if (auction.auctionType === AuctionType.NON_PRICE_CRITERIA) {
+            const bids: AuctionInitialBid[] = initRound.Bids.map((bid) => {
+                let name = bid.pseudonym;
+                let fullPrice = bid.total ? formatNumberToPrice(bid.total) + ' грн' : '...';
+                let coefficient = bid.coefficient ? `${bid.coefficient}` : '...';
+                if (
+                    participation.isParticipant &&
+                    participation.pseudonym !== null &&
+                    participation.pseudonym === bid.pseudonym
+                ) {
+                    name = 'Ви';
+                    if (bid.adjustedPrice && participation.coefficient) {
+                        fullPrice =
+                            formatNumberToPrice(
+                                Math.floor(bid.adjustedPrice * participation.coefficient),
+                            ) + ' грн';
+                        coefficient = `${participation.coefficient}`;
+                    }
+                } else if (bid.User) {
+                    name = bid.User.name;
+                }
+
+                const preparedRound: AuctionInitialBid = {
+                    id: bid.id,
+                    auctionType: AuctionType.NON_PRICE_CRITERIA,
+                    name,
+                    isMin: bid.sequenceNumber === initRound.Bids.length - 1,
+                    isMax: bid.sequenceNumber !== initRound.Bids.length - 1,
+                    coefficient: coefficient,
+                    fullPrice,
+                    adjustedPrice: formatNumberToPrice(bid.adjustedPrice || 0) + ' грн',
+                };
+
+                return preparedRound;
+            });
+            return bids;
+        }
+        return [];
+    }
+
     static mapToVerticalListItems(
         results: AuctionInitialBid[],
         options = { showLabelForMax: false },
@@ -23,7 +103,7 @@ class AuctionInitialBidsMapper {
         if (result.auctionType === AuctionType.NON_PRICE_CRITERIA) {
             tableData.push(
                 { key: 'Коефіцієнт: ', value: result.coefficient },
-                { key: 'Приведена ціна, грн:', value: result.enteredPrice },
+                { key: 'Приведена ціна, грн:', value: result.adjustedPrice },
             );
         }
 
@@ -66,21 +146,24 @@ class AuctionInitialBidsMapper {
                     iconProps: {
                         iconName: 'done',
                     },
+                    link: null,
                 },
                 {
                     id: getUuid(),
                     value: result.name,
+                    link: null,
                 },
                 {
                     id: getUuid(),
                     value: result.fullPrice,
+                    link: null,
                 },
             ];
 
             if (result.auctionType === AuctionType.NON_PRICE_CRITERIA) {
                 data.push(
-                    { id: getUuid(), value: result.coefficient },
-                    { id: getUuid(), value: result.enteredPrice },
+                    { id: getUuid(), value: result.coefficient, link: null },
+                    { id: getUuid(), value: result.adjustedPrice, link: null },
                 );
             }
 
@@ -89,6 +172,7 @@ class AuctionInitialBidsMapper {
             data.push({
                 id: getUuid(),
                 value: labelValue || '',
+                link: null,
                 labelProps: { colorVariant: 'primary', textShape: 'contained' },
             });
 
@@ -100,6 +184,9 @@ class AuctionInitialBidsMapper {
     }
 
     static mapToTableDataColumns(results: AuctionInitialBid[]): TableColumnProps[] {
+        if (!results.length) {
+            return tableColumns[AuctionType.DEFAULT];
+        }
         const auctionType = results[0].auctionType;
 
         return tableColumns[auctionType];

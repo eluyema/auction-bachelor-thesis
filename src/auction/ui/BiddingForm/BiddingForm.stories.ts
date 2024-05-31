@@ -46,17 +46,17 @@ type Story = StoryObj<typeof meta>;
 
 export const AuctionNotStarted: Story = {
     args: {
-        settings: { auctionType: AuctionType.DEFAULT, fullPriceMin: 49999998 },
+        settings: { auctionType: AuctionType.DEFAULT, fullPriceMax: 49999998 },
         auctionStartAt: getAdjustDate({ days: 2, hours: 21, seconds: 4 }),
         roundStartAt: getAdjustDate({ days: 3, hours: 21, seconds: 10 }),
-        yourTurnStartAt: getAdjustDate({ days: 4, hours: 21, seconds: 10 }),
+        yourTurnStartAt: getAdjustDate({ days: 4, hours: 21, minutes: 20, seconds: 10 }),
         yourTurnEndAt: getAdjustDate({ days: 4, hours: 21, minutes: 20, seconds: 10 }),
     },
 };
 
 export const RoundNotStarted: Story = {
     args: {
-        settings: { auctionType: AuctionType.DEFAULT, fullPriceMin: 49999998 },
+        settings: { auctionType: AuctionType.DEFAULT, fullPriceMax: 49999998 },
         auctionStartAt: getAdjustDate({ days: -2, hours: 21, seconds: 10 }),
         roundStartAt: getAdjustDate({ hours: 2 }),
         yourTurnStartAt: getAdjustDate({ days: 4, hours: 21, seconds: 10 }),
@@ -66,7 +66,7 @@ export const RoundNotStarted: Story = {
 
 export const YourTurnNotStarted: Story = {
     args: {
-        settings: { auctionType: AuctionType.DEFAULT, fullPriceMin: 49999998 },
+        settings: { auctionType: AuctionType.DEFAULT, fullPriceMax: 49999998 },
         auctionStartAt: getAdjustDate({ days: -2, hours: 21, seconds: 10 }),
         roundStartAt: getAdjustDate({ days: -3, hours: 21, seconds: 10 }),
         yourTurnStartAt: getAdjustDate({ seconds: 100 }),
@@ -76,25 +76,25 @@ export const YourTurnNotStarted: Story = {
 
 export const DefaultYourTurnStarted: Story = {
     args: {
-        settings: { auctionType: AuctionType.DEFAULT, fullPriceMin: 49999998 },
+        settings: { auctionType: AuctionType.DEFAULT, fullPriceMax: 49999998 },
         auctionStartAt: getAdjustDate({ days: -2, hours: 21, seconds: 10 }),
         roundStartAt: getAdjustDate({ days: -3, hours: 21, seconds: 10 }),
         yourTurnStartAt: getAdjustDate({ seconds: -1 }),
-        yourTurnEndAt: getAdjustDate({ seconds: 500 }),
+        yourTurnEndAt: getAdjustDate({ seconds: 120 }),
     },
 };
 
 export const DefaultYourTurnStartedBiddingReady: Story = {
     args: {
-        settings: { auctionType: AuctionType.DEFAULT, fullPriceMin: 49999998 },
+        settings: { auctionType: AuctionType.DEFAULT, fullPriceMax: 49999998 },
         auctionStartAt: getAdjustDate({ days: -2, hours: 21, seconds: 10 }),
         roundStartAt: getAdjustDate({ days: -3, hours: 21, seconds: 10 }),
         yourTurnStartAt: getAdjustDate({ seconds: -1 }),
-        yourTurnEndAt: getAdjustDate({ seconds: 500 }),
+        yourTurnEndAt: getAdjustDate({ seconds: 120 }),
         currentBid: {
             aborted: false,
             auctionType: AuctionType.DEFAULT,
-            fullPrice: '34 546 346 734 645,00',
+            fullPrice: 34546346734645,
             id: 'f126c2ae-6a20-495d-b88a-81fc62e4a85a',
         },
     },
@@ -102,15 +102,15 @@ export const DefaultYourTurnStartedBiddingReady: Story = {
 
 export const DefaultYourTurnStartedBiddingAborted: Story = {
     args: {
-        settings: { auctionType: AuctionType.DEFAULT, fullPriceMin: 49999998 },
+        settings: { auctionType: AuctionType.DEFAULT, fullPriceMax: 49999998 },
         auctionStartAt: getAdjustDate({ days: -2, hours: 21, seconds: 10 }),
         roundStartAt: getAdjustDate({ days: -3, hours: 21, seconds: 10 }),
         yourTurnStartAt: getAdjustDate({ seconds: -1 }),
-        yourTurnEndAt: getAdjustDate({ seconds: 500 }),
+        yourTurnEndAt: getAdjustDate({ seconds: 120 }),
         currentBid: {
             aborted: true,
             auctionType: AuctionType.DEFAULT,
-            fullPrice: '34 546 346 734 645,00',
+            fullPrice: 34546346734645,
             id: 'f126c2ae-6a20-495d-b88a-81fc62e4a85a',
         },
     },
@@ -120,13 +120,13 @@ export const NonPriceYourTurnStarted: Story = {
     args: {
         settings: {
             auctionType: AuctionType.NON_PRICE_CRITERIA,
-            fullPriceMin: 49999998,
+            fullPriceMax: 49999998,
             coefficient: 1.25,
         },
         auctionStartAt: getAdjustDate({ days: -2, hours: 21, seconds: 10 }),
         roundStartAt: getAdjustDate({ days: -3, hours: 21, seconds: 10 }),
         yourTurnStartAt: getAdjustDate({ seconds: -1 }),
-        yourTurnEndAt: getAdjustDate({ seconds: 500 }),
+        yourTurnEndAt: getAdjustDate({ seconds: 120 }),
     },
 };
 
@@ -134,17 +134,17 @@ export const NonPriceYourTurnStartedBiddingReady: Story = {
     args: {
         settings: {
             auctionType: AuctionType.NON_PRICE_CRITERIA,
-            fullPriceMin: 49999998,
+            fullPriceMax: 49999998,
             coefficient: 1.5,
         },
         auctionStartAt: getAdjustDate({ days: -2, hours: 21, seconds: 10 }),
         roundStartAt: getAdjustDate({ days: -3, hours: 21, seconds: 10 }),
         yourTurnStartAt: getAdjustDate({ seconds: -1 }),
-        yourTurnEndAt: getAdjustDate({ seconds: 500 }),
+        yourTurnEndAt: getAdjustDate({ seconds: 120 }),
         currentBid: {
             aborted: false,
             auctionType: AuctionType.DEFAULT,
-            fullPrice: '34 546 346 734 645,00',
+            fullPrice: 34546346734645,
             id: 'f126c2ae-6a20-495d-b88a-81fc62e4a85a',
         },
     },
@@ -154,17 +154,17 @@ export const NonPriceYourTurnStartedBiddingAborted: Story = {
     args: {
         settings: {
             auctionType: AuctionType.NON_PRICE_CRITERIA,
-            fullPriceMin: 49999998,
+            fullPriceMax: 49999998,
             coefficient: 1.75,
         },
         auctionStartAt: getAdjustDate({ days: -2, hours: 21, seconds: 10 }),
         roundStartAt: getAdjustDate({ days: -3, hours: 21, seconds: 10 }),
         yourTurnStartAt: getAdjustDate({ seconds: -1 }),
-        yourTurnEndAt: getAdjustDate({ seconds: 500 }),
+        yourTurnEndAt: getAdjustDate({ seconds: 120 }),
         currentBid: {
             aborted: true,
             auctionType: AuctionType.DEFAULT,
-            fullPrice: '34 546 346 734 645,00',
+            fullPrice: 34546346734645,
             id: 'f126c2ae-6a20-495d-b88a-81fc62e4a85a',
         },
     },
@@ -183,7 +183,7 @@ export const ESCOYourTurnStarted: Story = {
         auctionStartAt: getAdjustDate({ days: -2, hours: 21, seconds: 10 }),
         roundStartAt: getAdjustDate({ days: -3, hours: 21, seconds: 10 }),
         yourTurnStartAt: getAdjustDate({ seconds: -1 }),
-        yourTurnEndAt: getAdjustDate({ seconds: 500 }),
+        yourTurnEndAt: getAdjustDate({ seconds: 120 }),
     },
 };
 
@@ -200,11 +200,11 @@ export const ESCOYourTurnStartedBiddingReady: Story = {
         auctionStartAt: getAdjustDate({ days: -2, hours: 21, seconds: 10 }),
         roundStartAt: getAdjustDate({ days: -3, hours: 21, seconds: 10 }),
         yourTurnStartAt: getAdjustDate({ seconds: -1 }),
-        yourTurnEndAt: getAdjustDate({ seconds: 500 }),
+        yourTurnEndAt: getAdjustDate({ seconds: 120 }),
         currentBid: {
             aborted: false,
             auctionType: AuctionType.DEFAULT,
-            fullPrice: '34 546 346 734 645,00',
+            fullPrice: 34546346734645,
             id: 'f126c2ae-6a20-495d-b88a-81fc62e4a85a',
         },
     },
@@ -223,11 +223,11 @@ export const ESCOYourTurnStartedBiddingAborted: Story = {
         auctionStartAt: getAdjustDate({ days: -2, hours: 21, seconds: 10 }),
         roundStartAt: getAdjustDate({ days: -3, hours: 21, seconds: 10 }),
         yourTurnStartAt: getAdjustDate({ seconds: -1 }),
-        yourTurnEndAt: getAdjustDate({ seconds: 500 }),
+        yourTurnEndAt: getAdjustDate({ seconds: 120 }),
         currentBid: {
             aborted: true,
             auctionType: AuctionType.DEFAULT,
-            fullPrice: '34 546 346 734 645,00',
+            fullPrice: 34546346734645,
             id: 'f126c2ae-6a20-495d-b88a-81fc62e4a85a',
         },
     },

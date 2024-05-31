@@ -14,13 +14,14 @@ import DesktopOnly from 'src/shared/ui/DesktopOnly/DesktopOnly.vue';
 import MobileOnly from 'src/shared/ui/MobileOnly/MobileOnly.vue';
 import TableData from 'src/shared/ui/TableData/TableData.vue';
 import VerticalList from 'src/shared/ui/VerticalList/VerticalList.vue';
+import { computed } from 'vue';
 
 export type AuctionResultsProps = {
     list: AuctionResult[];
 };
 
-const { list } = defineProps<AuctionResultsProps>();
-const verticalListItems = mapper.mapToVerticalListItems(list);
-const tableColumns = mapper.mapToTableDataColumns(list);
-const tableRows = mapper.mapToTableDataRows(list);
+const props = defineProps<AuctionResultsProps>();
+const verticalListItems = computed(() => mapper.mapToVerticalListItems(props.list));
+const tableColumns = computed(() => mapper.mapToTableDataColumns(props.list));
+const tableRows = computed(() => mapper.mapToTableDataRows(props.list));
 </script>

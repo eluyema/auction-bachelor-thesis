@@ -60,7 +60,6 @@ const iconClass = computed(() => {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    width: 100%;
     padding-top: var(--spacing-8);
     padding-bottom: var(--spacing-8);
     cursor: pointer;

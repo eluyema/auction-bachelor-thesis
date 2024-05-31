@@ -17,5 +17,5 @@ export type AuctionInitialBid =
           isMax: boolean;
           fullPrice: string;
           coefficient: string;
-          enteredPrice: string;
+          adjustedPrice: string;
       };

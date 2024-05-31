@@ -72,7 +72,7 @@ import MobileOnly from 'src/shared/ui/MobileOnly/MobileOnly.vue';
 import BiddingStatus from './components/BiddingStatus.vue';
 
 export type DefaultVariantProps = {
-    endAt: Date;
+    endAtStr: string;
     fullPriceMin: number;
     currentBid?: AuctionBid | null;
     collapsedMobile: boolean;
@@ -83,13 +83,15 @@ const emit = defineEmits<{
     (event: 'bidAbort'): void;
 }>();
 
-const { endAt, fullPriceMin, currentBid } = defineProps<DefaultVariantProps>();
+const props = defineProps<DefaultVariantProps>();
 
-const showAbortButton = computed(() => !!currentBid && !currentBid.aborted);
+const showAbortButton = computed(() => !!props.currentBid && !props.currentBid.aborted);
 
-const formattedFullPriceMin = computed(() => formatNumberToPrice(fullPriceMin));
+const formattedFullPriceMin = computed(() => formatNumberToPrice(props.fullPriceMin));
 
-const diffInSeconds = computed(() => getSecondsBetweenDates(endAt, new Date()));
+const diffInSeconds = computed(() => {
+    return getSecondsBetweenDates(new Date(props.endAtStr), new Date());
+});
 
 const isError = ref(false);
 
@@ -100,7 +102,7 @@ const onBidAbort = () => {
 const getFormSchema = () => {
     return object({
         fullPrice: number()
-            .min(fullPriceMin, `Full price must be at least ${fullPriceMin}`)
+            .max(props.fullPriceMin, `Full price must be maximum ${props.fullPriceMin}`)
             .required('Full price is required'),
     });
 };
@@ -108,7 +110,7 @@ const getFormSchema = () => {
 const formSchema = ref(getFormSchema());
 
 watch(
-    () => fullPriceMin,
+    () => props.fullPriceMin,
     () => {
         formSchema.value = getFormSchema();
     },
@@ -122,11 +124,9 @@ const sendBid = () => {
     const bid: AuctionBid = {
         id: getUuid(),
         auctionType: AuctionType.DEFAULT,
-        fullPrice: formatNumberToPrice(+formInput.fullPrice),
+        fullPrice: +formInput.fullPrice,
         aborted: false,
     };
-
-    console.log(bid);
 
     emit('bidSent', bid);
 };

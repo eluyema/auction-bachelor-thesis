@@ -154,7 +154,7 @@ import MobileOnly from 'src/shared/ui/MobileOnly/MobileOnly.vue';
 import BiddingStatus from './components/BiddingStatus.vue';
 
 export type ESCOVariantProps = {
-    endAt: Date;
+    endAtStr: string;
     basePrice: number;
     fullPriceMin: number;
     collapsedMobile: boolean;
@@ -169,27 +169,26 @@ const emit = defineEmits<{
     (event: 'bidAbort'): void;
 }>();
 
-const { endAt, basePrice, currentBid, fullPriceMin, defaultYears, defaultDays, defaultPercent } =
-    defineProps<ESCOVariantProps>();
+const props = defineProps<ESCOVariantProps>();
 
-const showAbortButton = computed(() => !!currentBid && !currentBid.aborted);
+const showAbortButton = computed(() => !!props.currentBid && !props.currentBid.aborted);
 
-const formattedFullPriceMin = computed(() => formatNumberToPrice(fullPriceMin));
+const formattedFullPriceMin = computed(() => formatNumberToPrice(props.fullPriceMin));
 
 const formattedCalculatedFullPrice = computed(() => {
     const { years, days, percent } = getValuesOrDefault();
 
-    const value = calculateFullPrice(basePrice, years, days, percent);
+    const value = calculateFullPrice(props.basePrice, years, days, percent);
 
     return formatNumberToPrice(value);
 });
 
-const diffInSeconds = computed(() => getSecondsBetweenDates(endAt, new Date()));
+const diffInSeconds = computed(() => getSecondsBetweenDates(new Date(props.endAtStr), new Date()));
 
 const getValuesOrDefault = () => {
-    const currentYears = isNaN(+formInput.years) ? defaultYears : +formInput.years;
-    const currentDays = isNaN(+formInput.days) ? defaultDays : +formInput.days;
-    const currentPercent = isNaN(+formInput.percent) ? defaultPercent : +formInput.percent;
+    const currentYears = isNaN(+formInput.years) ? props.defaultYears : +formInput.years;
+    const currentDays = isNaN(+formInput.days) ? props.defaultDays : +formInput.days;
+    const currentPercent = isNaN(+formInput.percent) ? props.defaultPercent : +formInput.percent;
 
     return {
         years: currentYears,
@@ -207,18 +206,18 @@ const onBidAbort = () => {
 const getFormSchema = () => {
     return object({
         years: number()
-            .min(0, `Years must be at least ${fullPriceMin}`)
-            .max(100, `Years must be at least ${fullPriceMin}`)
+            .min(0, `Years must be at least ${props.fullPriceMin}`)
+            .max(100, `Years must be at least ${props.fullPriceMin}`)
             .integer()
             .required('Years is required'),
         days: number()
-            .min(0, `Days must be at least ${fullPriceMin}`)
-            .max(100, `Days must be at least ${fullPriceMin}`)
+            .min(0, `Days must be at least ${props.fullPriceMin}`)
+            .max(100, `Days must be at least ${props.fullPriceMin}`)
             .integer()
             .required('Days is required'),
         percent: number()
-            .min(0, `Percent must be at least ${fullPriceMin}`)
-            .max(100, `Percent must be at least ${fullPriceMin}`)
+            .min(0, `Percent must be at least ${props.fullPriceMin}`)
+            .max(100, `Percent must be at least ${props.fullPriceMin}`)
             .integer()
             .required('Percent is required'),
     });
@@ -250,14 +249,12 @@ const sendBid = (fullPrice: number) => {
     const bid: AuctionBid = {
         id: getUuid(),
         auctionType: AuctionType.ESCO,
-        fullPrice: formatNumberToPrice(fullPrice),
+        fullPrice: fullPrice,
         years: +formInput.years,
         days: +formInput.days,
         percent: +formInput.percent,
         aborted: false,
     };
-
-    console.log(bid);
 
     emit('bidSent', bid);
 };
@@ -267,13 +264,13 @@ const validateAndSendBid = async () => {
         await formSchema.value.validate(formInput);
 
         const fullPrice = calculateFullPrice(
-            basePrice,
+            props.basePrice,
             +formInput.years,
             +formInput.days,
             +formInput.percent,
         );
 
-        if (fullPrice < fullPriceMin) {
+        if (fullPrice < props.fullPriceMin) {
             isError.value = true;
             return;
         }
@@ -288,7 +285,7 @@ const validateAndSendBid = async () => {
 };
 
 watch(
-    () => fullPriceMin,
+    () => props.fullPriceMin,
     () => {
         formSchema.value = getFormSchema();
     },

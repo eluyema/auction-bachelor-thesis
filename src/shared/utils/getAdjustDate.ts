@@ -15,5 +15,5 @@ export const getAdjustDate = ({
     currentDate.setMinutes(currentDate.getMinutes() + minutes);
     currentDate.setSeconds(currentDate.getSeconds() + seconds);
 
-    return currentDate;
+    return currentDate.toISOString();
 };
