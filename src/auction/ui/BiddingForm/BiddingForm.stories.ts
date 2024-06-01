@@ -2,6 +2,7 @@ import { Meta, StoryObj } from '@storybook/vue3';
 import BiddingForm from './BiddingForm.vue';
 import { getAdjustDate } from 'src/shared/utils/getAdjustDate';
 import { AuctionType } from 'src/entities/auction';
+import { getUuid } from 'src/shared/utils/getUuid';
 
 const meta: Meta<typeof BiddingForm> = {
     title: 'Organisms/BiddingForm',
@@ -34,6 +35,10 @@ const meta: Meta<typeof BiddingForm> = {
             description: 'Date when the your turn of bidding end',
         },
         currentBid: {
+            control: 'object',
+            description: 'Current bid',
+        },
+        lastBid: {
             control: 'object',
             description: 'Current bid',
         },
@@ -174,16 +179,22 @@ export const ESCOYourTurnStarted: Story = {
     args: {
         settings: {
             auctionType: AuctionType.ESCO,
-            basePrice: 50000,
+            cashFlow: 50000,
             fullPriceMin: 961089,
-            defaultYears: 11,
-            defaultDays: 123,
-            defaultPercent: 87,
         },
         auctionStartAt: getAdjustDate({ days: -2, hours: 21, seconds: 10 }),
         roundStartAt: getAdjustDate({ days: -3, hours: 21, seconds: 10 }),
         yourTurnStartAt: getAdjustDate({ seconds: -1 }),
         yourTurnEndAt: getAdjustDate({ seconds: 120 }),
+        lastBid: {
+            id: getUuid(),
+            auctionType: AuctionType.ESCO,
+            fullPrice: 961089,
+            aborted: false,
+            years: 11,
+            days: 123,
+            percent: 87,
+        },
     },
 };
 
@@ -191,11 +202,8 @@ export const ESCOYourTurnStartedBiddingReady: Story = {
     args: {
         settings: {
             auctionType: AuctionType.ESCO,
-            basePrice: 100000,
+            cashFlow: 100000,
             fullPriceMin: 961089,
-            defaultYears: 11,
-            defaultDays: 123,
-            defaultPercent: 87,
         },
         auctionStartAt: getAdjustDate({ days: -2, hours: 21, seconds: 10 }),
         roundStartAt: getAdjustDate({ days: -3, hours: 21, seconds: 10 }),
@@ -207,6 +215,15 @@ export const ESCOYourTurnStartedBiddingReady: Story = {
             fullPrice: 34546346734645,
             id: 'f126c2ae-6a20-495d-b88a-81fc62e4a85a',
         },
+        lastBid: {
+            id: getUuid(),
+            auctionType: AuctionType.ESCO,
+            fullPrice: 961089,
+            aborted: false,
+            years: 11,
+            days: 123,
+            percent: 87,
+        },
     },
 };
 
@@ -214,11 +231,8 @@ export const ESCOYourTurnStartedBiddingAborted: Story = {
     args: {
         settings: {
             auctionType: AuctionType.ESCO,
-            basePrice: 100000,
+            cashFlow: 100000,
             fullPriceMin: 961089,
-            defaultYears: 11,
-            defaultDays: 123,
-            defaultPercent: 87,
         },
         auctionStartAt: getAdjustDate({ days: -2, hours: 21, seconds: 10 }),
         roundStartAt: getAdjustDate({ days: -3, hours: 21, seconds: 10 }),
@@ -229,6 +243,15 @@ export const ESCOYourTurnStartedBiddingAborted: Story = {
             auctionType: AuctionType.DEFAULT,
             fullPrice: 34546346734645,
             id: 'f126c2ae-6a20-495d-b88a-81fc62e4a85a',
+        },
+        lastBid: {
+            id: getUuid(),
+            auctionType: AuctionType.ESCO,
+            fullPrice: 961089,
+            aborted: false,
+            years: 11,
+            days: 123,
+            percent: 87,
         },
     },
 };
