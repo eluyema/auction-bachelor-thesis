@@ -36,8 +36,6 @@ export interface IAuctionBidding {
 
     getInitialBids(auction: AuctionFull | null, participation: Participation): AuctionInitialBid[];
 
-    getProgressBarProps(auction: AuctionFull | null, currentDate: Date): ProgressBarProps;
-
     getMyNearestBidInterval(
         auction: AuctionFull | null,
         currentDate: Date,
