@@ -53,11 +53,8 @@ defineProps<TabsPageWrapperProps>();
     padding-left: var(--spacing-20);
     padding-right: var(--spacing-20);
     margin-top: var(--spacing-24);
-    padding: var(--spacing-16);
-}
-
-.tabs-head {
-    height: 70px;
+    padding-top: var(--spacing-16);
+    padding-right: var(--spacing-16);
 }
 
 .tabs-body {
@@ -80,7 +77,6 @@ defineProps<TabsPageWrapperProps>();
     max-width: 1400px;
     width: 100%;
     min-height: 100%;
-    width: 100%;
     display: flex;
     flex-direction: column;
     margin-left: auto;
@@ -88,6 +84,7 @@ defineProps<TabsPageWrapperProps>();
 }
 
 .tabs-head {
+    height: 70px;
     display: flex;
 }
 

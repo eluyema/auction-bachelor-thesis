@@ -138,15 +138,13 @@ watch(
     }
 
     &__path-remaining {
-        stroke-width: 4px;
-        stroke-linecap: round;
-        scale: -1 1;
-        rotate: -90deg;
-        transform-origin: center;
-        transition-property: stroke;
-        transition: 1s linear all;
         fill-rule: nonzero;
         stroke: var(--color-main-blue);
+        stroke-width: 4px;
+        stroke-linecap: round;
+        transform: scale(-1, 1) rotate(-90deg);
+        transform-origin: center;
+        transition: stroke 1s linear;
     }
 
     &__label {
