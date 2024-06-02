@@ -91,13 +91,13 @@ export class ESCOAuctionBidding implements IAuctionBidding {
         participation: Participation,
     ): AuctionBidSettings {
         if (!auction) {
-            return { auctionType: AuctionType.DEFAULT, fullPriceMax: 0 };
+            return { auctionType: AuctionType.ESCO, fullPriceMin: 0, cashFlow: 0 };
         }
 
         if (!auction.Rounds.length) {
-            return { auctionType: AuctionType.DEFAULT, fullPriceMax: 0 };
+            return { auctionType: AuctionType.ESCO, fullPriceMin: 0, cashFlow: 0 };
         }
-
+        console.log(1);
         const currentTimeStr = currentDate.toISOString();
 
         const currentRound = auction.Rounds.find(
@@ -105,16 +105,18 @@ export class ESCOAuctionBidding implements IAuctionBidding {
         );
 
         if (!currentRound || currentRound.sequenceNumber === 0) {
-            return { auctionType: AuctionType.DEFAULT, fullPriceMax: 0 };
+            console.log('!');
+            return { auctionType: AuctionType.ESCO, fullPriceMin: 0, cashFlow: 0 };
         }
 
         const roundBeforeCurrent = auction.Rounds.find(
             (round) => round.sequenceNumber === currentRound.sequenceNumber - 1,
         );
-
+        console.log(2);
         if (!roundBeforeCurrent) {
-            return { auctionType: AuctionType.DEFAULT, fullPriceMax: 0 };
+            return { auctionType: AuctionType.ESCO, fullPriceMin: 0, cashFlow: 0 };
         }
+        console.log(3);
 
         const myPseudonym = participation.pseudonym;
 
@@ -133,21 +135,22 @@ export class ESCOAuctionBidding implements IAuctionBidding {
         });
 
         const maxBid = sortedBids[sortedBids.length - 1];
+        console.log(4);
 
         if (!maxBid.total) {
             throw new Error('Total is missed in last bid');
         }
-
+        console.log(5);
         if (!auction.cashFlow) {
             throw new Error('cashFlow is missed in auction');
         }
 
         const fullPriceMin = maxBid.total + step;
-
+        console.log(fullPriceMin);
         return {
             auctionType: AuctionType.ESCO,
             fullPriceMin: fullPriceMin > 0 ? fullPriceMin : 0,
-            cashFlow: auction.cashFlow || 0,
+            cashFlow: auction.cashFlow ?? 0,
         };
     }
 

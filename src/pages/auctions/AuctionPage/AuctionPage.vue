@@ -96,6 +96,13 @@ const lastBid = ref<AuctionBid | null>(null);
 const currentTime = ref(new Date());
 const currentAuction = computed<AuctionFull | null>(() => auctionsStore.state.currentAuction);
 
+watch(
+    () => lastBid,
+    () => {
+        console.log('lastBid updated in auction page');
+    },
+);
+
 const showBiddingForm = computed(
     () =>
         currentAuction.value &&
@@ -220,11 +227,10 @@ const auctionId = computed(() => {
     return Array.isArray(auctionIdParam) ? auctionIdParam[0] : auctionIdParam;
 });
 
-const onMakeBid = (bid: AuctionBid) => {
+const onMakeBid = async (bid: AuctionBid) => {
     if (!currentAuction.value) {
         return;
     }
-    auctionsStore.makeBid(currentAuction.value.id, bid);
 
     if (
         currentAuction.value.auctionType === AuctionType.ESCO &&
@@ -235,12 +241,16 @@ const onMakeBid = (bid: AuctionBid) => {
         LocalStorageService.setItem(AuctionPersistenceKeys.LAST_PERCENT, bid.percent);
         updateCurrentBid();
     }
+    console.log('start send bid');
+    await auctionsStore.makeBid(currentAuction.value.id, bid);
+    console.log('stop send bid');
 };
 
 const updateCurrentBid = () => {
     if (!currentAuction.value) {
         return;
     }
+    console.log('UPDATE BID');
     if (currentAuction.value.auctionType === AuctionType.ESCO && currentAuction.value.cashFlow) {
         const years = Number(LocalStorageService.getItem(AuctionPersistenceKeys.LAST_YEARS));
         const days = Number(LocalStorageService.getItem(AuctionPersistenceKeys.LAST_DAYS));

@@ -171,6 +171,41 @@ const emit = defineEmits<{
 
 const props = defineProps<ESCOVariantProps>();
 
+watch(
+    () => props.endAtStr,
+    () => {
+        console.log('endAtStr updated');
+    },
+);
+
+watch(
+    () => props.fullPriceMin,
+    () => {
+        console.log('fullPriceMin updated');
+    },
+);
+
+watch(
+    () => props.collapsedMobile,
+    () => {
+        console.log('collapsedMobile updated');
+    },
+);
+
+watch(
+    () => props.currentBid,
+    () => {
+        console.log('currentBid updated');
+    },
+);
+
+watch(
+    () => props.lastBid,
+    () => {
+        console.log('lastBid updated');
+    },
+);
+
 const currentYears = computed(() => {
     if (!props.lastBid || props.lastBid.auctionType !== AuctionType.ESCO) {
         return 0;
@@ -284,7 +319,7 @@ const validateAndSendBid = async () => {
             +formInput.days,
             +formInput.percent,
         );
-        console.log(props.fullPriceMin);
+        console.log(fullPrice, props.fullPriceMin, fullPrice > props.fullPriceMin);
         if (fullPrice > props.fullPriceMin) {
             isError.value = true;
             console.log();
