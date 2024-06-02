@@ -82,8 +82,8 @@ const ESCOList: AuctionResult[] = [
         isWinner: false,
     },
     {
-        id: '2',
         auctionType: AuctionType.ESCO,
+        id: '2',
         name: `ТОВ ДУВК`,
         fullPrice: '45 005 000,00',
         years: '...',
