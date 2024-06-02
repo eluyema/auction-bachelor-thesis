@@ -59,13 +59,13 @@ export class ESCOAuctionBidding implements IAuctionBidding {
             disabledIcons: true,
         };
 
-        if (!auction?.Rounds?.length) {
+        if (!auction || !auction.Rounds.length) {
             return defaultProps;
         }
 
         const round = auction.Rounds.find((round) => round.sequenceNumber === roundNum);
 
-        if (!round?.Bids?.length) {
+        if (!round || !round.Bids.length) {
             return defaultProps;
         }
 

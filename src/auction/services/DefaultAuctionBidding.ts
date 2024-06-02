@@ -19,7 +19,7 @@ export class DefaultAuctionBidding implements IAuctionBidding {
             disabledIcons: true,
         };
 
-        if (!auction?.Rounds?.length) {
+        if (!auction || !auction.Rounds.length) {
             return defaultProps;
         }
 
