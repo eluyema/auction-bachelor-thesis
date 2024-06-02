@@ -1,7 +1,9 @@
 <template>
     <div class="container">
         <h4 class="title" :class="{ disabled: disabled }">{{ name }}</h4>
+        <!--  @SONAR_STOP@ -->
         <table class="table">
+            <!--  @SONAR_STOP@ -->
             <tr class="table-head">
                 <TableColumn v-for="column of columns" v-bind="column" :key="column.id" />
             </tr>

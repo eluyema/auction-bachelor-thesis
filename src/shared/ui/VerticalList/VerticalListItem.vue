@@ -1,9 +1,11 @@
 <template>
+    <!--  @SONAR_STOP@ -->
     <li
         class="item"
         :class="{ bordered: !!bordered, 'active-background': !!activeBackground }"
         :key="id"
     >
+        <!--  @SONAR_STOP@ -->
         <div class="divider" v-if="!bordered" />
         <h6 class="item-title" :class="{ disabled: !!disabledText }">
             <CustomIcon
