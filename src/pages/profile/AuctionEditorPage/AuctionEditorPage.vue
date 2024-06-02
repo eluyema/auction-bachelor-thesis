@@ -54,7 +54,7 @@
                     {{ bid.percent }}
                 </td>
                 <td class="data-vertical-value">
-                    {{ formatNumberToPrice(bid.total || 0) + ' грн' }}
+                    {{ formatNumberToPrice(bid.total ?? 0) + ' грн' }}
                 </td>
                 <td
                     class="data-vertical-value"
@@ -66,7 +66,7 @@
                     class="data-vertical-value"
                     v-if="auctionType === AuctionType.NON_PRICE_CRITERIA"
                 >
-                    {{ formatNumberToPrice(bid.adjustedPrice || 0) + ' грн' }}
+                    {{ formatNumberToPrice(bid.adjustedPrice ?? 0) + ' грн' }}
                 </td>
                 <td>
                     <CustomButton colorVariant="error" @click="onRemoveInitBid(bid)"

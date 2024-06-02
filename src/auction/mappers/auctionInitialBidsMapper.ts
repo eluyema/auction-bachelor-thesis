@@ -99,7 +99,7 @@ class AuctionInitialBidsMapper {
                     isMax: bid.id === maxBid.id,
                     coefficient: coefficient,
                     fullPrice,
-                    adjustedPrice: formatNumberToPrice(bid.adjustedPrice || 0) + ' грн',
+                    adjustedPrice: formatNumberToPrice(bid.adjustedPrice ?? 0) + ' грн',
                 };
 
                 return preparedRound;
@@ -195,7 +195,7 @@ class AuctionInitialBidsMapper {
 
             data.push({
                 id: getUuid(),
-                value: labelValue || '',
+                value: labelValue ?? '',
                 link: null,
                 labelProps: { colorVariant: 'primary', textShape: 'contained' },
             });

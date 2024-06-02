@@ -12,5 +12,3 @@ onMounted(() => {
     authStore.setupMyUser();
 });
 </script>
-
-<style scoped lang="scss"></style>

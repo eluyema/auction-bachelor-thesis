@@ -6,8 +6,6 @@ import { ProgressBarProps } from 'src/shared/ui/ProgressBar/ProgressBar.vue';
 import { IAuctionBidding } from './IAuctionBidding';
 
 export class DefaultAuctionBidding implements IAuctionBidding {
-    constructor() {}
-
     getRoundProps(
         roundNum: 1 | 2 | 3,
         auction: AuctionFull | null,
@@ -21,13 +19,13 @@ export class DefaultAuctionBidding implements IAuctionBidding {
             disabledIcons: true,
         };
 
-        if (!auction || !auction.Rounds.length) {
+        if (!auction?.Rounds?.length) {
             return defaultProps;
         }
 
         const round = auction.Rounds.find((round) => round.sequenceNumber === roundNum);
 
-        if (!round || !round.Bids.length) {
+        if (!round?.Bids?.length) {
             return defaultProps;
         }
 

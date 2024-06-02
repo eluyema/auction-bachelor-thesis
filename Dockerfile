@@ -1,5 +1,5 @@
 # syntax=docker/dockerfile:1
-FROM node:20-alpine as build
+FROM node:20-alpine AS build
 RUN apk add --update --no-cache python3 g++ make
 WORKDIR /sbh-fe-ts
 COPY package*.json .

@@ -76,7 +76,7 @@ class AuctionRoundBidMapper {
                     name,
                     auctionType: auctionType,
                     status,
-                    fullPrice: formatNumberToPrice(bid.total || 0) + ' грн',
+                    fullPrice: formatNumberToPrice(bid.total ?? 0) + ' грн',
                     isMin: bid.id === minBid.id,
                     isMax: bid.id === maxBid.id,
                 };

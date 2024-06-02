@@ -1,8 +1,7 @@
-import { AuctionResult, Participation } from 'src/entities/auction';
+import { AuctionResult, Participation, AuctionType } from 'src/entities/auction';
 import { VerticalListItemProps } from 'src/shared/ui/VerticalList/VerticalListItem.vue';
 import { TableRowProps, TableColumnProps } from 'src/shared/ui/TableData/index';
 import { getUuid } from 'src/shared/utils/getUuid';
-import { AuctionType } from 'src/entities/auction';
 import { tableColumns } from './data';
 import { RoundFull } from 'src/entities/round/RoundFull';
 import { formatNumberToPrice } from 'src/shared/utils/formatNumberToPrice';
@@ -51,7 +50,7 @@ class AuctionResultsMapper {
                     name,
                     auctionType: auctionType,
                     userAuctionsLink,
-                    fullPrice: formatNumberToPrice(bid.total || 0) + ' грн',
+                    fullPrice: formatNumberToPrice(bid.total ?? 0) + ' грн',
                     isWinner: bid.id === minBid.id,
                 };
 
@@ -131,10 +130,10 @@ class AuctionResultsMapper {
                     name,
                     auctionType: AuctionType.ESCO,
                     userAuctionsLink,
-                    fullPrice: formatNumberToPrice(bid.total || 0) + ' грн',
-                    years: `${bid.years || '...'}`,
-                    days: `${bid.days || '...'}`,
-                    percent: `${bid.percent || '...'}`,
+                    fullPrice: formatNumberToPrice(bid.total ?? 0) + ' грн',
+                    years: `${bid.years ?? '...'}`,
+                    days: `${bid.days ?? '...'}`,
+                    percent: `${bid.percent ?? '...'}`,
                     isWinner: bid.id === maxBid.id,
                 };
 
