@@ -1,11 +1,26 @@
 <template>
     <form class="form-initial-bid" v-if="user" @submit.prevent="validateAndSendInitialBid">
-        <label>Тривалість контракту, років:</label>
-        <CustomInput :error="error" v-model="formInput.years" label="від 0 до 15" />
-        <label>Тривалість контракту, днів:</label>
-        <CustomInput :error="error" v-model="formInput.days" label="від 0 до 364" />
-        <label>Річні платежі, % економії:</label>
-        <CustomInput :error="error" v-model="formInput.percent" label="від 0 до 100" />
+        <label for="contract-years-input">Тривалість контракту, років:</label>
+        <CustomInput
+            :error="error"
+            inputId="contract-years-input"
+            v-model="formInput.years"
+            label="від 0 до 15"
+        />
+        <label for="contract-days-input">Тривалість контракту, днів:</label>
+        <CustomInput
+            :error="error"
+            inputId="contract-days-input"
+            v-model="formInput.days"
+            label="від 0 до 364"
+        />
+        <label for="contract-percent-input">Річні платежі, % економії:</label>
+        <CustomInput
+            :error="error"
+            inputId="contract-percent-input"
+            v-model="formInput.percent"
+            label="від 0 до 100"
+        />
         <p class="total-text">Total = {{ total }}</p>
         <CustomButton class="submit-button" type="submit">Додатки початкову заявку</CustomButton>
     </form>

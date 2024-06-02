@@ -1,6 +1,7 @@
 <template>
     <label class="label-block" :class="{ error: !!error }">
         <input
+            :id="inputId"
             class="input"
             :value="modelValue"
             :disabled="disabled"
@@ -38,6 +39,7 @@ export type CustomInputProps = {
     hideClearButton?: boolean;
     type?: HTMLInputElement['type'];
     error?: boolean;
+    inputId?: string;
 };
 
 const props = defineProps<CustomInputProps>();
