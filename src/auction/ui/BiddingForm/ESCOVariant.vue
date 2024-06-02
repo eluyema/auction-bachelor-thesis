@@ -171,41 +171,6 @@ const emit = defineEmits<{
 
 const props = defineProps<ESCOVariantProps>();
 
-watch(
-    () => props.endAtStr,
-    () => {
-        console.log('endAtStr updated');
-    },
-);
-
-watch(
-    () => props.fullPriceMin,
-    () => {
-        console.log('fullPriceMin updated');
-    },
-);
-
-watch(
-    () => props.collapsedMobile,
-    () => {
-        console.log('collapsedMobile updated');
-    },
-);
-
-watch(
-    () => props.currentBid,
-    () => {
-        console.log('currentBid updated');
-    },
-);
-
-watch(
-    () => props.lastBid,
-    () => {
-        console.log('lastBid updated');
-    },
-);
-
 const currentYears = computed(() => {
     if (!props.lastBid || props.lastBid.auctionType !== AuctionType.ESCO) {
         return 0;
@@ -289,7 +254,8 @@ const formInput = reactive({
 
 function calculateFullPrice(years: number, days: number, cashFlow: number, percent: number) {
     try {
-        return ESCOAuctionBidding.getNPV(years, days, cashFlow, percent);
+        const calc = ESCOAuctionBidding.getNPV(years, days, cashFlow, percent);
+        return calc;
     } catch (_err) {
         return 0;
     }
@@ -314,15 +280,15 @@ const validateAndSendBid = async () => {
         await formSchema.value.validate(formInput);
 
         const fullPrice = calculateFullPrice(
-            props.cashFlow,
             +formInput.years,
             +formInput.days,
+            props.cashFlow,
             +formInput.percent,
         );
-        console.log(fullPrice, props.fullPriceMin, fullPrice > props.fullPriceMin);
-        if (fullPrice > props.fullPriceMin) {
+
+        if (fullPrice < props.fullPriceMin) {
             isError.value = true;
-            console.log();
+
             return;
         }
 

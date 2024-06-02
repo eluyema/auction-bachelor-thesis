@@ -105,7 +105,6 @@ class AuctionRoundBidMapper {
 
                 const filteredBids = [...round.Bids].sort((a, b) => {
                     if (!a.adjustedPrice || !b.adjustedPrice) {
-                        console.log(a, b);
                         throw new Error('adjustedPrice is missed in bids');
                     }
                     return a.adjustedPrice - b.adjustedPrice;

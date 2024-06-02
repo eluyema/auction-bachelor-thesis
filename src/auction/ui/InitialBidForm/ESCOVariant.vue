@@ -59,7 +59,7 @@ const total = computed(() => {
     if (Number.isNaN(days) || Number.isNaN(years) || Number.isNaN(percent)) {
         return 'Неможливо обрахувати';
     }
-    console.log(years, days, props.cashFlow, percent);
+
     return (
         formatNumberToPrice(ESCOAuctionBidding.getNPV(years, days, props.cashFlow, percent)) +
         ' грн'
