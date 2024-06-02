@@ -54,7 +54,7 @@ defineProps<TabsPageWrapperProps>();
     padding-right: var(--spacing-20);
     margin-top: var(--spacing-24);
     padding-top: var(--spacing-16);
-    padding-right: var(--spacing-16);
+    padding-bottom: var(--spacing-16);
 }
 
 .tabs-body {
