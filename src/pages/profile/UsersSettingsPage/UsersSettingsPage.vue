@@ -26,7 +26,7 @@
     </TabsPageWrapper>
 </template>
 <script setup lang="ts">
-import { useAuthStore } from 'src/auth/store';
+import { useAuthStore } from 'src/auth/store/useAuthStore';
 import { LoadingStatuses } from 'src/entities/application';
 import { selectAvailableTabs, usersSettingsTab } from 'src/entities/profile/tabs';
 import { User } from 'src/entities/users/MyUser';

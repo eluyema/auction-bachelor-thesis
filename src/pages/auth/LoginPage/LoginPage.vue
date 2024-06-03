@@ -12,7 +12,7 @@
     </div>
 </template>
 <script setup lang="ts">
-import { useAuthStore } from 'src/auth/store';
+import { useAuthStore } from 'src/auth/store/useAuthStore';
 import LoginForm from 'src/auth/ui/LoginForm/LoginForm.vue';
 import { LoadingStatuses } from 'src/entities/application';
 import { LoginData } from 'src/entities/auth/loginData';

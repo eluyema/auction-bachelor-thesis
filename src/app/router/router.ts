@@ -6,7 +6,7 @@ import RegistrationPage from 'src/pages/auth/RegistrationPage/RegistrationPage.v
 import MyAuctionsPage from 'src/pages/profile/MyAuctionsPage/MyAuctionsPage.vue';
 import MyInfoPage from 'src/pages/profile/MyInfoPage/MyInfoPage.vue';
 import UsersSettingsPage from 'src/pages/profile/UsersSettingsPage/UsersSettingsPage.vue';
-import { useAuthStore } from 'src/auth/store';
+import { useAuthStore } from 'src/auth/store/useAuthStore';
 import NotFound from 'src/pages/NotFound.vue';
 import AuctionEditorPage from 'src/pages/profile/AuctionEditorPage/AuctionEditorPage.vue';
 import CreateAuction from 'src/pages/profile/CreateAuction/CreateAuction.vue';

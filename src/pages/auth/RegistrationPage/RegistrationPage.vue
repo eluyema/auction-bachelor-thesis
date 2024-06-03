@@ -16,7 +16,7 @@ import AppHeader from 'src/shared/ui/AppHeader/AppHeader.vue';
 import RegistrationForm from 'src/auth/ui/RegistrationForm/RegistrationForm.vue';
 import { RegistrationData } from 'src/entities/auth/registrationData';
 import { useRouter } from 'vue-router';
-import { useAuthStore } from 'src/auth/store';
+import { useAuthStore } from 'src/auth/store/useAuthStore';
 import { watch } from 'vue';
 import { LoadingStatuses } from 'src/entities/application';
 

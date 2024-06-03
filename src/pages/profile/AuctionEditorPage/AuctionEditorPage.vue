@@ -96,7 +96,7 @@
 <script setup lang="ts">
 import { useManagerAuctionStore } from 'src/auction/store/managerAuctionStore';
 import InitialBidForm from 'src/auction/ui/InitialBidForm/InitialBidForm.vue';
-import { useAuthStore } from 'src/auth/store';
+import { useAuthStore } from 'src/auth/store/useAuthStore';
 import { LoadingStatuses } from 'src/entities/application';
 import { AuctionType } from 'src/entities/auction';
 import { BidFull } from 'src/entities/bid/BidFull';

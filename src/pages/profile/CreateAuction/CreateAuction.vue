@@ -83,7 +83,7 @@
     </TabsPageWrapper>
 </template>
 <script setup lang="ts">
-import { useAuthStore } from 'src/auth/store';
+import { useAuthStore } from 'src/auth/store/useAuthStore';
 import { AuctionType } from 'src/entities/auction';
 import { myAuctionsTab, selectAvailableTabs } from 'src/entities/profile/tabs';
 import CustomInput from 'src/shared/ui/CustomInput/CustomInput.vue';

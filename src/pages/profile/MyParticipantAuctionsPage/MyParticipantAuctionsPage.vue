@@ -19,7 +19,7 @@
 <script setup lang="ts">
 import { useAuctionsStore } from 'src/auction/store/auctionsStore';
 import AuctionsList from 'src/auction/ui/AuctionsList/AuctionsList.vue';
-import { useAuthStore } from 'src/auth/store';
+import { useAuthStore } from 'src/auth/store/useAuthStore';
 import { LoadingStatuses } from 'src/entities/application';
 import { myParticipationAuctionsTab, selectAvailableTabs } from 'src/entities/profile/tabs';
 import TabsPageWrapper from 'src/shared/ui/TabsPageWrapper/TabsPageWrapper.vue';

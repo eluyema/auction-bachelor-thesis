@@ -11,7 +11,7 @@
 <script setup lang="ts">
 import { useManagerAuctionStore } from 'src/auction/store/managerAuctionStore';
 import AuctionsList from 'src/auction/ui/AuctionsList/AuctionsList.vue';
-import { useAuthStore } from 'src/auth/store';
+import { useAuthStore } from 'src/auth/store/useAuthStore';
 import { myAuctionsTab, selectAvailableTabs } from 'src/entities/profile/tabs';
 import CustomButton from 'src/shared/ui/CustomButton/CustomButton.vue';
 import TabsPageWrapper from 'src/shared/ui/TabsPageWrapper/TabsPageWrapper.vue';
