@@ -1,9 +1,10 @@
 <template>
     <form class="form" @submit.prevent="submitUpdate">
-        <h2 class="title">Редагування даних користувача</h2>
+        <h2 class="title">Редагування рівня доступу користувача</h2>
         <div>
             <CustomInput
                 :error="!!errorText"
+                disabled
                 label="Ім'я користувача / Ім'я юридичної особи"
                 class="input"
                 type="text"
@@ -14,6 +15,7 @@
         <div>
             <CustomInput
                 :error="!!errorText"
+                disabled
                 label="Пошта"
                 class="input"
                 type="email"
@@ -116,7 +118,7 @@ const submitUpdate = async () => {
     padding: var(--spacing-20);
     border-radius: var(--radius-large);
     width: 100%;
-    max-width: 400px;
+    max-width: 430px;
 }
 
 .input {
